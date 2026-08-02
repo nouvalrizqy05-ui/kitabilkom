@@ -91,7 +91,7 @@ export default function Footer() {
             </div>
             <div className="footer-bottom">
               <p className="footer-copyright">© 2026 Kitab Ilkom — HIMA Ilmu Komputer UNNES. All rights reserved.</p>
-              <p className="footer-powered">Dibuat dengan ❤️ oleh Mahasiswa Ilkom</p>
+              <p className="footer-powered">Di bawah olahan Divisi Akademik Sinergi</p>
             </div>
           </div>
         </div>
