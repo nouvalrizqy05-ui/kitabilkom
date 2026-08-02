@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kitab Ilkom - Portal Akademik Jurusan Ilmu Komputer Universitas Negeri Semarang. Cari mata kuliah, materi, soal, info akademik, dan banyak lagi.">
+    <title>Kitab Ilkom | Portal Akademik Ilmu Komputer UNNES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <header class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-brand" id="navbar-brand">
+                <img src="assets/logo-ilkom.png" alt="Logo Ilmu Komputer" class="navbar-logo-img">
+                <img src="assets/logo-astasae.png" alt="Logo Astasae" class="navbar-logo-img">
+                <div class="navbar-brand-text">
+                    <span class="brand-title">Kitab</span>
+                    <span class="brand-subtitle">Ilkom</span>
+                </div>
+            </a>
+            <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="navbar-nav" id="navbar-nav">
+                <a href="index.html" class="nav-link active" id="nav-beranda">Beranda</a>
+                <div class="nav-dropdown" id="nav-dropdown-akademik">
+                    <a href="#" class="nav-link dropdown-toggle" id="nav-akademik">
+                        Akademik
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu" id="dropdown-menu-akademik">
+                        <a href="index.html#buku-akademik" class="dropdown-item" id="nav-buku">Buku Akademik</a>
+                        <a href="#info-akademik" class="dropdown-item" id="nav-info">Info Akademik</a>
+                        <a href="#dosen" class="dropdown-item" id="nav-dosen">Dosen Ilkom</a>
+                        <a href="#kalender" class="dropdown-item" id="nav-kalender">Kalender Prestasi</a>
+                    </div>
+                </div>
+                <a href="#vote" class="nav-link" id="nav-vote">Vote Tutorin</a>
+                <a href="#tentang" class="nav-link" id="nav-tentang">Tentang</a>
+            </nav>
+        </div>
+    </header>
+
+    
+    <!-- ==================== PAGE HEADER ==================== -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Direktori Dosen</h1>
+            <p class="page-subtitle">Kenali lebih dekat profil dan bidang keahlian dosen-dosen Ilmu Komputer UNNES.</p>
+        </div>
+    </section>
+
+    <!-- ==================== PAGE CONTENT ==================== -->
+    <section class="page-content">
+        <div class="container">
+
+            <div style="max-width: 600px; margin: 0 auto 4rem; position: relative; z-index: 10;">
+                <div class="search-container" style="margin-top: 0; box-shadow: 0 15px 35px rgba(0,0,0,0.1), inset 0 2px 0 rgba(255,255,255,1);">
+                    <input type="text" class="search-input" placeholder="Cari nama dosen atau keahlian..." style="padding-left: 2rem;">
+                    <button class="search-btn" aria-label="Cari">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                            <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="2.5"/>
+                            <path d="M15 15L20 20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="cards-grid">
+                <div class="card-3d" style="flex-direction: row; align-items: center; gap: 1.5rem;">
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--gray-300) url('assets/hero-new.png') center/cover; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);"></div>
+                    <div>
+                        <h3 class="card-title" style="margin-bottom: 0.2rem; font-size: 1.1rem;">Prof. Dr. Ir. Wahyu Hidayat, M.Kom.</h3>
+                        <p class="card-meta" style="margin-bottom: 0.5rem; color: var(--primary-600); font-weight: 600;">Artificial Intelligence</p>
+                        <p style="font-size: 0.8rem; color: var(--gray-500);">NIP: 198001012005011001</p>
+                    </div>
+                </div>
+                <div class="card-3d" style="flex-direction: row; align-items: center; gap: 1.5rem;">
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--purple-300) url('assets/hero-laptop.png') center/cover; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);"></div>
+                    <div>
+                        <h3 class="card-title" style="margin-bottom: 0.2rem; font-size: 1.1rem;">Dr. Rina Puspita, S.Kom., M.Cs.</h3>
+                        <p class="card-meta" style="margin-bottom: 0.5rem; color: var(--primary-600); font-weight: 600;">Data Science & Analytics</p>
+                        <p style="font-size: 0.8rem; color: var(--gray-500);">NIP: 198502022010122002</p>
+                    </div>
+                </div>
+                <div class="card-3d" style="flex-direction: row; align-items: center; gap: 1.5rem;">
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--gold-300) url('assets/hero-new.png') center/cover; flex-shrink: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);"></div>
+                    <div>
+                        <h3 class="card-title" style="margin-bottom: 0.2rem; font-size: 1.1rem;">Ahmad Yulianto, S.Kom., M.T.</h3>
+                        <p class="card-meta" style="margin-bottom: 0.5rem; color: var(--primary-600); font-weight: 600;">Software Engineering</p>
+                        <p style="font-size: 0.8rem; color: var(--gray-500);">NIP: 199003032015041003</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+

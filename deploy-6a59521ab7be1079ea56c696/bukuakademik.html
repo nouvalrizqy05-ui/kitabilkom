@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kitab Ilkom - Portal Akademik Jurusan Ilmu Komputer Universitas Negeri Semarang. Cari mata kuliah, materi, soal, info akademik, dan banyak lagi.">
+    <title>Kitab Ilkom | Portal Akademik Ilmu Komputer UNNES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <header class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-brand" id="navbar-brand">
+                <img src="assets/logo-ilkom.png" alt="Logo Ilmu Komputer" class="navbar-logo-img">
+                <img src="assets/logo-astasae.png" alt="Logo Astasae" class="navbar-logo-img">
+                <div class="navbar-brand-text">
+                    <span class="brand-title">Kitab</span>
+                    <span class="brand-subtitle">Ilkom</span>
+                </div>
+            </a>
+            <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="navbar-nav" id="navbar-nav">
+                <a href="index.html" class="nav-link active" id="nav-beranda">Beranda</a>
+                <div class="nav-dropdown" id="nav-dropdown-akademik">
+                    <a href="#" class="nav-link dropdown-toggle" id="nav-akademik">
+                        Akademik
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu" id="dropdown-menu-akademik">
+                        <a href="index.html#buku-akademik" class="dropdown-item" id="nav-buku">Buku Akademik</a>
+                        <a href="#info-akademik" class="dropdown-item" id="nav-info">Info Akademik</a>
+                        <a href="#dosen" class="dropdown-item" id="nav-dosen">Dosen Ilkom</a>
+                        <a href="#kalender" class="dropdown-item" id="nav-kalender">Kalender Prestasi</a>
+                    </div>
+                </div>
+                <a href="#vote" class="nav-link" id="nav-vote">Vote Tutorin</a>
+                <a href="#tentang" class="nav-link" id="nav-tentang">Tentang</a>
+            </nav>
+        </div>
+    </header>
+
+    
+    <!-- ==================== PAGE HEADER ==================== -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Buku Akademik Digital</h1>
+            <p class="page-subtitle">Temukan dan unduh materi kuliah, e-book, dan modul untuk semester Anda.</p>
+        </div>
+    </section>
+
+    <!-- ==================== PAGE CONTENT ==================== -->
+    <section class="page-content">
+        <div class="container">
+
+            <div class="page-tabs">
+                <button class="tab-btn active">Semester 1</button>
+                <button class="tab-btn">Semester 2</button>
+                <button class="tab-btn">Semester 3</button>
+                <button class="tab-btn">Semua</button>
+            </div>
+            <div class="cards-grid">
+                <!-- Card 1 -->
+                <div class="card-3d">
+                    <span class="card-badge">PDF</span>
+                    <div class="card-image-wrap">
+                        <img src="assets/hero-laptop.png" alt="Buku" style="height: 120px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); mix-blend-mode: normal;">
+                    </div>
+                    <h3 class="card-title">Algoritma & Pemrograman</h3>
+                    <p class="card-meta">Dosen: Prof. Dr. Budi Santoso</p>
+                    <button class="btn-primary-small">Unduh Buku</button>
+                </div>
+                <!-- Card 2 -->
+                <div class="card-3d">
+                    <span class="card-badge">Modul</span>
+                    <div class="card-image-wrap" style="background: var(--purple-800);">
+                        <img src="assets/hero-new.png" alt="Modul" style="height: 120px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));">
+                    </div>
+                    <h3 class="card-title">Sistem Operasi</h3>
+                    <p class="card-meta">Dosen: Ir. Siti Aminah, M.Kom.</p>
+                    <button class="btn-primary-small">Unduh Modul</button>
+                </div>
+                <!-- Card 3 -->
+                <div class="card-3d">
+                    <span class="card-badge">E-Book</span>
+                    <div class="card-image-wrap" style="background: var(--gold-800);">
+                        <img src="assets/hero-laptop.png" alt="EBook" style="height: 120px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));">
+                    </div>
+                    <h3 class="card-title">Kalkulus Dasar</h3>
+                    <p class="card-meta">Dosen: Dr. Andi Wijaya</p>
+                    <button class="btn-primary-small">Unduh Buku</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kitab Ilkom - Portal Akademik Jurusan Ilmu Komputer Universitas Negeri Semarang. Cari mata kuliah, materi, soal, info akademik, dan banyak lagi.">
+    <title>Kitab Ilkom | Portal Akademik Ilmu Komputer UNNES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <header class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-brand" id="navbar-brand">
+                <img src="assets/logo-ilkom.png" alt="Logo Ilmu Komputer" class="navbar-logo-img">
+                <img src="assets/logo-astasae.png" alt="Logo Astasae" class="navbar-logo-img">
+                <div class="navbar-brand-text">
+                    <span class="brand-title">Kitab</span>
+                    <span class="brand-subtitle">Ilkom</span>
+                </div>
+            </a>
+            <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="navbar-nav" id="navbar-nav">
+                <a href="index.html" class="nav-link active" id="nav-beranda">Beranda</a>
+                <div class="nav-dropdown" id="nav-dropdown-akademik">
+                    <a href="#" class="nav-link dropdown-toggle" id="nav-akademik">
+                        Akademik
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu" id="dropdown-menu-akademik">
+                        <a href="index.html#buku-akademik" class="dropdown-item" id="nav-buku">Buku Akademik</a>
+                        <a href="#info-akademik" class="dropdown-item" id="nav-info">Info Akademik</a>
+                        <a href="#dosen" class="dropdown-item" id="nav-dosen">Dosen Ilkom</a>
+                        <a href="#kalender" class="dropdown-item" id="nav-kalender">Kalender Prestasi</a>
+                    </div>
+                </div>
+                <a href="#vote" class="nav-link" id="nav-vote">Vote Tutorin</a>
+                <a href="#tentang" class="nav-link" id="nav-tentang">Tentang</a>
+            </nav>
+        </div>
+    </header>
+
+    
+    <!-- ==================== PAGE HEADER ==================== -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Vote Tutorin Maba</h1>
+            <p class="page-subtitle">Tentukan pilihanmu untuk asisten mahasiswa baru angkatan ini.</p>
+        </div>
+    </section>
+
+    <!-- ==================== PAGE CONTENT ==================== -->
+    <section class="page-content">
+        <div class="container">
+
+            <!-- Voting Mata Kuliah -->
+            <div style="text-align:center; margin-bottom: 2rem;">
+                <h2 style="font-family: var(--font-display); color: var(--navy-900);">Voting 1: Pilih Mata Kuliah</h2>
+                <p style="color: var(--gray-600);">Materi apa yang paling ingin dibahas pada sesi minggu ini?</p>
+            </div>
+            <div class="cards-grid" style="margin-bottom: 4rem;">
+                <!-- Opsi Matkul 1 -->
+                <div class="card-3d" style="text-align: center;">
+                    <div class="card-image-wrap" style="background: var(--navy-800); height: 100px; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 26px;">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Algoritma & Pemrograman</h3>
+                    <p class="card-meta">Fokus: Looping & Array</p>
+                    <button class="btn-primary-small" style="width: 100%;">Vote Matkul Ini</button>
+                </div>
+                <!-- Opsi Matkul 2 -->
+                <div class="card-3d" style="text-align: center;">
+                    <div class="card-image-wrap" style="background: var(--purple-800); height: 100px; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 26px;">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Sistem Operasi</h3>
+                    <p class="card-meta">Fokus: Manajemen Memori</p>
+                    <button class="btn-primary-small" style="width: 100%;">Vote Matkul Ini</button>
+                </div>
+                <!-- Opsi Matkul 3 -->
+                <div class="card-3d" style="text-align: center;">
+                    <div class="card-image-wrap" style="background: var(--gold-800); height: 100px; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 26px;">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Kalkulus Dasar</h3>
+                    <p class="card-meta">Fokus: Integral Tentu</p>
+                    <button class="btn-primary-small" style="width: 100%;">Vote Matkul Ini</button>
+                </div>
+            </div>
+
+            <!-- Voting Jadwal -->
+            <div style="text-align:center; margin-bottom: 2rem;">
+                <h2 style="font-family: var(--font-display); color: var(--navy-900);">Voting 2: Pilih Jadwal</h2>
+                <p style="color: var(--gray-600);">Silakan pilih jadwal (hari & jam) yang paling sesuai untuk sesinya!</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card-3d" style="text-align: center;">
+                    <div class="card-image-wrap" style="background: var(--purple-100); height: 100px; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 26px;">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Opsi 1: Akhir Pekan Pagi</h3>
+                    <p class="card-meta">Sabtu, 08.00 - 10.00 WIB</p>
+                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1.5rem;">Cocok untuk yang ingin fresh belajar di pagi hari saat libur.</p>
+                    <button class="btn-primary-small" style="width: 100%;">Vote Jadwal Ini</button>
+                </div>
+                
+                <div class="card-3d" style="text-align: center;">
+                    <div class="card-image-wrap" style="background: var(--navy-100); height: 100px; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--navy-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 26px;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Opsi 2: Hari Biasa Sore</h3>
+                    <p class="card-meta">Jumat, 15.30 - 17.30 WIB</p>
+                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1.5rem;">Pas untuk mengisi waktu kosong setelah perkuliahan selesai.</p>
+                    <button class="btn-primary-small" style="width: 100%;">Vote Jadwal Ini</button>
+                </div>
+                
+                <div class="card-3d" style="text-align: center;">
+                    <div class="card-image-wrap" style="background: var(--gold-100); height: 100px; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 26px;">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Opsi 3: Akhir Pekan Siang</h3>
+                    <p class="card-meta">Minggu, 13.00 - 15.00 WIB</p>
+                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1.5rem;">Bagi yang suka belajar santai di Minggu siang.</p>
+                    <button class="btn-primary-small" style="width: 100%;">Vote Jadwal Ini</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
