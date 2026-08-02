@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, Info, CheckSquare, Users, HelpCircle, ArrowRightLeft, BarChart3, GraduationCap, Library, Star, Trophy, Camera } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import Calendar from '../components/Calendar';
@@ -12,11 +12,19 @@ export default function Home() {
   const [kegiatan, setKegiatan] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
   // Search state
   const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState("Semua");
-  const searchCategories = ["Semua", "Buku Akademik", "Info Akademik", "Tutorin Maba", "Dosen Ilkom"];
+  const searchCategories = ["Semua", "Buku Akademik", "Info Akademik", "Dosen Ilkom"];
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    navigate(`/search?q=${encodeURIComponent(searchQuery)}&c=${encodeURIComponent(searchCategory)}`);
+  };
 
   // Carousel logic
   useEffect(() => {
@@ -143,9 +151,10 @@ export default function Home() {
       {/* ==================== SEARCH BAR ==================== */}
       <section className="search-section" id="search-section">
         <div className="container">
-          <div className="search-wrapper">
+          <form className="search-wrapper" onSubmit={handleSearchSubmit}>
             <div className="search-dropdown" style={{ position: 'relative' }}>
               <button 
+                type="button"
                 className="search-dropdown-btn"
                 onClick={() => setIsSearchDropdownOpen(!isSearchDropdownOpen)}
               >
@@ -157,6 +166,7 @@ export default function Home() {
                 {searchCategories.map((cat) => (
                   <button 
                     key={cat}
+                    type="button"
                     className={`search-dropdown-item ${searchCategory === cat ? 'active' : ''}`}
                     onClick={() => {
                       setSearchCategory(cat);
@@ -169,11 +179,17 @@ export default function Home() {
               </div>
             </div>
             <div className="search-divider"></div>
-            <input type="text" className="search-input" placeholder="Cari Mata Kuliah, Materi, Soal, Dll ..." />
-            <button className="search-btn" aria-label="Cari">
+            <input 
+              type="text" 
+              className="search-input" 
+              placeholder="Cari Mata Kuliah, Judul, Info, Dosen..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="search-btn" aria-label="Cari">
               <Search size={22} strokeWidth={2.5} />
             </button>
-          </div>
+          </form>
         </div>
       </section>
 
