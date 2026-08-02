@@ -1484,3 +1484,77 @@
     display: none;
   }
 }
+
+/* Biometric & Remember Me */
+.auth-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: var(--gray-600);
+  cursor: pointer;
+}
+
+.auth-checkbox input {
+  accent-color: var(--purple-600);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.biometric-quick-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.btn-biometric {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--purple-100), var(--blue-50));
+  border: 2px dashed var(--purple-300);
+  border-radius: var(--radius-xl);
+  color: var(--purple-700);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-biometric:hover {
+  background: var(--purple-100);
+  border-color: var(--purple-400);
+  transform: translateY(-2px);
+}
+
+.biometric-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.biometric-divider::before,
+.biometric-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.biometric-divider::before {
+  margin-right: 1rem;
+}
+
+.biometric-divider::after {
+  margin-left: 1rem;
+}
