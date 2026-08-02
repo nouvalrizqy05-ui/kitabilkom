@@ -9,7 +9,6 @@ import AdminUsers from './AdminUsers'
 import AdminPublikasi from './AdminPublikasi'
 import AdminAspirasi from './AdminAspirasi'
 import AdminAgenda from './AdminAgenda'
-import AdminKegiatan from './AdminKegiatan'
 import { useAuth } from '../../context/AuthContext'
 
 const TABS = [
@@ -21,7 +20,6 @@ const TABS = [
   { key: 'vote', label: 'Vote', icon: Vote, Component: AdminVote },
   { key: 'aspirasi', label: 'Aspirasi', icon: MessageSquare, Component: AdminAspirasi },
   { key: 'agenda', label: 'Agenda', icon: Calendar, Component: AdminAgenda },
-  { key: 'kegiatan', label: 'Kegiatan', icon: ImageIcon, Component: AdminKegiatan },
   { key: 'users', label: 'Pengguna', icon: UserCog, Component: AdminUsers },
 ]
 

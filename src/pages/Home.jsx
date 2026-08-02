@@ -9,7 +9,6 @@ import Calendar from '../components/Calendar';
 export default function Home() {
   const [stats, setStats] = useState({ mahasiswa: 0, dosen: 0, materi: 0, info: 0 });
   const [latestInfo, setLatestInfo] = useState([]);
-  const [kegiatan, setKegiatan] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
@@ -49,11 +48,6 @@ export default function Home() {
           .eq('kategori', 'Artikel Publikasi')
           .order('tanggal', { ascending: false })
           .limit(3),
-        supabase
-          .from('kegiatan_hima')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(3),
       ]);
 
       if (!isMounted) return;
@@ -65,7 +59,6 @@ export default function Home() {
         info: infoRes.count ?? 0,
       });
       setLatestInfo(latestInfoRes?.data ?? []);
-      setKegiatan(kegiatanRes?.data ?? []);
       setLoading(false);
     }
 
@@ -368,40 +361,6 @@ export default function Home() {
               })
             ) : (
               <p>Belum ada artikel publikasi terbaru.</p>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== KEGIATAN HIMA ==================== */}
-      <section className="kegiatan-section" id="kegiatan" style={{ background: 'white' }}>
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">
-              <Camera size={24} stroke="var(--primary-600)" strokeWidth={2.5} style={{ marginRight: '10px' }} />
-              Kegiatan HIMA Ilkom
-            </h2>
-          </div>
-          <div className="kegiatan-grid">
-            {kegiatan.length > 0 ? (
-              kegiatan.map(item => (
-                <div key={item.id} className="kegiatan-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ height: '200px', backgroundImage: `url(${item.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'var(--gray-100)' }}></div>
-                  <div className="kegiatan-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '1.5rem' }}>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--purple-600)', fontWeight: 700, marginBottom: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                      {new Date(item.created_at).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
-                    </div>
-                    <h4 className="kegiatan-title" style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.8rem', lineHeight: 1.4, color: 'var(--navy-900)' }}>
-                      {item.judul}
-                    </h4>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--gray-600)' }}>
-                      {item.deskripsi}
-                    </p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>Belum ada kegiatan terbaru yang didokumentasikan.</p>
             )}
           </div>
         </div>
