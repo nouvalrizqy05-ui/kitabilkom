@@ -208,7 +208,7 @@ export default function Login() {
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
             />
-            <span>Ingat Saya (Simpan Kredensial)</span>
+            <span>Ingat Saya</span>
           </label>
 
           {error && <p className="auth-error">{error}</p>}
