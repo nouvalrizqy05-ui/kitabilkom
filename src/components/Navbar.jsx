@@ -86,6 +86,7 @@ export default function Navbar() {
                 <ChevronDown className="dropdown-arrow" size={14} strokeWidth={2.5} />
               </button>
               <div className="dropdown-menu">
+                <Link to="/profil" className="dropdown-item">Profil Saya</Link>
                 {profile?.role === 'admin' && (
                   <Link to="/admin" className="dropdown-item">Admin Dashboard</Link>
                 )}

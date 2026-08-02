@@ -11,6 +11,8 @@ import Publikasi from './pages/Publikasi'
 import DosenIlkom from './pages/DosenIlkom'
 import VoteTutorin from './pages/VoteTutorin'
 import Bantuan from './pages/Bantuan'
+import Profil from './pages/Profil'
+import Aspirasi from './pages/Aspirasi'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import { ProtectedRoute, AdminRoute } from './components/ProtectedRoute'
 import ScrollToTop from './components/ScrollToTop'
@@ -33,7 +35,16 @@ export default function App() {
             <Route path="/publikasi" element={<PageTransition><Publikasi /></PageTransition>} />
             <Route path="/dosen" element={<PageTransition><DosenIlkom /></PageTransition>} />
             <Route path="/bantuan" element={<PageTransition><Bantuan /></PageTransition>} />
+            <Route path="/aspirasi" element={<PageTransition><Aspirasi /></PageTransition>} />
 
+            <Route
+              path="/profil"
+              element={
+                <ProtectedRoute>
+                  <PageTransition><Profil /></PageTransition>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/buku-akademik"
               element={

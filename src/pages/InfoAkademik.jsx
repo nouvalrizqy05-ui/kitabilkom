@@ -72,7 +72,7 @@ export default function InfoAkademik() {
                 ? new Date(selected.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
                 : ''}
             </p>
-            <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{selected.konten}</p>
+            <div className="rich-text-content" dangerouslySetInnerHTML={{ __html: selected.konten }}></div>
           </Modal>
         )}
       </section>

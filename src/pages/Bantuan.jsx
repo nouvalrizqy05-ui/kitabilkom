@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ChevronDown, ExternalLink, MessageCircle, FileText, HelpCircle, Send, BookOpen, ClipboardList, GraduationCap, Briefcase } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ChevronDown, ExternalLink, MessageCircle, MessageSquare, ChevronRight, FileText, HelpCircle, Send, BookOpen, ClipboardList, GraduationCap, Briefcase } from 'lucide-react'
 import BackButton from '../components/BackButton'
 
 /* ===== PLACEHOLDER LINKS ===== */
@@ -127,16 +128,16 @@ export default function Bantuan() {
 
           {/* ===== QUICK ACTION CARDS ===== */}
           <div className="bantuan-quick-actions">
-            <a href={GFORM_ASPIRASI} target="_blank" rel="noopener noreferrer" className="bantuan-action-card bantuan-action-aspirasi">
+            <Link to="/aspirasi" className="bantuan-action-card bantuan-action-aspirasi">
               <div className="bantuan-action-icon">
-                <Send size={32} />
+                <MessageSquare size={24} />
               </div>
               <div className="bantuan-action-text">
                 <h3>Sampaikan Aspirasi</h3>
-                <p>Laporkan kendala perkuliahan, fasilitas, atau berikan saran untuk kemajuan Ilkom melalui formulir resmi.</p>
+                <p>Punya keluhan fasilitas, kritik, atau saran untuk Ilkom? Suarakan di sini!</p>
               </div>
-              <ExternalLink size={20} className="bantuan-action-arrow" />
-            </a>
+              <ChevronRight className="bantuan-action-arrow" size={20} />
+            </Link>
 
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="bantuan-action-card bantuan-action-wa">
               <div className="bantuan-action-icon">

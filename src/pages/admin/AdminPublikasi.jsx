@@ -3,6 +3,7 @@ import { Pencil, Trash2, Plus, ExternalLink } from 'lucide-react'
 import { supabase } from '../../lib/supabaseClient'
 import { useAuth } from '../../context/AuthContext'
 import Modal from '../../components/Modal'
+import RichTextEditor from '../../components/RichTextEditor'
 
 const emptyForm = { judul: '', penulis: '', nama_jurnal: '', tahun: new Date().getFullYear(), abstrak: '', link_url: '' }
 
@@ -164,14 +165,12 @@ export default function AdminPublikasi() {
               Tautan Eksternal (URL / DOI)
               <input type="url" required value={form.link_url} placeholder="https://doi.org/... atau link jurnal" onChange={(e) => setForm({ ...form, link_url: e.target.value })} />
             </label>
-            <label>
-              Abstrak
-              <textarea
-                required
-                rows={5}
-                placeholder="Tuliskan ringkasan / abstrak dari penelitian..."
+            <label className="admin-field">
+              <span>Abstrak</span>
+              <RichTextEditor
                 value={form.abstrak}
-                onChange={(e) => setForm({ ...form, abstrak: e.target.value })}
+                onChange={(content) => setForm({ ...form, abstrak: content })}
+                placeholder="Tuliskan ringkasan / abstrak dari penelitian..."
               />
             </label>
             {error && <p className="auth-error">{error}</p>}

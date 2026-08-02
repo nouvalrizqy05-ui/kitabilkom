@@ -3,9 +3,7 @@ import { supabase } from '../lib/supabaseClient';
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const EVENT_TYPES = {
-  lomba: { class: 'event-lomba', tagClass: 'tag-lomba', icon: '🏆', label: 'Lomba' },
-  beasiswa: { class: 'event-beasiswa', tagClass: 'tag-beasiswa', icon: '🎓', label: 'Beasiswa' },
-  bootcamp: { class: 'event-bootcamp', tagClass: 'tag-bootcamp', icon: '💻', label: 'Bootcamp' }
+  kegiatan: { class: 'event-lomba', tagClass: 'tag-lomba', icon: '📅', label: 'Agenda' },
 };
 
 // generateMockEvents removed to sync with admin database
@@ -31,9 +29,8 @@ export default function Calendar() {
       const endStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(endDay).padStart(2, '0')}`;
 
       const { data, error } = await supabase
-        .from('info_akademik')
-        .select('id, judul, kategori, tanggal, konten')
-        .in('kategori', ['Lomba', 'Beasiswa', 'Bootcamp'])
+        .from('kalender_akademik')
+        .select('*')
         .gte('tanggal', startStr)
         .lte('tanggal', endStr)
         .order('tanggal', { ascending: true });
@@ -44,10 +41,10 @@ export default function Calendar() {
           return {
             id: item.id,
             date: new Date(parseInt(y), parseInt(m) - 1, parseInt(d)),
-            type: item.kategori.toLowerCase(),
-            title: item.judul,
-            desc: item.konten,
-            status: 'Informasi', 
+            type: 'kegiatan',
+            title: item.nama_kegiatan,
+            desc: item.keterangan || '',
+            status: 'Agenda', 
             statusClass: 'status-upcoming'
           };
         });

@@ -3,6 +3,7 @@ import { Pencil, Trash2, Plus } from 'lucide-react'
 import { supabase } from '../../lib/supabaseClient'
 import { useAuth } from '../../context/AuthContext'
 import Modal from '../../components/Modal'
+import RichTextEditor from '../../components/RichTextEditor'
 
 const KATEGORI_OPTIONS = ['Penting', 'Berita', 'Lomba', 'Beasiswa', 'Bootcamp']
 const emptyForm = { judul: '', kategori: 'Penting', tanggal: '', konten: '' }
@@ -147,13 +148,12 @@ export default function AdminInfo() {
                 onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
               />
             </label>
-            <label>
-              Isi / Konten
-              <textarea
-                required
-                rows={5}
+            <label className="admin-field">
+              <span>Isi Pengumuman</span>
+              <RichTextEditor
                 value={form.konten}
-                onChange={(e) => setForm({ ...form, konten: e.target.value })}
+                onChange={(content) => setForm({ ...form, konten: content })}
+                placeholder="Detail informasi..."
               />
             </label>
             {error && <p className="auth-error">{error}</p>}
