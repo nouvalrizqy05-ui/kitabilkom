@@ -64,7 +64,10 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { nama } },
+      options: { 
+        data: { nama },
+        emailRedirectTo: 'https://kitabilkom.vercel.app/'
+      },
     })
     return { data, error }
   }
