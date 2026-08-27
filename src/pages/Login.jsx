@@ -100,22 +100,10 @@ export default function Login() {
       const assertion = await navigator.credentials.get({ publicKey });
       
       if (assertion) {
-        // Biometric verified! Login directly with saved credentials
-        setSubmitting(true)
-        const saved = localStorage.getItem('kitabilkom_saved_cred')
-        if (saved) {
-          const { email: savedEmail, password: savedPassword } = decodeData(saved)
-          const { error: signInError } = await signIn({ email: savedEmail, password: savedPassword })
-          if (signInError) {
-            setError(signInError.message)
-            setSubmitting(false)
-            return
-          }
-          navigate(from, { replace: true })
-        } else {
-          setError('Kredensial tidak ditemukan. Silakan login manual.')
-          setSubmitting(false)
-        }
+        // Biometric verified! Karena password tidak lagi disimpan di localStorage,
+        // arahkan user untuk mengisi password secara manual (email sudah terisi otomatis).
+        setSubmitting(false)
+        setError('Verifikasi sidik jari berhasil! Silakan masukkan kata sandi Anda untuk melanjutkan.')
       }
     } catch (err) {
       console.warn("Biometric login failed:", err)

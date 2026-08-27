@@ -49,13 +49,16 @@ export default function DosenIlkom() {
         <div className="container">
 
         <div className="search-wrap">
-          <Search size={18} />
+          <Search size={18} aria-hidden="true" />
+          <label htmlFor="dosen-search-input" className="sr-only">Cari nama dosen atau bidang keahlian</label>
           <input
+            id="dosen-search-input"
             type="text"
             className="search-input"
             placeholder="Cari nama dosen atau bidang keahlian..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            aria-label="Cari nama dosen atau bidang keahlian"
           />
         </div>
 
