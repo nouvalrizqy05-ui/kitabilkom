@@ -160,7 +160,7 @@ html {
 body {
     font-family: var(--font-body);
     color: var(--gray-800);
-    background-color: #b5c4df;
+    background-color: #F4F5F7;
     line-height: 1.6;
     overflow-x: hidden;
 }
@@ -275,10 +275,8 @@ button {
 }
 
 .navbar.scrolled {
-    background: rgba(106, 85, 160, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+    background: var(--navy-700);
+    box-shadow: var(--shadow-md);
     top: 15px;
     width: calc(100% - 30px);
     max-width: var(--container-max);
@@ -559,8 +557,7 @@ button {
 
 .hero-badge {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    background: var(--navy-500);
     color: white;
     font-family: var(--font-display);
     font-size: 0.85rem;
@@ -568,7 +565,7 @@ button {
     padding: 0.4rem 1rem;
     border-radius: var(--radius-full);
     margin-bottom: 1.2rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid var(--navy-400);
 }
 
 .hero-title {
@@ -641,8 +638,7 @@ button {
     transform: translateY(-50%);
     width: 48px;
     height: 48px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    background: var(--navy-500);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -650,7 +646,7 @@ button {
     color: white;
     z-index: 10;
     transition: all var(--transition-base);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--navy-400);
 }
 
 .carousel-btn:hover {
@@ -1615,15 +1611,17 @@ button {
 }
 
 .vote-badge {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(10px);
-    padding: 0.4rem 1rem;
+    background: var(--primary-100);
+    color: var(--primary-700);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1.2rem;
     border-radius: var(--radius-full);
+    font-weight: 700;
     font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--primary-200);
 }
 
 .vote-title {
@@ -1722,7 +1720,6 @@ button {
     border-radius: var(--radius-md) var(--radius-md) 0 0;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
     border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(5px);
 }
 
 .bar-1 { height: 120px; background: linear-gradient(180deg, rgba(212, 168, 67, 0.4), rgba(212, 168, 67, 0.1)); border-color: rgba(212, 168, 67, 0.3); }
@@ -1924,6 +1921,17 @@ button {
 .footer-social-icons {
     display: flex;
     gap: 0.8rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 15, 26, 0.6);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .social-icon {
