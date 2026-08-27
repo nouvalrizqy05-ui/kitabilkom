@@ -2,8 +2,6 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import MobileBottomNav from './components/MobileBottomNav'
-import useIsMobile from './hooks/useIsMobile'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -23,12 +21,11 @@ import PageTransition from './components/PageTransition'
 
 export default function App() {
   const location = useLocation()
-  const isMobile = useIsMobile()
 
   return (
     <>
       <ScrollToTop />
-      {!isMobile && <Navbar />}
+      <Navbar />
       <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
@@ -79,8 +76,7 @@ export default function App() {
           </Routes>
         </AnimatePresence>
       </main>
-      {!isMobile && <Footer />}
-      {isMobile && <MobileBottomNav />}
+      <Footer />
     </>
   )
 }
