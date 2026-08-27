@@ -319,9 +319,11 @@
 
 /* ---------- AUTH (LOGIN / REGISTER) ---------- */
 .auth-section {
+  position: relative;
   display: flex;
   justify-content: center;
   padding: 7rem 1.5rem 4rem;
+  min-height: 100vh;
 }
 
 .auth-box {
@@ -985,8 +987,9 @@
 /* Variasi untuk halaman auth (background terang) */
 .back-btn-page-light {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  /* top = navbar height (72px) + jarak aman 16px */
+  top: calc(72px + 1rem);
+  left: 1.5rem;
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -999,7 +1002,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-  z-index: 2;
+  z-index: 10;
   font-family: inherit;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
@@ -1019,8 +1022,11 @@
   }
 
   .back-btn-page-light {
-    top: 0.75rem;
-    left: 0.75rem;
+    /* Di mobile navbar tidak float, tetap 72px + sedikit jarak */
+    top: calc(72px + 0.75rem);
+    left: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.82rem;
   }
 }
 
