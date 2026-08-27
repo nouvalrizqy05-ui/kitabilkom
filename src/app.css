@@ -912,6 +912,11 @@
   flex-direction: column;
   align-items: center;
   gap: 1.25rem;
+  /* Reset default button styling */
+  font-family: inherit;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .prodi-gate-card:hover {
@@ -1589,7 +1594,21 @@
   text-decoration: underline;
 }
 
-/* ==================== SEARCH PAGE ==================== */
+/* ==================== ACCESSIBILITY UTILITIES ==================== */
+/* Screen-reader only: visually hidden but readable by assistive tech */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ==================== HERO BUTTONS ==================== */
 .search-page-form {
   display: flex;
   max-width: 600px;

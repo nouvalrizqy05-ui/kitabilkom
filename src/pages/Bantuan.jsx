@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { ChevronDown, ExternalLink, MessageCircle, MessageSquare, ChevronRight, FileText, HelpCircle, Send, BookOpen, ClipboardList, GraduationCap, Briefcase } from 'lucide-react'
 import BackButton from '../components/BackButton'
 
-/* ===== PLACEHOLDER LINKS ===== */
-/* Ganti URL di bawah ini dengan link asli Anda */
-const GFORM_ASPIRASI = '#'
-const WHATSAPP_LINK = '#'
+/* ===== KONFIGURASI LINK ===== */
+/* TODO: Ganti nomor WA di bawah dengan nomor pengurus HIMA yang aktif */
+const WHATSAPP_NUMBER = '6281234567890' // Ganti dengan nomor HP aktif
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=Halo%20HIMA%20Ilkom%20UNNES%2C%20saya%20ingin%20bertanya...`
 /* ============================== */
 
 const FAQ_DATA = [

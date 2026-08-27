@@ -5,9 +5,10 @@ import { useAuth } from '../context/AuthContext'
 import { ALLOWED_EMAIL_DOMAIN } from '../lib/supabaseClient'
 import BackButton from '../components/BackButton'
 
-// Helper for simple base64 encode/decode (NOT secure encryption, just obfuscation)
-const encodeData = (data) => btoa(JSON.stringify(data))
-const decodeData = (str) => JSON.parse(atob(str))
+// Hanya simpan email (bukan password) untuk fitur Ingat Saya
+const saveEmail = (email) => localStorage.setItem('kitabilkom_saved_email', email)
+const getSavedEmail = () => localStorage.getItem('kitabilkom_saved_email') || ''
+const clearSavedEmail = () => localStorage.removeItem('kitabilkom_saved_email')
 
 export default function Login() {
   const { signIn } = useAuth()
@@ -26,17 +27,11 @@ export default function Login() {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
   useEffect(() => {
-    // Load saved credentials
-    const saved = localStorage.getItem('kitabilkom_saved_cred')
-    if (saved) {
-      try {
-        const { email: savedEmail, password: savedPassword } = decodeData(saved)
-        setEmail(savedEmail)
-        setPassword(savedPassword)
-        setRememberMe(true)
-      } catch (e) {
-        localStorage.removeItem('kitabilkom_saved_cred')
-      }
+    // Load saved email only (no password stored for security)
+    const savedEmail = getSavedEmail()
+    if (savedEmail) {
+      setEmail(savedEmail)
+      setRememberMe(true)
     }
 
     // Check if biometric is enrolled
@@ -144,14 +139,13 @@ export default function Login() {
     }
 
     if (rememberMe) {
-      localStorage.setItem('kitabilkom_saved_cred', encodeData({ email, password }))
-      
+      saveEmail(email)
       // Attempt to register biometric if mobile, supported, and not yet registered
       if (isMobile && window.PublicKeyCredential && !localStorage.getItem('kitabilkom_biometric_id')) {
         await registerBiometric()
       }
     } else {
-      localStorage.removeItem('kitabilkom_saved_cred')
+      clearSavedEmail()
       localStorage.removeItem('kitabilkom_biometric_id')
     }
 

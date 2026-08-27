@@ -14,6 +14,7 @@ export default function BukuAkademik() {
   const [previewingId, setPreviewingId] = useState(null)
   const [previewData, setPreviewData] = useState(null)
   const [selectedProdi, setSelectedProdi] = useState(null)
+  const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
     let isMounted = true
@@ -51,7 +52,7 @@ export default function BukuAkademik() {
     const { data, error } = await supabase.storage.from('buku-files').createSignedUrl(item.file_url, 60, { download: item.judul })
     setDownloadingId(null)
     if (error) {
-      alert('Gagal membuat link unduhan: ' + error.message)
+      setErrorMsg('Gagal membuat link unduhan: ' + error.message)
       return
     }
     window.open(data.signedUrl, '_blank', 'noopener,noreferrer')
@@ -63,7 +64,7 @@ export default function BukuAkademik() {
     const { data, error } = await supabase.storage.from('buku-files').createSignedUrl(item.file_url, 60)
     setPreviewingId(null)
     if (error) {
-      alert('Gagal membuat link preview: ' + error.message)
+      setErrorMsg('Gagal membuat link preview: ' + error.message)
       return
     }
     setPreviewData({
@@ -85,24 +86,31 @@ export default function BukuAkademik() {
 
       <section className="page-content">
         <div className="container">
+          {errorMsg && (
+            <div role="alert" style={{ background: 'var(--rose-50)', color: 'var(--rose-500)', padding: '0.8rem 1.2rem', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', border: '1px solid var(--rose-400)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>{errorMsg}</span>
+              <button onClick={() => setErrorMsg('')} aria-label="Tutup pesan error" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--rose-500)', fontWeight: 700 }}>✕</button>
+            </div>
+          )}
           {!selectedProdi ? (
             <div className="prodi-gate-container">
               <h2 style={{textAlign: 'center', marginBottom: '2rem', fontFamily: 'var(--font-display)', color: 'var(--navy-900)'}}>Pilih Program Studi</h2>
               <div className="prodi-gate-grid">
-                <div className="prodi-gate-card" onClick={() => setSelectedProdi('S1 Teknik Informatika')}>
-                  <div className="prodi-gate-icon" style={{background: 'var(--blue-50)', color: 'var(--blue-600)'}}>
-                    <FileText size={40} />
+                {/* FIX: Gunakan <button> semantik agar bisa diakses via keyboard */}
+                <button className="prodi-gate-card" onClick={() => setSelectedProdi('S1 Teknik Informatika')}>
+                  <div className="prodi-gate-icon" style={{background: 'var(--blue-50)', color: 'var(--blue-600)'}}>  
+                    <FileText size={40} aria-hidden="true" />
                   </div>
                   <h3>S1 Teknik Informatika</h3>
                   <p>Materi, modul, dan buku panduan khusus mahasiswa Teknik Informatika.</p>
-                </div>
-                <div className="prodi-gate-card" onClick={() => setSelectedProdi('S1 Sistem Informasi')}>
+                </button>
+                <button className="prodi-gate-card" onClick={() => setSelectedProdi('S1 Sistem Informasi')}>
                   <div className="prodi-gate-icon" style={{background: 'var(--purple-50)', color: 'var(--purple-600)'}}>
-                    <FileText size={40} />
+                    <FileText size={40} aria-hidden="true" />
                   </div>
                   <h3>S1 Sistem Informasi</h3>
                   <p>Materi, modul, dan buku panduan khusus mahasiswa Sistem Informasi.</p>
-                </div>
+                </button>
               </div>
             </div>
           ) : (

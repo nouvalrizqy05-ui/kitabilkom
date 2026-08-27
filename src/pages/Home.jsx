@@ -92,7 +92,7 @@ export default function Home() {
           <div className={`hero-slide ${currentSlide === 1 ? 'active' : ''}`} data-slide="1">
             <div className="hero-content">
               <span className="hero-badge">📚 Info Terbaru</span>
-              <h1 className="hero-title">Buku Akademik<br/><span className="highlight">Digital</span></h1>
+              <h2 className="hero-title">Buku Akademik<br/><span className="highlight">Digital</span></h2>
               <p className="hero-description">Panduan akademik lengkap dari kurikulum, mata kuliah pilihan, hingga jadwal perkuliahan semester ini. Semua terintegrasi untukmu.</p>
               <Link to="/buku-akademik" className="hero-cta">
                 Buka Buku Akademik
@@ -107,7 +107,7 @@ export default function Home() {
           <div className={`hero-slide ${currentSlide === 2 ? 'active' : ''}`} data-slide="2">
             <div className="hero-content">
               <span className="hero-badge">🏆 Prestasi & Kompetisi</span>
-              <h1 className="hero-title">Raih Prestasi<br/><span className="highlight">Bersama!</span></h1>
+              <h2 className="hero-title">Raih Prestasi<br/><span className="highlight">Bersama!</span></h2>
               <p className="hero-description">Temukan informasi lomba, beasiswa, bootcamp, dan kesempatan berkarir. Jangan lewatkan event-event terbaik untuk mahasiswa Ilkom!</p>
               <a href="#kalender" className="hero-cta">
                 Lihat Kalender
@@ -172,14 +172,17 @@ export default function Home() {
               </div>
             </div>
             <div className="search-divider"></div>
+            <label htmlFor="home-search-input" className="sr-only">Cari Mata Kuliah, Judul, Info, atau Dosen</label>
             <input 
+              id="home-search-input"
               type="text" 
               className="search-input" 
               placeholder="Cari Mata Kuliah, Judul, Info, Dosen..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Cari Mata Kuliah, Judul, Info, atau Dosen"
             />
-            <button type="submit" className="search-btn" aria-label="Cari">
+            <button type="submit" className="search-btn" aria-label="Mulai pencarian">
               <Search size={22} strokeWidth={2.5} />
             </button>
           </form>

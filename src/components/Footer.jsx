@@ -1,7 +1,19 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 
 export default function Footer() {
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  // FIX: Tombol kembali ke atas hanya tampil setelah scroll 300px
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -9,18 +21,7 @@ export default function Footer() {
   return (
     <>
       <footer className="footer-3d" id="tentang">
-        <div className="footer-wave">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,80 1440,60 L1440,120 L0,120 Z" fill="url(#footerWaveGrad)"/>
-            <defs>
-              <linearGradient id="footerWaveGrad" x1="0" y1="0" x2="1440" y2="0">
-                <stop offset="0%" stopColor="#1e1b4b"/>
-                <stop offset="50%" stopColor="#312e81"/>
-                <stop offset="100%" stopColor="#1e1b4b"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
+        {/* FIX: Hapus dead code footer-wave yang disembunyikan CSS */}
         <div className="footer-3d-bg">
           <div className="grid-3d"></div>
           <div className="footer-particles">
@@ -68,20 +69,20 @@ export default function Footer() {
               <div className="footer-social-group">
                 <h4 className="footer-links-title">Ikuti Kami</h4>
                 <div className="footer-social-icons">
-                  <a href="https://instagram.com/himailkomunnes" target="_blank" rel="noopener noreferrer" className="social-icon" id="social-ig" aria-label="Instagram">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-instagram">
+                  <a href="https://instagram.com/himailkomunnes" target="_blank" rel="noopener noreferrer" className="social-icon" id="social-ig" aria-label="Instagram HIMA Ilkom UNNES">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
                       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                       <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
                     </svg>
                   </a>
-                  <a href="https://www.tiktok.com/@himailkomunnes" target="_blank" rel="noopener noreferrer" className="social-icon" id="social-tt" aria-label="TikTok">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-tiktok">
+                  <a href="https://www.tiktok.com/@himailkomunnes" target="_blank" rel="noopener noreferrer" className="social-icon" id="social-tt" aria-label="TikTok HIMA Ilkom UNNES">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
                     </svg>
                   </a>
-                  <a href="https://youtube.com/@himailkomunnes271?si=xyrHKIC06RkrDbFV" target="_blank" rel="noopener noreferrer" className="social-icon" id="social-yt" aria-label="YouTube">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-youtube">
+                  <a href="https://youtube.com/@himailkomunnes271?si=xyrHKIC06RkrDbFV" target="_blank" rel="noopener noreferrer" className="social-icon" id="social-yt" aria-label="YouTube HIMA Ilkom UNNES">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M2.5 7.1C2.5 7.1 2 9.5 2 12c0 2.5.5 4.9.5 4.9S3.5 19 6 19.5c2.5.5 6 .5 6 .5s3.5 0 6-.5c2.5-.5 3.5-2.6 3.5-2.6s.5-2.4.5-4.9c0-2.5-.5-4.9-.5-4.9C20.5 4.5 18 4 18 4s-3.5-.5-6-.5C9.5 3.5 6 4 6 4s-2.5.5-3.5 3.1z"/>
                       <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
                     </svg>
@@ -97,9 +98,17 @@ export default function Footer() {
         </div>
       </footer>
 
-      <button className="back-to-top show" id="back-to-top" aria-label="Kembali ke atas" onClick={scrollToTop}>
-        <ArrowUp size={20} strokeWidth={2.5} />
-      </button>
+      {/* FIX: Tampil hanya setelah scroll 300px */}
+      {showBackToTop && (
+        <button
+          className="back-to-top show"
+          id="back-to-top"
+          aria-label="Kembali ke atas halaman"
+          onClick={scrollToTop}
+        >
+          <ArrowUp size={20} strokeWidth={2.5} />
+        </button>
+      )}
     </>
   );
 }
