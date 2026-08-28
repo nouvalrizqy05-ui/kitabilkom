@@ -2178,59 +2178,96 @@ button {
         padding: 1.5rem 1rem;
     }
 
+    /* ===== HERO ===== */
     .hero-title {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
 
     .hero-description {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
 
     .hero-badge {
-        font-size: 0.75rem;
+        font-size: 0.73rem;
     }
 
     .hero-cta {
-        font-size: 0.85rem;
-        padding: 0.65rem 1.2rem;
+        font-size: 0.82rem;
+        padding: 0.6rem 1.1rem;
     }
 
-    .vote-title {
-        font-size: 1.4rem;
+    /* ===== GLOBAL HEADING ===== */
+    h1 {
+        font-size: 1.35rem !important;
     }
 
-    .vote-stats {
-        gap: 1.2rem;
+    h2 {
+        font-size: 1.15rem !important;
     }
 
-    .vote-stat-number {
+    h3 {
+        font-size: 1rem !important;
+    }
+
+    h4 {
+        font-size: 0.88rem !important;
+    }
+
+    /* ===== PAGE HEADER ===== */
+    .page-title {
         font-size: 1.3rem;
     }
 
-    .stat-number {
-        font-size: 1.8rem;
-    }
-
-    .stat-label {
-        font-size: 0.75rem;
-    }
-
-    .page-title {
-        font-size: 1.4rem;
-    }
-
     .page-subtitle {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
 
+    /* ===== CARDS ===== */
     .card-title {
-        font-size: 0.92rem;
+        font-size: 0.88rem;
     }
 
     .card-meta {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
     }
 
+    .card-badge {
+        font-size: 0.68rem;
+    }
+
+    /* Semua grid card jadi 1 kolom di mobile kecil */
+    .dosen-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+
+    /* ===== VOTE ===== */
+    .vote-title {
+        font-size: 1.3rem;
+    }
+
+    .vote-stats {
+        gap: 1rem;
+    }
+
+    .vote-stat-number {
+        font-size: 1.2rem;
+    }
+
+    /* ===== STATS ===== */
+    .stat-number {
+        font-size: 1.6rem;
+    }
+
+    .stat-label {
+        font-size: 0.72rem;
+    }
+
+    /* ===== EVENTS ===== */
     .event-card {
         flex-wrap: wrap;
     }
@@ -2241,24 +2278,29 @@ button {
         margin-top: 0.5rem;
     }
 
-    /* Teks section heading lebih kecil di mobile */
-    h2 {
-        font-size: 1.3rem;
+    /* ===== BANTUAN ===== */
+    .bantuan-faq-question {
+        font-size: 0.85rem;
     }
 
-    /* Footer lebih kompak */
+    .bantuan-faq-answer p {
+        font-size: 0.82rem;
+    }
+
+    /* ===== FOOTER ===== */
     .footer-brand-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     .footer-brand-subtitle {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
     }
 
     .footer-copyright, .footer-powered {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
     }
 }
+
 
 /* ==================== SCROLLBAR ==================== */
 ::-webkit-scrollbar {

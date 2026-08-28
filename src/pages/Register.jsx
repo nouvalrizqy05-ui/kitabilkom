@@ -50,8 +50,8 @@ export default function Register() {
   if (success) {
     return (
       <section className="auth-section">
-        <BackButton light={true} />
         <div className="auth-box">
+          <BackButton light={true} />
           <h1>Cek Email Kamu</h1>
           <p className="auth-subtitle">
             Kami sudah kirim link konfirmasi ke <strong>{email}</strong>. Buka email kampus kamu dan klik link-nya
@@ -67,8 +67,8 @@ export default function Register() {
 
   return (
     <section className="auth-section">
-      <BackButton light={true} />
       <div className="auth-box">
+        <BackButton light={true} />
         <h1>Daftar Akun</h1>
         <p className="auth-subtitle">
           Pendaftaran khusus untuk civitas Ilmu Komputer UNNES dengan email {ALLOWED_EMAIL_DOMAIN}.
@@ -80,7 +80,7 @@ export default function Register() {
             <input
               type="text"
               required
-              placeholder="Nama kamu"
+              placeholder="Nama Anda"
               value={nama}
               onChange={(e) => setNama(e.target.value)}
             />
@@ -91,7 +91,7 @@ export default function Register() {
             <input
               type="email"
               required
-              placeholder={`nim_kamu${ALLOWED_EMAIL_DOMAIN}`}
+              placeholder="Email Anda"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

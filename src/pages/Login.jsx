@@ -143,8 +143,9 @@ export default function Login() {
 
   return (
     <section className="auth-section">
-      <BackButton light={true} />
       <div className="auth-box">
+        {/* Tombol Kembali di dalam card, pojok kiri atas */}
+        <BackButton light={true} />
         <h1>Masuk ke Kitab Ilkom</h1>
         <p className="auth-subtitle">
           Gunakan email kampus kamu ({ALLOWED_EMAIL_DOMAIN}) untuk mengakses buku akademik, voting, dan fitur
@@ -167,7 +168,7 @@ export default function Login() {
             <input
               type="email"
               required
-              placeholder={`nim_kamu${ALLOWED_EMAIL_DOMAIN}`}
+              placeholder="Email Anda"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -178,7 +179,7 @@ export default function Login() {
             <input
               type="password"
               required
-              placeholder="••••••••"
+              placeholder="Kata sandi Anda"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
