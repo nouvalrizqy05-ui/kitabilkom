@@ -11,7 +11,7 @@ export default function BackButton({ light = false }) {
       aria-label="Kembali"
     >
       <ArrowLeft size={18} />
-      <span>Kembali</span>
+      <span className="back-btn-text">Kembali</span>
     </button>
   )
 }

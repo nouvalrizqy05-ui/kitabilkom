@@ -1028,6 +1028,11 @@
     padding: 0.4rem 0.8rem;
     font-size: 0.82rem;
   }
+
+  /* Sembunyikan teks "Kembali" di mobile — cukup tampilkan ikon panah */
+  .back-btn-text {
+    display: none;
+  }
 }
 
 /* ---------- PUSAT BANTUAN ---------- */

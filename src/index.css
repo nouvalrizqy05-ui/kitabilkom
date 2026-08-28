@@ -444,13 +444,14 @@ button {
     display: block;
     width: 24px;
     height: 2.5px;
-    background: var(--gray-700);
+    background: white;
     border-radius: 2px;
     transition: all var(--transition-base);
 }
 
 .navbar-toggle.active .hamburger-line:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
+    background: white;
 }
 
 .navbar-toggle.active .hamburger-line:nth-child(2) {
@@ -459,6 +460,7 @@ button {
 
 .navbar-toggle.active .hamburger-line:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -5px);
+    background: white;
 }
 
 /* ==================== HERO CAROUSEL ==================== */
@@ -2177,11 +2179,24 @@ button {
     }
 
     .hero-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+    }
+
+    .hero-description {
+        font-size: 0.85rem;
+    }
+
+    .hero-badge {
+        font-size: 0.75rem;
+    }
+
+    .hero-cta {
+        font-size: 0.85rem;
+        padding: 0.65rem 1.2rem;
     }
 
     .vote-title {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
 
     .vote-stats {
@@ -2189,11 +2204,31 @@ button {
     }
 
     .vote-stat-number {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
 
     .stat-number {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .page-title {
+        font-size: 1.4rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .card-title {
+        font-size: 0.92rem;
+    }
+
+    .card-meta {
+        font-size: 0.78rem;
     }
 
     .event-card {
@@ -2204,6 +2239,24 @@ button {
         width: 100%;
         text-align: center;
         margin-top: 0.5rem;
+    }
+
+    /* Teks section heading lebih kecil di mobile */
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    /* Footer lebih kompak */
+    .footer-brand-title {
+        font-size: 1.1rem;
+    }
+
+    .footer-brand-subtitle {
+        font-size: 0.78rem;
+    }
+
+    .footer-copyright, .footer-powered {
+        font-size: 0.72rem;
     }
 }
 
