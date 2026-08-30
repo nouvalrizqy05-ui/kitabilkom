@@ -66,7 +66,7 @@ export function AuthProvider({ children }) {
       password,
       options: { 
         data: { nama },
-        emailRedirectTo: 'https://kitabilkom.vercel.app/'
+        emailRedirectTo: 'https://www.kitabilkom.online/'
       },
     })
     return { data, error }
