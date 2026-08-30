@@ -5,6 +5,8 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import LupaPassword from './pages/LupaPassword'
+import ResetPassword from './pages/ResetPassword'
 import BukuAkademik from './pages/BukuAkademik'
 import InfoAkademik from './pages/InfoAkademik'
 import Publikasi from './pages/Publikasi'
@@ -32,6 +34,8 @@ export default function App() {
             <Route path="/" element={<PageTransition><Home /></PageTransition>} />
             <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
             <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
+            <Route path="/lupa-password" element={<PageTransition><LupaPassword /></PageTransition>} />
+            <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
             <Route path="/info-akademik" element={<PageTransition><InfoAkademik /></PageTransition>} />
             <Route path="/publikasi" element={<PageTransition><Publikasi /></PageTransition>} />
             <Route path="/dosen" element={<PageTransition><DosenIlkom /></PageTransition>} />

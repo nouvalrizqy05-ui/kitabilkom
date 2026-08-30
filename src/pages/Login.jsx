@@ -184,15 +184,24 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-          
-          <label className="auth-checkbox">
-            <input 
-              type="checkbox" 
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-            />
-            <span>Ingat Saya</span>
-          </label>
+
+          {/* Baris Ingat Saya + Lupa Password */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <label className="auth-checkbox" style={{ margin: 0 }}>
+              <input 
+                type="checkbox" 
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <span>Ingat Saya</span>
+            </label>
+            <Link
+              to="/lupa-password"
+              style={{ fontSize: '0.82rem', color: 'var(--primary-600)', fontWeight: 600, textDecoration: 'none' }}
+            >
+              Lupa Password?
+            </Link>
+          </div>
 
           {error && <p className="auth-error">{error}</p>}
 

@@ -247,7 +247,7 @@ export default function Home() {
               </div>
               <div className="quick-link-hover-content">
                 <h3 className="hover-title">Vote Tutorin Maba</h3>
-                <p className="hover-desc">Pilih dan berikan voting untuk tutor terbaik pilihan mahasiswa tahun ini.</p>
+                <p className="hover-desc">Pilih dan berikan voting untuk mata kuliah pilihan yang memiliki kebutuhan mentoring paling besar.</p>
                 <div className="hover-btn">Lihat Detail</div>
               </div>
             </Link>
