@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, Info, CheckSquare, Users, HelpCircle, ArrowRightLeft, BarChart3, GraduationCap, Library, Star, Trophy, Camera } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
@@ -25,12 +25,37 @@ export default function Home() {
     navigate(`/search?q=${encodeURIComponent(searchQuery)}&c=${encodeURIComponent(searchCategory)}`);
   };
 
-  // Carousel logic
+  const SLIDE_COUNT = 3;
+  const AUTOPLAY_DELAY = 7000;
+  const timerRef = useRef(null);
+  const currentSlideRef = useRef(currentSlide);
+
+  // Sinkronkan ref setiap kali state berubah
+  useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+  // goToSlide = satu-satunya fungsi yang ubah slide + reset timer
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+    currentSlideRef.current = index;
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      const next = (currentSlideRef.current + 1) % SLIDE_COUNT;
+      setCurrentSlide(next);
+      currentSlideRef.current = next;
+    }, AUTOPLAY_DELAY);
+  };
+
+  const goNext = () => goToSlide((currentSlideRef.current + 1) % SLIDE_COUNT);
+  const goPrev = () => goToSlide((currentSlideRef.current - 1 + SLIDE_COUNT) % SLIDE_COUNT);
+
+  // Mulai auto-play pertama kali
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev === 2 ? 0 : prev + 1));
-    }, 5000);
-    return () => clearInterval(timer);
+    timerRef.current = setInterval(() => {
+      const next = (currentSlideRef.current + 1) % SLIDE_COUNT;
+      setCurrentSlide(next);
+      currentSlideRef.current = next;
+    }, AUTOPLAY_DELAY);
+    return () => clearInterval(timerRef.current);
   }, []);
 
   useEffect(() => {
@@ -115,18 +140,18 @@ export default function Home() {
 
 
         {/* Carousel Controls */}
-        <button className="carousel-btn carousel-prev" onClick={() => setCurrentSlide(s => s === 0 ? 2 : s - 1)} aria-label="Previous slide">
+        <button className="carousel-btn carousel-prev" onClick={goPrev} aria-label="Previous slide">
           <ChevronLeft size={24} strokeWidth={2.5} />
         </button>
-        <button className="carousel-btn carousel-next" onClick={() => setCurrentSlide(s => s === 2 ? 0 : s + 1)} aria-label="Next slide">
+        <button className="carousel-btn carousel-next" onClick={goNext} aria-label="Next slide">
           <ChevronRight size={24} strokeWidth={2.5} />
         </button>
 
         {/* Dots */}
         <div className="carousel-dots">
-          <button className={`dot ${currentSlide === 0 ? 'active' : ''}`} onClick={() => setCurrentSlide(0)} aria-label="Slide 1"></button>
-          <button className={`dot ${currentSlide === 1 ? 'active' : ''}`} onClick={() => setCurrentSlide(1)} aria-label="Slide 2"></button>
-          <button className={`dot ${currentSlide === 2 ? 'active' : ''}`} onClick={() => setCurrentSlide(2)} aria-label="Slide 3"></button>
+          <button className={`dot ${currentSlide === 0 ? 'active' : ''}`} onClick={() => goToSlide(0)} aria-label="Slide 1"></button>
+          <button className={`dot ${currentSlide === 1 ? 'active' : ''}`} onClick={() => goToSlide(1)} aria-label="Slide 2"></button>
+          <button className={`dot ${currentSlide === 2 ? 'active' : ''}`} onClick={() => goToSlide(2)} aria-label="Slide 3"></button>
         </div>
 
         {/* Decorative elements */}
