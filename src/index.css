@@ -655,7 +655,7 @@ button {
 
 .carousel-dots {
     position: absolute;
-    bottom: 1.5rem;
+    bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
