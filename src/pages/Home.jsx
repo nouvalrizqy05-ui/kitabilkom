@@ -84,10 +84,8 @@ export default function Home() {
                 <ArrowRight size={20} strokeWidth={2} />
               </a>
             </div>
-            <div className="hero-image">
-              <img src="/assets/hero-new.png" alt="Mahasiswa Ilmu Komputer" loading="eager" />
-            </div>
           </div>
+
           {/* Slide 2 */}
           <div className={`hero-slide ${currentSlide === 1 ? 'active' : ''}`} data-slide="1">
             <div className="hero-content">
@@ -99,14 +97,12 @@ export default function Home() {
                 <ArrowRight size={20} strokeWidth={2} />
               </Link>
             </div>
-            <div className="hero-image">
-              <img src="/assets/hero-laptop.png" alt="Buku Akademik Digital" loading="lazy" />
-            </div>
           </div>
+
           {/* Slide 3 */}
           <div className={`hero-slide ${currentSlide === 2 ? 'active' : ''}`} data-slide="2">
             <div className="hero-content">
-              <span className="hero-badge">🏆 Prestasi & Kompetisi</span>
+              <span className="hero-badge">🏆 Prestasi &amp; Kompetisi</span>
               <h2 className="hero-title">Raih Prestasi<br/><span className="highlight">Bersama!</span></h2>
               <p className="hero-description">Temukan informasi lomba, beasiswa, bootcamp, dan kesempatan berkarir. Jangan lewatkan event-event terbaik untuk mahasiswa Ilkom!</p>
               <a href="#kalender" className="hero-cta">
@@ -114,11 +110,9 @@ export default function Home() {
                 <ArrowRight size={20} strokeWidth={2} />
               </a>
             </div>
-            <div className="hero-image">
-              <img src="/assets/hero-success.png" alt="Raih Prestasi" loading="lazy" />
-            </div>
           </div>
         </div>
+
 
         {/* Carousel Controls */}
         <button className="carousel-btn carousel-prev" onClick={() => setCurrentSlide(s => s === 0 ? 2 : s - 1)} aria-label="Previous slide">
