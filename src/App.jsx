@@ -35,7 +35,7 @@ export default function App() {
             <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
             <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
             <Route path="/lupa-password" element={<PageTransition><LupaPassword /></PageTransition>} />
-            <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
+            <Route path="/isi-passwordbaru" element={<PageTransition><ResetPassword /></PageTransition>} />
             <Route path="/info-akademik" element={<PageTransition><InfoAkademik /></PageTransition>} />
             <Route path="/publikasi" element={<PageTransition><Publikasi /></PageTransition>} />
             <Route path="/dosen" element={<PageTransition><DosenIlkom /></PageTransition>} />

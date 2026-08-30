@@ -15,7 +15,8 @@ export default function LupaPassword() {
     setSubmitting(true)
 
     // URL redirect setelah user klik link di email
-    const redirectTo = `${window.location.origin}/reset-password`
+    // Harus sama persis dengan yang didaftarkan di Supabase Dashboard → Auth → URL Configuration → Redirect URLs
+    const redirectTo = 'https://www.kitabilkom.online/isi-passwordbaru'
 
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
       redirectTo,
