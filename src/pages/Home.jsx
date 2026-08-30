@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, Info, CheckSquare, Users, ArrowRightLeft, BarChart3, GraduationCap, Library, Star, Camera } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, Info, CheckSquare, Users, HelpCircle, ArrowRightLeft, BarChart3, GraduationCap, Library, Star, Trophy, Camera } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import Calendar from '../components/Calendar';
 
@@ -253,33 +253,27 @@ export default function Home() {
       <section className="info-banners" id="info-banners">
         <div className="container">
           <div className="banners-grid">
-
-            {/* Banner 1 — Pusat Bantuan */}
-            <Link to="/bantuan" className="info-banner banner-pink">
-              <span className="banner-eyebrow">Pusat Bantuan</span>
+            <Link to="/bantuan" className="info-banner banner-pink" style={{ textDecoration: 'none' }}>
               <div className="banner-content">
-                <h3 className="banner-title">Ada Kendala<br/>Terkait Perkuliahan?</h3>
-                <div className="banner-divider"></div>
-                <p className="banner-desc">Temukan informasi dan solusi untuk pertanyaan akademik kamu di sini.</p>
+                <h3 className="banner-title">Ada kendala terkait<br/>perkuliahan Ilkom?</h3>
+                <p className="banner-desc">Klik di sini untuk menemukan informasi dan solusi!</p>
               </div>
-              <span className="banner-cta">Selengkapnya →</span>
+              <div className="banner-icon">
+                <HelpCircle size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+              </div>
             </Link>
-
-            {/* Banner 2 — Pendataan Prestasi */}
-            <a href="https://forms.gle/cvvpeFXCEd4QLBQn7" target="_blank" rel="noopener noreferrer" className="info-banner banner-purple">
-              <span className="banner-eyebrow">Program Resmi HIMA</span>
+            <a href="https://forms.gle/cvvpeFXCEd4QLBQn7" target="_blank" rel="noopener noreferrer" className="info-banner banner-purple" style={{ textDecoration: 'none' }}>
               <div className="banner-content">
-                <h3 className="banner-title">Pendataan Prestasi<br/>Mahasiswa Ilkom</h3>
-                <div className="banner-divider"></div>
-                <p className="banner-desc">Isi form pendataan dan dapatkan apresiasi atas pencapaianmu.</p>
+                <h3 className="banner-title">Pendataan Prestasi<br/>Mahasiswa Ilmu Komputer</h3>
+                <p className="banner-desc">Klik di sini untuk mengisi form pendataan prestasi resmi dan dapatkan apresiasi!</p>
               </div>
-              <span className="banner-cta">Isi Sekarang →</span>
+              <div className="banner-icon">
+                <Trophy size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+              </div>
             </a>
-
           </div>
         </div>
       </section>
-
 
       {/* ==================== KALENDER PRESTASI ==================== */}
       <Calendar />

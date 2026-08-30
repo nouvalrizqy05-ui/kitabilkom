@@ -1040,128 +1040,56 @@ button {
     gap: 1.5rem;
 }
 
-/* ===== BANNER UTAMA ===== */
 .info-banner {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 3rem 2.5rem;
+    justify-content: space-between;
+    padding: 2rem 2.5rem;
     border-radius: var(--radius-2xl);
     color: white;
     position: relative;
     overflow: hidden;
-    min-height: 180px;
+    min-height: 140px;
     transition: all var(--transition-spring);
     cursor: pointer;
-    text-decoration: none;
 }
 
 .info-banner:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-2xl);
 }
 
 .banner-pink {
-    background: linear-gradient(135deg, #c9952a 0%, #b07d1a 40%, #7a5410 100%);
+    background: var(--gradient-banner-pink);
 }
 
 .banner-purple {
-    background: linear-gradient(135deg, #3a2f7a 0%, #2a2060 40%, #1a1440 100%);
+    background: var(--gradient-banner-purple);
 }
 
-/* Efek cahaya oval di tengah atas */
 .info-banner::before {
     content: '';
     position: absolute;
-    top: -40%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 100%;
-    background: radial-gradient(ellipse, rgba(255,255,255,0.12) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-/* Garis dekoratif tipis di tepi bawah */
-.info-banner::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    pointer-events: none;
-}
-
-/* Badge atas kecil */
-.banner-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    opacity: 0.65;
-    margin-bottom: 0.75rem;
-    position: relative;
-    z-index: 2;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.06) 100%);
 }
 
 .banner-content {
     position: relative;
     z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .banner-title {
     font-family: var(--font-display);
-    font-size: 1.45rem;
+    font-size: 1.15rem;
     font-weight: 800;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
-    margin: 0;
-}
-
-/* Garis pemisah dekoratif di bawah judul */
-.banner-divider {
-    width: 40px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 2px;
-    margin: 0.4rem auto;
+    line-height: 1.3;
+    margin-bottom: 0.3rem;
 }
 
 .banner-desc {
-    font-size: 0.875rem;
-    opacity: 0.8;
-    max-width: 28ch;
-    line-height: 1.5;
-    margin: 0;
-}
-
-/* Panah kecil CTA bawah */
-.banner-cta {
-    margin-top: 1rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.7;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: opacity 0.2s, gap 0.2s;
-    position: relative;
-    z-index: 2;
-}
-
-.info-banner:hover .banner-cta {
-    opacity: 1;
-    gap: 10px;
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
 .banner-link {
@@ -1173,6 +1101,15 @@ button {
 
 .banner-link:hover {
     opacity: 0.85;
+}
+
+.banner-icon {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    animation: float 5s ease-in-out infinite;
 }
 
 /* ==================== SECTION HEADER ==================== */
