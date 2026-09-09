@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Search, Mail, Briefcase, Fingerprint, GraduationCap } from 'lucide-react'
 import BackButton from '../components/BackButton'
+import DosenCard from '../components/DosenCard'
 
 // Data dosen hardcode — direplikasi dari capek-kuliah-main/data/dosen.ts
 const dosenTI = [
@@ -239,58 +240,7 @@ export default function DosenIlkom() {
           ) : (
             <div className="dosen-card-grid">
               {filtered.map((dosen) => (
-                <div className="dosen-card-3d" key={dosen.id}>
-                  {/* Logo UNNES kecil */}
-                  <img
-                    src="/assets/unnes-logo.webp"
-                    alt=""
-                    className="dosen-card-logo"
-                    aria-hidden="true"
-                  />
-
-                  {/* Badge prodi */}
-                  {dosen.prodi && (
-                    <span className="dosen-card-prodi">{dosen.prodi}</span>
-                  )}
-
-                  {/* Teks UNNES dekoratif vertical */}
-                  <span className="dosen-card-watermark" aria-hidden="true">UNNES</span>
-
-                  {/* Foto dosen */}
-                  <div className="dosen-card-photo">
-                    <img
-                      src={dosen.foto_url || '/assets/dosen-placeholder.png'}
-                      alt={dosen.nama}
-                      loading="lazy"
-                    />
-                  </div>
-
-                  {/* Info overlay bawah */}
-                  <div className="dosen-card-info">
-                    <h3 className="dosen-card-name">{dosen.nama}</h3>
-
-                    {dosen.email && (
-                      <div className="dosen-card-detail">
-                        <Mail size={14} />
-                        <span>{dosen.email}</span>
-                      </div>
-                    )}
-
-                    {dosen.jabatan && (
-                      <div className="dosen-card-detail">
-                        <Briefcase size={14} />
-                        <span>{dosen.jabatan}</span>
-                      </div>
-                    )}
-
-                    {dosen.nip && (
-                      <div className="dosen-card-detail">
-                        <Fingerprint size={14} />
-                        <span>{dosen.nip}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <DosenCard key={dosen.id} dosen={dosen} />
               ))}
             </div>
           )}
