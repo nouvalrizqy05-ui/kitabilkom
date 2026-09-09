@@ -129,7 +129,7 @@ const dosenSI = [
     id: 'si-3',
     nama: 'Shona Chayy Bilqisth, S.Kom., M.Cs.',
     foto_url: '/assets/shona.png',
-    email: '',
+    email: 'shona@mail.unnes.ac.id',
     jabatan: 'Asisten Ahli',
     prodi: 'SI',
     nip: 'NIP-199408162024061001',
