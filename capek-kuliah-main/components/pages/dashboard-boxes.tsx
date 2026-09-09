@@ -1,0 +1,259 @@
+"use client"
+
+import { Link2, MessageCircle, SendHorizonal } from "lucide-react"
+import { Button } from "../ui/button"
+import Link from "next/link"
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar"
+import Image from "next/image"
+import { berkasWajib } from "@/data/berkas-wajib"
+import { useState } from "react"
+import { buttonVariants } from "@/components/ui/button"
+import { motion } from 'framer-motion'
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import updateHistoryData from "@/data/update-history"
+import UpdateHistory from "../update-history"
+import { cn } from "@/lib/utils"
+
+export default function DashboardBoxes() {
+    const [selectedQna, setSelectedQna] = useState(berkasWajib[0]);
+
+    return (
+        <div className="flex-col lg:flex-row flex gap-5">
+            <div className="w-full lg:w-1/3 flex lg:flex-col flex-col-reverse gap-5">
+                {/* Berkas Wajib */}
+                <motion.div 
+                    initial={{y: -60, x: -60, opacity: 0}}
+                    animate={{y: 0, x:0, opacity: 1, transition: {duration: 0.3, delay: 0.2}}}
+                    className="border-2 rounded-lg p-3 lg:p-5">
+                    <h1 className="font-bold text-xl lg:text-2xl">Berkas Wajib</h1>
+                    <p className=" text-slate-400 text-sm lg:text-base">
+                        Siapkan dari awal karena sulit mendapatkannya
+                    </p>
+                    <div className="mt-5 flex flex-col gap-3">
+                        {berkasWajib.map((berkas) => (
+                            <div key={berkas.id} className="flex justify-between items-center">
+                                {berkas.name}
+                                <Button
+                                    onClick={() => setSelectedQna(berkas)}
+                                    size={'sm'}
+                                    className={selectedQna.id != berkas.id ? 'bg-secondary text-primary' : 'bg-primary text-secondary'}>
+                                    <MessageCircle size={16} />
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                </motion.div>
+                {/* Update Notice */}
+                <motion.div 
+                    initial={{y: 60, x: -60, opacity: 0}}
+                    animate={{y: 0, x:0, opacity: 1, transition: {duration: 0.3, delay: 0.4}}}
+                    className="h-full border-2 rounded-lg p-3 lg:p-5">
+                    <div className="h-full flex flex-col">
+                        <h1 className="font-bold text-xl lg:text-2xl">Update Notice</h1>
+                        <p className=" text-slate-400 lg:text-base text-sm">
+                            Perubahan terbaru berdasarkan request kalian
+                        </p>
+                        <div className="mt-5 h-full flex flex-col">
+                            <div className="relative max-h-80 overflow-y-auto flex gap-5 flex-col mb-3">
+                                {updateHistoryData.map((history, index) => (
+                                    <UpdateHistory key={index} history={history}/>
+                                ))}
+                            </div>
+                            <div className="bg-secondary-foreground rounded-l-lg rounded-tr-lg text-secondary ml-auto p-3 w-fit text-sm max-w-[90%] lg:max-w-[80%]">
+                                Thx 👍
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+            <div className="w-full lg:w-1/3 flex flex-col gap-5">
+                {/* QnA */}
+                <motion.div 
+                    initial={{y: -60, opacity: 0}}
+                    animate={{y: 0, opacity: 1, transition: {duration: 0.3, delay: 0.5}}}
+                    className="border-2 rounded-lg p-3 lg:p-5">
+                    <div className="flex gap-3 items-center">
+                        <Avatar>
+                            <AvatarImage alt="Informan" src="/images/info.png" />
+                            <AvatarFallback>
+                                IM
+                            </AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <h1 className="font-bold text-sm">Informan</h1>
+                            <p className=" text-slate-400 text-xs lg:text-sm">
+                                informanqna@mail.unnes.ac.id
+                            </p>
+                        </div>
+                    </div>
+                    <div className="mt-5 flex flex-col gap-5 h-[18rem] overflow-y-scroll">
+                        {selectedQna.qna.map((qna) => (
+                            <div key={qna.id}>
+                                {qna.type === 'question' && (
+
+                                    <div className="bg-secondary rounded-r-lg rounded-tl-lg p-3 w-fit text-sm max-w-[90%] lg:max-w-[80%]">
+                                        {qna.message}
+                                    </div>
+                                )}
+                                {qna.type === 'answer' && (
+                                    <div className="bg-secondary-foreground rounded-l-lg rounded-tr-lg text-secondary ml-auto p-3 w-fit text-sm max-w-[90%] lg:max-w-[80%]">
+                                        {qna.message}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-5 flex gap-3">
+                        <div className="w-full border-2 rounded-lg h-10"></div>
+                        <Button disabled>
+                            <SendHorizonal size={18} />
+                        </Button>
+                    </div>
+                </motion.div>
+                {/* Referensi Jurnal */}
+                <motion.div 
+                    initial={{y: 60, opacity: 0}}
+                    animate={{y: 0, opacity: 1, transition: {duration: 0.5, delay: 0.3}}}
+                    className="border-2 rounded-lg p-3 lg:p-5 h-full">
+                    <h1 className="font-bold text-xl lg:text-2xl">Referensi Artikel</h1>
+                    <p className=" text-slate-400 text-sm lg:text-base">
+                        Beberapa referensi untuk mencari artikel
+                    </p>
+                    <div className="mt-5 flex flex-col gap-3">
+                        <Link href="https://ieeexplore.ieee.org/browse/periodicals/title" target="_blank" className="hover:underline">
+                            IEEE
+                        </Link>
+                        <Link href="https://www.sciencedirect.com/browse/journals-and-books" target="_blank" className="hover:underline">
+                            Science Direct
+                        </Link>
+                        <Link href="https://paperswithcode.com" target="_blank" className="hover:underline">
+                            PapersWithCode
+                        </Link>
+                        <Link href="https://arxiv.org/archive/cs" target="_blank" className="hover:underline">
+                            Arxiv
+                        </Link>
+                        <Link href="https://link.springer.com/" target="_blank" className="hover:underline">
+                            Springer
+                        </Link>
+                        <Link href="https://scholar.google.com/" target="_blank" className="hover:underline">
+                            Google Scholar
+                        </Link>
+                        <Link href="https://journals.sagepub.com/" target="_blank" className="hover:underline">
+                            Sage Journals
+                        </Link>
+                        <Link href="https://doaj.org/" target="_blank" className="hover:underline">
+                            Director of Open Access Journals
+                        </Link>
+                    </div>
+                </motion.div>
+            </div>
+            <div className="w-full lg:w-1/3 flex flex-col gap-5">
+                {/* Dev Team */}
+                <motion.div 
+                    initial={{y: -60, x: 60, opacity: 0}}
+                    animate={{y: 0, x:0, opacity: 1, transition: {duration: 0.3, delay: 0.4}}}
+                    className="border-2 rounded-lg p-3 lg:p-5">
+                    <h1 className="font-bold text-xl lg:text-2xl">Shared Project</h1>
+                    <p className=" text-slate-400 text-sm lg:text-base">
+                        Project buatan teman ILKOM yang dapat bermanfaat dalam pembuatan skripsi
+                    </p>
+                    <div className="mt-5 flex flex-col gap-3 lg:gap-5">
+                        <div className="flex flex-col">
+                            <Link href="https://github.com/lutfizp/PLS-SEM-PY" className={cn(buttonVariants({variant: 'link', size: 'sm'}), 'w-fit flex gap-2 mt-2 p-0')} target="_blank">
+                                <p>PLS-SEM-PY</p> 
+                                <FaGithub size={16}/>
+                            </Link>
+                            <p className=" text-slate-400 text-xs lg:text-sm">
+                                Python implementation of PLS-SEM (Partial Least Squares Structural Equation Modeling) built using Streamlit
+                            </p>    
+                        </div>
+                    </div>
+                </motion.div>
+                {/* Tool Helper */}
+                <motion.div 
+                    initial={{y: 60, x: 60, opacity: 0}}
+                    animate={{y: 0, x:0, opacity: 1, transition: {duration: 0.3, delay: 0.2}}}
+                    className="border-2 rounded-lg p-3 lg:p-5 h-full">
+                    <h1 className="font-bold lg:text-2xl text-xl">Tools Helper Skripsian</h1>
+                    <p className=" text-slate-400 text-sm lg:text-sm">
+                        Beberapa Tool yang bisa bantu kamu skripsian
+                    </p>
+                    <div className="grid grid-cols-3 gap-4 mt-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4">
+                        <Link href={'https://openai.com/chatgpt/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/chatgpt.png'} alt="ChatGPT" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://gemini.google.com/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/gemini.png'} alt="Gemini" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://aistudio.google.com/app/prompts/new_chat'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/ai_studio.png'} alt="AI Studio" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://claude.ai/new'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/claude.png'} alt="Claude AI" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://copilot.microsoft.com/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/github_copilot.png'} alt="GitHub Copilot" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://aws.amazon.com/q/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/amazon_q.png'} alt="Amazon Q" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.kaggle.com'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/kaggle.webp'} alt="Kaggle" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.mendeley.com'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/mendeley.png'} alt="Mendeley" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.zotero.org/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/zotero.png'} alt="Zotero" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.figma.com'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/figma.webp'} alt="Figma" width={30} height={30} />
+                        </Link>
+                        <Link href={'https://www.eraser.io/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/eraser.png'} alt="Eraser.io" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://harzing.com/resources/publish-or-perish/windows'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/publish_or_perish.png'} alt="Publish or Perish" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.deepl.com/translator'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/deepl.png'} alt="DeepL" width={25} height={25} />
+                        </Link>
+                        <Link href={'https://quillbot.com/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/quillbot.png'} alt="Quillbot" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://colab.research.google.com/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/google_colab.png'} alt="Google Colab" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://universe.roboflow.com/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/roboflow.png'} alt="Roboflow" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://typeset.io/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/scispace.png'} alt="Scispace" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.connectedpapers.com/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/connected_papers.png'} alt="Connected Papers" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.researchrabbit.ai/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/research_rabbit.webp'} alt="Research Rabbit" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.semanticscholar.org/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/semantic_scholar.png'} alt="Semantic Scholar" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.sci-hub.se/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/sci_hub.webp'} alt="Sci-Hub" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.perplexity.ai/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/perplexity.webp'} alt="Perplexity" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://jenni.ai/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/jenni.webp'} alt="Jenni" width={45} height={45} />
+                        </Link>
+                        <Link href={'https://www.blackbox.ai/'} target="_blank" className="flex items-center justify-center border-2 rounded-lg p-3 hover:border-slate-600 transition-colors aspect-square">
+                            <Image src={'/images/blackbox.png'} alt="Blackbox" width={45} height={45} />
+                        </Link>
+                    </div>
+                </motion.div>
+            </div>
+        </div>
+    )
+}
