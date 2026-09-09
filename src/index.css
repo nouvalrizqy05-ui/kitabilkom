@@ -1613,7 +1613,7 @@ button {
     position: absolute;
     opacity: 0.3;
     transform: rotate(90deg) scaleY(-1);
-    top: 8.5rem;
+    top: 11rem;
     left: -5rem;
     color: white;
     font-size: 5rem;
