@@ -1600,12 +1600,17 @@ button {
     right: 1rem;
     display: grid;
     place-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .dosen-unnes-logo-wrap img {
-    width: 32px;
-    height: 32px;
-    opacity: 0.7;
+    width: 2.25rem;
+    height: 2.25rem;
+    opacity: 1;
 }
 
 /* Decorative UNNES watermark */
@@ -1613,8 +1618,8 @@ button {
     position: absolute;
     opacity: 0.3;
     transform: rotate(90deg) scaleY(-1);
-    top: 9rem;
-    left: -5rem;
+    top: 7.5rem;
+    left: -4rem;
     color: white;
     font-size: 5rem;
     line-height: 1;
@@ -1642,12 +1647,15 @@ button {
     flex-direction: column;
     gap: 0.75rem;
     border-radius: 0.75rem;
-    background-color: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid #64748b;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+    background-color: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+    padding: 1.25rem 1rem 1rem 1rem;
 }
 
 /* Prodi badge (floating on top right of glass panel) */
