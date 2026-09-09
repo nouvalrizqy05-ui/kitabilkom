@@ -80,7 +80,7 @@ const dosenTI = [
   {
     id: 'ti-9',
     nama: 'Ir. Much Aziz Muslim, S.Kom., M.Kom., Ph.D.',
-    foto_url: '',
+    foto_url: '/assets/aziz.png',
     email: 'a212muslim@mail.unnes.ac.id',
     jabatan: 'Lektor Kepala',
     prodi: 'TI',
@@ -98,7 +98,7 @@ const dosenTI = [
   {
     id: 'ti-11',
     nama: 'Florentina Yuni Arini, S.Kom., M.Cs., Ph.D.',
-    foto_url: '',
+    foto_url: '/assets/florentina.png',
     email: 'floyuna@mail.unnes.ac.id',
     jabatan: 'Lektor',
     prodi: 'TI',
@@ -164,7 +164,7 @@ const dosenSI = [
   {
     id: 'si-7',
     nama: 'Bagus Winarko Nugroho, S.Pd., M.Kom.',
-    foto_url: '',
+    foto_url: '/assets/bagus.png',
     email: '',
     jabatan: 'Asisten Ahli',
     prodi: 'SI',
