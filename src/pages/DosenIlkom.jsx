@@ -128,7 +128,7 @@ const dosenSI = [
   {
     id: 'si-3',
     nama: 'Shona Chayy Bilqisth, S.Kom., M.Cs.',
-    foto_url: '',
+    foto_url: '/assets/shona.png',
     email: '',
     jabatan: 'Asisten Ahli',
     prodi: 'SI',
@@ -155,7 +155,7 @@ const dosenSI = [
   {
     id: 'si-6',
     nama: 'Alya Aulia Nurdin, S.Kom., M.Kom.',
-    foto_url: '',
+    foto_url: '/assets/Alya.png',
     email: '',
     jabatan: 'Tenaga Pengajar',
     prodi: 'SI',
