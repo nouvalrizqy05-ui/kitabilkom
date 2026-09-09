@@ -1,54 +1,182 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Search, GraduationCap, Mail, Briefcase, Fingerprint } from 'lucide-react'
-import { supabase } from '../lib/supabaseClient'
+import { useMemo, useState } from 'react'
+import { Search, Mail, Briefcase, Fingerprint, GraduationCap } from 'lucide-react'
 import BackButton from '../components/BackButton'
 
+// Data dosen hardcode — direplikasi dari capek-kuliah-main/data/dosen.ts
+const dosenTI = [
+  {
+    id: 'ti-1',
+    nama: 'Dr. Alamsyah S.Si., M.Kom.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/132320168',
+    email: 'alamsyah@mail.unnes.ac.id',
+    jabatan: 'Ketua Jurusan',
+    prodi: 'TI',
+    nip: 'NIP-197405172006041001',
+  },
+  {
+    id: 'ti-2',
+    nama: 'Endang Sugiharti S.Si., M.Kom.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/132231407',
+    email: 'endangsugiharti@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-197401071999032001',
+  },
+  {
+    id: 'ti-3',
+    nama: 'Florentina Yuni Arini S.Kom., M.Cs., Ph.D.',
+    foto_url: '',
+    email: 'floyuna@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-197810252003122001',
+  },
+  {
+    id: 'ti-4',
+    nama: 'Zaenal Abidin S.Si., M.Cs., Ph.D.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/132308201',
+    email: 'z.abidin@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-198205042005011001',
+  },
+  {
+    id: 'ti-5',
+    nama: 'Riza Arifudin S.Pd., M.Cs.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/132308204',
+    email: 'rizaarifudin@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-198005252005011001',
+  },
+  {
+    id: 'ti-6',
+    nama: 'Much Aziz Muslim S.Kom., M.Kom.',
+    foto_url: '',
+    email: 'a212muslim@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-197404202008121001',
+  },
+  {
+    id: 'ti-7',
+    nama: 'Aji Purwinarko S.Si., M.Cs.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/198509102015041001',
+    email: 'aji.purwinarko@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-198509102015041001',
+  },
+  {
+    id: 'ti-8',
+    nama: 'Anggyi Trisnawan Putra S.Si., M.Si.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/198707062014041003',
+    email: 'anggy.trisnawan@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-198707062014041003',
+  },
+  {
+    id: 'ti-9',
+    nama: 'Abas Setiawan S.Kom., M.Cs.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/199110302022031006',
+    email: 'abas.setiawan@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-199110302022031006',
+  },
+  {
+    id: 'ti-10',
+    nama: 'Jumanto S.Kom., M.Cs.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/199202072023211024',
+    email: 'jumanto@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-199202072023211024',
+  },
+  {
+    id: 'ti-11',
+    nama: 'M. Faris Al Hakim S.Pd., M.Cs.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/199203272022031003',
+    email: 'farishakim@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'TI',
+    nip: 'NIP-199203272022031003',
+  },
+]
+
+const dosenSI = [
+  {
+    id: 'si-1',
+    nama: 'Budi Prasetiyo S.Si., M.Kom.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/198805012014041001',
+    email: 'bprasetiyo@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'SI',
+    nip: 'NIP-198805012014041001',
+  },
+  {
+    id: 'si-2',
+    nama: 'Subhan S.Pd., M.Pd., M.Kom.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/198909042019031014',
+    email: 'subhan@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'SI',
+    nip: 'NIP-198909042019031014',
+  },
+  {
+    id: 'si-3',
+    nama: 'Yahya Nur Ifriza S.Pd., M.Kom.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/199001172022031008',
+    email: 'yahyanurifriza@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'SI',
+    nip: 'NIP-199001172022031008',
+  },
+  {
+    id: 'si-4',
+    nama: 'Kholiq Budiman S.Pd., M.Kom.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/199209242019031013',
+    email: 'kholiq.budiman@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'SI',
+    nip: 'NIP-199209242019031013',
+  },
+  {
+    id: 'si-5',
+    nama: 'Devi Ajeng Efrilianda S.Kom., M.Kom.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/199304152019032012',
+    email: 'deviajeng@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'SI',
+    nip: 'NIP-199304152019032012',
+  },
+  {
+    id: 'si-6',
+    nama: 'Yusuf Wisnu Mandaya S.T., M.Kom.',
+    foto_url: 'https://simpeg2.unnes.ac.id/photo/1993051020230812001',
+    email: 'wisnumandaya@mail.unnes.ac.id',
+    jabatan: 'Dosen',
+    prodi: 'SI',
+    nip: 'NIP-1993051020230812001',
+  },
+]
+
+const allDosen = [...dosenTI, ...dosenSI]
+
 export default function DosenIlkom() {
-  const [items, setItems] = useState([])
-  const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
   const [activeTab, setActiveTab] = useState('semua')
 
-  useEffect(() => {
-    let isMounted = true
-    async function loadDosen() {
-      const { data, error } = await supabase
-        .from('dosen')
-        .select('id, nama, bidang, nip, foto_url, email, jabatan, prodi')
-        .order('nama', { ascending: true })
-      if (isMounted) {
-        if (error) console.error(error)
-        setItems(data ?? [])
-        setLoading(false)
-      }
-    }
-    loadDosen()
-    return () => {
-      isMounted = false
-    }
-  }, [])
+  const items = activeTab === 'ti' ? dosenTI : activeTab === 'si' ? dosenSI : allDosen
 
   const filtered = useMemo(() => {
-    let result = items
-    // Filter by prodi tab
-    if (activeTab === 'ti') {
-      result = result.filter(d => d.prodi?.toUpperCase() === 'TI')
-    } else if (activeTab === 'si') {
-      result = result.filter(d => d.prodi?.toUpperCase() === 'SI')
-    }
-    // Filter by search query
     const q = query.trim().toLowerCase()
-    if (q) {
-      result = result.filter(
-        (d) => d.nama?.toLowerCase().includes(q) || d.bidang?.toLowerCase().includes(q) || d.email?.toLowerCase().includes(q)
-      )
-    }
-    return result
-  }, [items, query, activeTab])
-
-  // Count per prodi
-  const countTI = items.filter(d => d.prodi?.toUpperCase() === 'TI').length
-  const countSI = items.filter(d => d.prodi?.toUpperCase() === 'SI').length
+    if (!q) return items
+    return items.filter(
+      (d) => d.nama?.toLowerCase().includes(q) || d.email?.toLowerCase().includes(q) || d.jabatan?.toLowerCase().includes(q)
+    )
+  }, [items, query])
 
   return (
     <>
@@ -71,7 +199,7 @@ export default function DosenIlkom() {
               role="tab"
               aria-selected={activeTab === 'semua'}
             >
-              Semua <span className="tab-count">{items.length}</span>
+              Semua <span className="tab-count">{allDosen.length}</span>
             </button>
             <button
               className={`dosen-tab ${activeTab === 'ti' ? 'active' : ''}`}
@@ -79,7 +207,7 @@ export default function DosenIlkom() {
               role="tab"
               aria-selected={activeTab === 'ti'}
             >
-              Teknik Informatika <span className="tab-count">{countTI}</span>
+              Teknik Informatika <span className="tab-count">{dosenTI.length}</span>
             </button>
             <button
               className={`dosen-tab ${activeTab === 'si' ? 'active' : ''}`}
@@ -87,28 +215,26 @@ export default function DosenIlkom() {
               role="tab"
               aria-selected={activeTab === 'si'}
             >
-              Sistem Informasi <span className="tab-count">{countSI}</span>
+              Sistem Informasi <span className="tab-count">{dosenSI.length}</span>
             </button>
           </div>
 
           {/* Search */}
           <div className="search-wrap" style={{ marginBottom: '2rem' }}>
             <Search size={18} aria-hidden="true" />
-            <label htmlFor="dosen-search-input" className="sr-only">Cari nama dosen atau bidang keahlian</label>
+            <label htmlFor="dosen-search-input" className="sr-only">Cari nama dosen atau email</label>
             <input
               id="dosen-search-input"
               type="text"
               className="search-input"
-              placeholder="Cari nama dosen, email, atau bidang keahlian..."
+              placeholder="Cari nama dosen, email, atau jabatan..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              aria-label="Cari nama dosen atau bidang keahlian"
+              aria-label="Cari nama dosen atau email"
             />
           </div>
 
-          {loading ? (
-            <p className="empty-state">Memuat data dosen...</p>
-          ) : filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <p className="empty-state">Tidak ada dosen yang cocok dengan pencarian.</p>
           ) : (
             <div className="dosen-card-grid">
@@ -132,11 +258,11 @@ export default function DosenIlkom() {
 
                   {/* Foto dosen */}
                   <div className="dosen-card-photo">
-                    {dosen.foto_url ? (
-                      <img src={dosen.foto_url} alt={dosen.nama} loading="lazy" />
-                    ) : (
-                      <img src="/assets/dosen-placeholder.png" alt={dosen.nama} loading="lazy" />
-                    )}
+                    <img
+                      src={dosen.foto_url || '/assets/dosen-placeholder.png'}
+                      alt={dosen.nama}
+                      loading="lazy"
+                    />
                   </div>
 
                   {/* Info overlay bawah */}
@@ -154,13 +280,6 @@ export default function DosenIlkom() {
                       <div className="dosen-card-detail">
                         <Briefcase size={14} />
                         <span>{dosen.jabatan}</span>
-                      </div>
-                    )}
-
-                    {dosen.bidang && (
-                      <div className="dosen-card-detail">
-                        <GraduationCap size={14} />
-                        <span>{dosen.bidang}</span>
                       </div>
                     )}
 
