@@ -80,7 +80,7 @@ export default function Navbar() {
               </div>
             </div>
             
-            <a href="https://forms.google.com/" target="_blank" rel="noopener noreferrer" className="nav-link">GForm Pengumpulan</a>
+            <a href="https://forms.google.com/" target="_blank" rel="noopener noreferrer" className="nav-link">Unggah Artikel</a>
             
             {user ? (
               <div 

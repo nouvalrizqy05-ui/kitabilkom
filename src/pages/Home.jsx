@@ -243,11 +243,11 @@ export default function Home() {
                 <div className="quick-link-icon">
                   <CheckSquare size={48} stroke="var(--purple-500)" strokeWidth={1.5} />
                 </div>
-                <span className="quick-link-label">GForm Pengumpulan</span>
+                <span className="quick-link-label">Unggah Artikel</span>
               </div>
               <div className="quick-link-hover-content">
-                <h3 className="hover-title">GForm Pengumpulan</h3>
-                <p className="hover-desc">Akses tautan menuju Google Form untuk keperluan pengumpulan berkas atau tugas.</p>
+                <h3 className="hover-title">Unggah Artikel</h3>
+                <p className="hover-desc">Akses tautan menuju Google Form untuk keperluan unggah artikel atau tugas.</p>
                 <div className="hover-btn">Buka Form</div>
               </div>
             </a>
