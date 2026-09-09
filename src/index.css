@@ -1612,7 +1612,7 @@ button {
 .dosen-watermark {
     position: absolute;
     opacity: 0.3;
-    transform: scaleY(-1) rotate(90deg);
+    transform: rotate(90deg) scaleY(-1);
     top: 6rem;
     left: -5rem;
     color: white;
