@@ -11,7 +11,7 @@ import BukuAkademik from './pages/BukuAkademik'
 import InfoAkademik from './pages/InfoAkademik'
 import Publikasi from './pages/Publikasi'
 import DosenIlkom from './pages/DosenIlkom'
-import VoteTutorin from './pages/VoteTutorin'
+
 import Bantuan from './pages/Bantuan'
 import Search from './pages/Search'
 import Profil from './pages/Profil'
@@ -59,14 +59,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/vote"
-              element={
-                <ProtectedRoute>
-                  <PageTransition><VoteTutorin /></PageTransition>
-                </ProtectedRoute>
-              }
-            />
+
             <Route
               path="/admin"
               element={

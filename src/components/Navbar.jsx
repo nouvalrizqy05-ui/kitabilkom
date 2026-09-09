@@ -80,7 +80,7 @@ export default function Navbar() {
               </div>
             </div>
             
-            <Link to="/vote" className={`nav-link ${location.pathname === '/vote' ? 'active' : ''}`}>Vote Tutorin</Link>
+            <a href="https://forms.google.com/" target="_blank" rel="noopener noreferrer" className="nav-link">GForm Pengumpulan</a>
             
             {user ? (
               <div 

@@ -64,7 +64,7 @@ export default function Footer() {
               <div className="footer-links-group">
                 <h4 className="footer-links-title">Lainnya</h4>
                 <Link to="/dosen" className="footer-link" onClick={scrollToTop}>Dosen Ilkom</Link>
-                <Link to="/vote" className="footer-link" onClick={scrollToTop}>Vote Tutorin</Link>
+                <a href="https://forms.google.com/" target="_blank" rel="noopener noreferrer" className="footer-link">GForm Pengumpulan</a>
               </div>
               <div className="footer-social-group">
                 <h4 className="footer-links-title">Ikuti Kami</h4>

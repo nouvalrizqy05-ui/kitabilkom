@@ -4,7 +4,6 @@ import AdminOverview from './AdminOverview'
 import AdminBuku from './AdminBuku'
 import AdminInfo from './AdminInfo'
 import AdminDosen from './AdminDosen'
-import AdminVote from './AdminVote'
 import AdminUsers from './AdminUsers'
 import AdminPublikasi from './AdminPublikasi'
 import AdminAspirasi from './AdminAspirasi'
@@ -17,7 +16,6 @@ const TABS = [
   { key: 'info', label: 'Info', icon: Newspaper, Component: AdminInfo },
   { key: 'publikasi', label: 'Publikasi', icon: FileText, Component: AdminPublikasi },
   { key: 'dosen', label: 'Dosen', icon: Users, Component: AdminDosen },
-  { key: 'vote', label: 'Vote', icon: Vote, Component: AdminVote },
   { key: 'aspirasi', label: 'Aspirasi', icon: MessageSquare, Component: AdminAspirasi },
   { key: 'agenda', label: 'Agenda', icon: Calendar, Component: AdminAgenda },
   { key: 'users', label: 'Pengguna', icon: UserCog, Component: AdminUsers },

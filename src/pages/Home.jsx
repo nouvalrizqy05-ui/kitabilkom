@@ -238,19 +238,19 @@ export default function Home() {
                 <div className="hover-btn">Lihat Detail</div>
               </div>
             </Link>
-            <Link to="/vote" className="quick-link-card">
+            <a href="https://forms.google.com/" target="_blank" rel="noopener noreferrer" className="quick-link-card">
               <div className="quick-link-default">
                 <div className="quick-link-icon">
                   <CheckSquare size={48} stroke="var(--purple-500)" strokeWidth={1.5} />
                 </div>
-                <span className="quick-link-label">Vote Tutorin Maba</span>
+                <span className="quick-link-label">GForm Pengumpulan</span>
               </div>
               <div className="quick-link-hover-content">
-                <h3 className="hover-title">Vote Tutorin Maba</h3>
-                <p className="hover-desc">Pilih dan berikan voting untuk mata kuliah pilihan yang memiliki kebutuhan mentoring paling besar.</p>
-                <div className="hover-btn">Lihat Detail</div>
+                <h3 className="hover-title">GForm Pengumpulan</h3>
+                <p className="hover-desc">Akses tautan menuju Google Form untuk keperluan pengumpulan berkas atau tugas.</p>
+                <div className="hover-btn">Buka Form</div>
               </div>
-            </Link>
+            </a>
             <Link to="/dosen" className="quick-link-card">
               <div className="quick-link-default">
                 <div className="quick-link-icon">
