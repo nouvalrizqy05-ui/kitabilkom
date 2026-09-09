@@ -165,7 +165,7 @@ const dosenSI = [
     id: 'si-7',
     nama: 'Bagus Winarko Nugroho, S.Pd., M.Kom.',
     foto_url: '/assets/bagus.png',
-    email: '',
+    email: 'bagoes@mail.unnes.ac.id',
     jabatan: 'Asisten Ahli',
     prodi: 'SI',
     nip: 'NIP-199110042024061001',
