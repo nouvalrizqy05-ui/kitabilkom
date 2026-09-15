@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const EVENT_TYPES = {
   'Lomba': { class: 'event-lomba', tagClass: 'tag-lomba', icon: '🏆', label: 'Lomba' },
@@ -227,7 +228,6 @@ export default function Calendar() {
                           {typeInfo.icon} {typeInfo.label}
                         </span>
                         <h4 className="event-title">{evt.title}</h4>
-                        <p className="event-desc">{evt.desc}</p>
                       </div>
                       <div className={`event-status ${evt.statusClass}`}>{evt.status}</div>
                     </div>
@@ -239,6 +239,12 @@ export default function Calendar() {
                   <p>Tidak ada jadwal acara pada tanggal ini.</p>
                 </div>
               )}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+              <Link to="/info-akademik" className="btn-primary" style={{ padding: '0.6rem 1.25rem', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', borderRadius: 'var(--radius-full)' }}>
+                View Detail <ArrowRight size={16} />
+              </Link>
             </div>
           </div>
         </div>
