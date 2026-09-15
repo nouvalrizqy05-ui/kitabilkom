@@ -2228,21 +2228,41 @@
     padding: 1rem 1.25rem;
   }
 
+  .admin-tabs {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+  }
+  .admin-tabs::-webkit-scrollbar {
+    height: 4px;
+  }
+  .admin-tabs::-webkit-scrollbar-thumb {
+    background: var(--gold-400);
+    border-radius: 4px;
+  }
+
   .admin-panel {
     padding: 1rem;
     min-width: 0;
+    overflow-x: auto;
   }
 
   .admin-table {
-    min-width: 650px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    min-width: 100%;
   }
 
-  .admin-info-form {
+  .admin-form {
     grid-template-columns: 1fr !important;
   }
 
-  .admin-info-form > label,
-  .admin-info-form > .admin-field {
+  .admin-form > label,
+  .admin-form > .admin-field,
+  .admin-form > div {
     grid-column: 1 / -1 !important;
   }
 }
