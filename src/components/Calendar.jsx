@@ -36,13 +36,20 @@ export default function Calendar() {
       const { data, error } = await supabase
         .from('info_akademik')
         .select('*')
-        .gte('tanggal', startStr)
-        .lte('tanggal', endStr)
-        .order('tanggal', { ascending: true });
+        .lte('tanggal', endStr);
 
       if (isMounted && data) {
-        const mapped = data.map(item => {
+        const mapped = data.filter(item => {
+           const endDateStr = item.batas_pendaftaran || item.tanggal;
+           return endDateStr >= startStr;
+        }).map(item => {
           const [y, m, d] = item.tanggal.split('-');
+          const startDate = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+          
+          const endDateStr = item.batas_pendaftaran || item.tanggal;
+          const [ey, em, ed] = endDateStr.split('-');
+          const endDate = new Date(parseInt(ey), parseInt(em) - 1, parseInt(ed));
+
           const category = EVENT_TYPES[item.kategori] ? item.kategori : 'default';
           
           // Helper to create excerpt
@@ -53,7 +60,8 @@ export default function Calendar() {
 
           return {
             id: item.id,
-            date: new Date(parseInt(y), parseInt(m) - 1, parseInt(d)),
+            startDate,
+            endDate,
             type: category,
             title: item.judul,
             desc: desc,
@@ -61,6 +69,8 @@ export default function Calendar() {
             statusClass: item.status === 'Tutup' ? 'status-past' : 'status-upcoming'
           };
         });
+        
+        mapped.sort((a, b) => a.startDate - b.startDate);
         setEvents(mapped);
       }
     }
@@ -91,7 +101,10 @@ export default function Calendar() {
   };
 
   const filteredEvents = selectedDate 
-    ? events.filter(e => e.date.getDate() === selectedDate.getDate())
+    ? events.filter(e => {
+        const current = selectedDate.getTime();
+        return current >= e.startDate.getTime() && current <= e.endDate.getTime();
+      })
     : events;
 
   const getEventTitle = () => {
@@ -102,7 +115,8 @@ export default function Calendar() {
   };
 
   const getEventForDay = (day) => {
-    return events.find(e => e.date.getDate() === day);
+    const current = new Date(year, month, day).getTime();
+    return events.find(e => current >= e.startDate.getTime() && current <= e.endDate.getTime());
   };
 
   const isToday = (day) => {
@@ -196,8 +210,17 @@ export default function Calendar() {
                   return (
                     <div key={evt.id} className={`event-card ${typeInfo.class}`}>
                       <div className="event-date">
-                        <span className="event-day">{evt.date.getDate().toString().padStart(2, '0')}</span>
-                        <span className="event-month">{MONTH_NAMES[evt.date.getMonth()].substring(0, 3)}</span>
+                        {evt.startDate.getTime() !== evt.endDate.getTime() ? (
+                          <>
+                            <span className="event-day" style={{ fontSize: '1.2rem', lineHeight: 1.2 }}>{evt.startDate.getDate().toString().padStart(2, '0')}-{evt.endDate.getDate().toString().padStart(2, '0')}</span>
+                            <span className="event-month">{MONTH_NAMES[evt.startDate.getMonth()].substring(0, 3)}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="event-day">{evt.startDate.getDate().toString().padStart(2, '0')}</span>
+                            <span className="event-month">{MONTH_NAMES[evt.startDate.getMonth()].substring(0, 3)}</span>
+                          </>
+                        )}
                       </div>
                       <div className="event-info">
                         <span className={`event-tag ${typeInfo.tagClass}`}>
