@@ -197,7 +197,7 @@ export default function Calendar() {
               {selectedDate && (
                 <button 
                   onClick={() => setSelectedDate(null)}
-                  style={{ fontSize: '0.8rem', background: 'var(--primary-100)', color: 'var(--text-primary)', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s' }}
+                  style={{ fontSize: '0.8rem', background: 'var(--primary-100)', color: 'var(--primary-900)', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s' }}
                 >
                   Tampilkan Semua
                 </button>
