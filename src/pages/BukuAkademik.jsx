@@ -18,13 +18,13 @@ export default function BukuAkademik() {
   const [previewData, setPreviewData] = useState(null)
   const { prodi: prodiParam, matkul: matkulParam } = useParams()
   const navigate = useNavigate()
-  
+
   const selectedProdi = useMemo(() => {
     if (prodiParam === 'ti') return 'S1 Teknik Informatika'
     if (prodiParam === 'si') return 'S1 Sistem Informasi'
     return null
   }, [prodiParam])
-  
+
   const [errorMsg, setErrorMsg] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const selectedMatkul = matkulParam ? decodeURIComponent(matkulParam) : null
@@ -55,21 +55,21 @@ export default function BukuAkademik() {
   const availableCourses = useMemo(() => {
     if (!selectedProdi) return [];
     const courses = new Set();
-    
+
     // Add predefined courses
     if (activeTab === 'Semua') {
       Object.values(MATAKULIAH_DATA[selectedProdi] || {}).flat().forEach(c => courses.add(c));
     } else {
       (MATAKULIAH_DATA[selectedProdi]?.[activeTab] || []).forEach(c => courses.add(c));
     }
-    
+
     // Add dynamically from items
     items.forEach(item => {
       if (item.prodi === selectedProdi && (activeTab === 'Semua' || String(item.semester) === String(activeTab))) {
         if (item.mata_kuliah) courses.add(item.mata_kuliah);
       }
     });
-    
+
     return Array.from(courses).sort();
   }, [items, selectedProdi, activeTab])
 
@@ -83,7 +83,7 @@ export default function BukuAkademik() {
     }
     if (searchQuery) {
       const q = searchQuery.toLowerCase()
-      result = result.filter(item => 
+      result = result.filter(item =>
         (item.judul && item.judul.toLowerCase().includes(q)) ||
         (item.mata_kuliah && item.mata_kuliah.toLowerCase().includes(q)) ||
         (item.dosen && item.dosen.toLowerCase().includes(q)) ||
@@ -134,18 +134,18 @@ export default function BukuAkademik() {
         </div>
         <div className="banner-buku-body">
           <div className="banner-buku-left-ornament">
-             <div className="banner-buku-kitab-ilkom">
-                <span>KITAB</span>
-                <span>ILKOM</span>
-             </div>
-             <div className="banner-buku-vline"></div>
+            <div className="banner-buku-kitab-ilkom">
+              <span>KITAB</span>
+              <span>ILKOM</span>
+            </div>
+            <div className="banner-buku-vline"></div>
           </div>
           <div className="banner-buku-center-text">
             <span className="banner-buku-subtitle">DIREKTORI</span>
             <h1 className="banner-buku-title">BUKU AKADEMIK</h1>
           </div>
-          <div className="banner-buku-speech-bubble">IPK 4 menanti!<br/>Semangat :)</div>
-            <img src="/assets/lebah akasin.png" alt="Lebah Akasin" className="banner-buku-mascot-right" />
+          <div className="banner-buku-speech-bubble">IPK 4 menanti!<br />Semangat :)</div>
+          <img src="/assets/lebah akasin.png" alt="Lebah Akasin" className="banner-buku-mascot-right" />
         </div>
         <div className="banner-buku-pattern bottom"></div>
       </section>
@@ -160,55 +160,55 @@ export default function BukuAkademik() {
           )}
           {!selectedProdi ? (
             <div className="prodi-gate-container">
-              <h2 style={{textAlign: 'center', marginBottom: '2rem', fontFamily: 'var(--font-display)', color: 'var(--text-primary)'}}>Pilih Program Studi</h2>
+              <h2 style={{ textAlign: 'center', marginBottom: '2rem', fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>Pilih Program Studi</h2>
               <div className="prodi-gate-grid">
                 <button className="prodi-gate-card" onClick={() => navigate('/buku-akademik/ti')}>
-                  <div className="prodi-gate-icon" style={{ color: 'var(--gold-400)' }}>  
+                  <div className="prodi-gate-icon" style={{ color: 'var(--gold-400)' }}>
                     <FileText size={40} aria-hidden="true" />
                   </div>
                   <h3>S1 Teknik Informatika</h3>
-                  <p>Materi, modul, dan buku panduan khusus mahasiswa Teknik Informatika.</p>
+                  <p>Kumpulan buku akademik khusus mahasiswa Teknik Informatika.</p>
                 </button>
                 <button className="prodi-gate-card" onClick={() => navigate('/buku-akademik/si')}>
                   <div className="prodi-gate-icon" style={{ color: 'var(--gold-400)' }}>
                     <FileText size={40} aria-hidden="true" />
                   </div>
                   <h3>S1 Sistem Informasi</h3>
-                  <p>Materi, modul, dan buku panduan khusus mahasiswa Sistem Informasi.</p>
+                  <p>Kumpulan buku akademik khusus mahasiswa Sistem Informasi.</p>
                 </button>
               </div>
             </div>
           ) : (
             <>
               {!selectedMatkul && (
-                <button 
-                  onClick={() => navigate('/buku-akademik')} 
+                <button
+                  onClick={() => navigate('/buku-akademik')}
                   style={{ marginBottom: '2rem', background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}
                 >
                   &larr; Kembali Pilih Prodi
                 </button>
               )}
 
-              
-              <h2 style={{marginBottom: '1.5rem', fontFamily: 'var(--font-display)', color: 'var(--text-primary)'}}>Perpustakaan {selectedProdi}</h2>
-              
+
+              <h2 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>Perpustakaan {selectedProdi}</h2>
+
               <div className="search-filter-bar">
-                  <div className="search-filter-dropdown">
-                    <select value={activeTab} onChange={(e) => setActiveTab(e.target.value)}>
-                      {TABS.map((tab) => (
-                        <option key={tab} value={tab}>{tab === 'Semua' ? 'Semua' : `Semester ${tab}`}</option>
-                      ))}
-                    </select>
-                    <ChevronDown size={16} />
-                  </div>
-                  <input 
-                    type="text" 
-                    placeholder="Cari Mata Kuliah, Judul, Info, Dosen..." 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <button className="search-btn"><Search size={20} /></button>
+                <div className="search-filter-dropdown">
+                  <select value={activeTab} onChange={(e) => setActiveTab(e.target.value)}>
+                    {TABS.map((tab) => (
+                      <option key={tab} value={tab}>{tab === 'Semua' ? 'Semua' : `Semester ${tab}`}</option>
+                    ))}
+                  </select>
+                  <ChevronDown size={16} />
                 </div>
+                <input
+                  type="text"
+                  placeholder="Cari Mata Kuliah, Judul, Info, Dosen..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button className="search-btn"><Search size={20} /></button>
+              </div>
 
               {errorMsg && (
                 <div className="alert-error" style={{ margin: '1rem 0' }}>
@@ -274,8 +274,8 @@ export default function BukuAkademik() {
                 </div>
               ) : (
                 <>
-                  <button 
-                    onClick={() => navigate(`/buku-akademik/${prodiParam}`)} 
+                  <button
+                    onClick={() => navigate(`/buku-akademik/${prodiParam}`)}
                     style={{ marginBottom: '1.5rem', background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}
                   >
                     &larr; Kembali ke Daftar Mata Kuliah
@@ -321,11 +321,11 @@ export default function BukuAkademik() {
           )}
         </div>
       </section>
-      
-      <DocumentPreviewModal 
-        data={previewData} 
-        onClose={() => setPreviewData(null)} 
-        onDownload={handleDownload} 
+
+      <DocumentPreviewModal
+        data={previewData}
+        onClose={() => setPreviewData(null)}
+        onDownload={handleDownload}
       />
     </>
   )

@@ -55,18 +55,18 @@ export default function Calendar() {
 
       if (isMounted && data) {
         const mapped = data.filter(item => {
-           const endDateStr = item.batas_pendaftaran || item.tanggal;
-           return endDateStr >= startStr;
+          const endDateStr = item.batas_pendaftaran || item.tanggal;
+          return endDateStr >= startStr;
         }).map(item => {
           const [y, m, d] = item.tanggal.split('-');
           const startDate = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
-          
+
           const endDateStr = item.batas_pendaftaran || item.tanggal;
           const [ey, em, ed] = endDateStr.split('-');
           const endDate = new Date(parseInt(ey), parseInt(em) - 1, parseInt(ed));
 
           const category = EVENT_TYPES[item.kategori] ? item.kategori : 'default';
-          
+
           // Helper to create excerpt
           const tmp = document.createElement("DIV");
           tmp.innerHTML = item.konten || '';
@@ -80,11 +80,11 @@ export default function Calendar() {
             type: category,
             title: item.judul,
             desc: desc,
-            status: item.status || 'Buka', 
+            status: item.status || 'Buka',
             statusClass: item.status === 'Tutup' ? 'status-past' : 'status-upcoming'
           };
         });
-        
+
         mapped.sort((a, b) => a.startDate - b.startDate);
         setEvents(mapped);
       }
@@ -115,11 +115,11 @@ export default function Calendar() {
     }
   };
 
-  const filteredEvents = selectedDate 
+  const filteredEvents = selectedDate
     ? events.filter(e => {
-        const current = selectedDate.getTime();
-        return current >= e.startDate.getTime() && current <= e.endDate.getTime();
-      })
+      const current = selectedDate.getTime();
+      return current >= e.startDate.getTime() && current <= e.endDate.getTime();
+    })
     : events;
 
   const getEventTitle = () => {
@@ -153,7 +153,7 @@ export default function Calendar() {
               </defs>
             </svg>
             <CalendarDays size={28} stroke="var(--gold-500)" strokeWidth={2} />
-            Kalender Prestasi
+            Kalender Akademik
           </h2>
         </div>
         <div className="calendar-layout">
@@ -181,7 +181,7 @@ export default function Calendar() {
                 const day = i + 1;
                 const evt = getEventForDay(day);
                 const isSelected = selectedDate && selectedDate.getDate() === day;
-                
+
                 let classes = 'cal-day';
                 if (evt) {
                   classes += ` has-event ${EVENT_TYPES[evt.type].class}`;
@@ -191,9 +191,9 @@ export default function Calendar() {
                 }
 
                 return (
-                  <div 
-                    key={day} 
-                    className={classes} 
+                  <div
+                    key={day}
+                    className={classes}
                     onClick={() => handleDayClick(day)}
                     style={isToday(day) && !isSelected ? { border: '2px solid var(--gold-500)', color: 'var(--text-primary)', fontWeight: 'bold' } : {}}
                   >
@@ -209,7 +209,7 @@ export default function Calendar() {
             <h3 className="events-date-title" id="events-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               {getEventTitle()}
               {selectedDate && (
-                <button 
+                <button
                   onClick={() => setSelectedDate(null)}
                   style={{ fontSize: '0.8rem', background: 'var(--primary-100)', color: 'var(--primary-900)', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s' }}
                 >
@@ -217,7 +217,7 @@ export default function Calendar() {
                 </button>
               )}
             </h3>
-            
+
             <div className="calendar-grid">
               {filteredEvents.length > 0 ? (
                 filteredEvents.map((evt, index) => {
