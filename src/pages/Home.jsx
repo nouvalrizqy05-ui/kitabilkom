@@ -108,11 +108,11 @@ export default function Home() {
         <div className="hero-custom-container">
           <div className="hero-content-custom">
             <div className="hero-brand-logo">
-              <img src="/assets/logo-ilkom.png" alt="Logo Ilkom" style={{ width: '80px', height: 'auto', objectFit: 'contain' }} />
-              <img src="/assets/logo-astasae.png" alt="Logo Astasae" style={{ width: '80px', height: 'auto', objectFit: 'contain' }} />
-              <div style={{ marginLeft: '10px' }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1, marginBottom: '-5px' }}>Kitab</div>
-                <div className="hero-title-main" style={{ fontFamily: 'var(--font-display)', fontSize: '4.5rem', fontWeight: 900 }}>ILKOM</div>
+              <img src="/assets/logo-ilkom.png" alt="Logo Ilkom" className="hero-brand-mark" />
+              <img src="/assets/logo-astasae.png" alt="Logo Astasae" className="hero-brand-mark" />
+              <div className="hero-brand-name">
+                <div className="hero-brand-kitab">Kitab</div>
+                <div className="hero-title-main">ILKOM</div>
               </div>
             </div>
             

@@ -653,6 +653,11 @@
   font-size: 0.88rem;
 }
 
+.admin-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .admin-table th {
   text-align: left;
   color: var(--gray-500);
@@ -2155,3 +2160,123 @@
 .dark .bantuan-sop-card { background: var(--bg-surface); border-color: var(--border-color); }
 .dark .bantuan-sop-steps li { color: var(--text-primary); border-color: var(--border-color); }
 .dark .bantuan-step-number { opacity: 0.9; }
+
+/* ==================== RESPONSIVE CONTENT ==================== */
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    padding: 0;
+  }
+
+  .info-tools-bar {
+    align-items: stretch;
+  }
+
+  .info-search-wrapper {
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .info-filter-group {
+    width: 100%;
+  }
+
+  .info-filter-btn {
+    flex: 1;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .info-modal-overlay {
+    padding: 0.75rem;
+  }
+
+  .info-modal-container {
+    max-height: calc(100dvh - 1.5rem);
+    height: calc(100dvh - 1.5rem);
+    border-radius: 12px;
+  }
+
+  .info-modal-layout {
+    flex-direction: column;
+  }
+
+  .info-modal-left {
+    width: 100% !important;
+    height: 30% !important;
+    min-height: 150px;
+    border-right: none;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .info-modal-right {
+    width: 100% !important;
+    height: 70% !important;
+    min-height: 0;
+  }
+
+  .info-modal-content-scroll {
+    padding: 1.25rem;
+  }
+
+  .info-modal-title {
+    font-size: 1.3rem;
+  }
+
+  .info-modal-actions {
+    padding: 1rem 1.25rem;
+  }
+
+  .admin-panel {
+    padding: 1rem;
+    min-width: 0;
+  }
+
+  .admin-table {
+    min-width: 650px;
+  }
+
+  .admin-info-form {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-info-form > label,
+  .admin-info-form > .admin-field {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .info-card-body {
+    padding: 1rem;
+  }
+
+  .info-card-header {
+    flex-direction: column;
+  }
+
+  .info-status-badge {
+    align-self: flex-start;
+  }
+
+  .info-modal-close {
+    top: 0.65rem;
+    right: 0.65rem;
+    width: 32px;
+    height: 32px;
+  }
+
+  .info-modal-left {
+    height: 25% !important;
+    min-height: 120px;
+  }
+
+  .info-modal-right {
+    height: 75% !important;
+  }
+
+  .info-modal-deadline {
+    font-size: 0.8rem;
+  }
+}

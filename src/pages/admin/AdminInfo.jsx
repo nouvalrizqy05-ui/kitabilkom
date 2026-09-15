@@ -154,6 +154,7 @@ export default function AdminInfo() {
       {loading ? (
         <p className="empty-state">Memuat...</p>
       ) : (
+        <div className="admin-table-scroll">
         <table className="admin-table">
           <thead>
             <tr>
@@ -193,11 +194,12 @@ export default function AdminInfo() {
             ))}
           </tbody>
         </table>
+        </div>
       )}
 
       {modalOpen && (
         <Modal title={editing ? 'Edit Info' : 'Tambah Info'} onClose={() => setModalOpen(false)}>
-          <form onSubmit={handleSubmit} className="admin-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+          <form onSubmit={handleSubmit} className="admin-form admin-info-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
             
             <label style={{ gridColumn: '1 / -1' }}>
               Judul Acara / Lomba

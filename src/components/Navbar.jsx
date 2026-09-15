@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Moon, Sun } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
@@ -8,6 +8,7 @@ export default function Navbar() {
     return localStorage.getItem('theme') === 'dark' || 
       (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { user, isAdmin } = useAuth();
 
@@ -18,6 +19,10 @@ export default function Navbar() {
       document.documentElement.classList.remove('dark');
     }
   }, [isDarkMode]);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -31,9 +36,19 @@ export default function Navbar() {
         <Link to="/" className="navbar-brand-custom">
           <img src="/assets/logo-ilkom.png" alt="Logo" className="navbar-logo-custom" />
         </Link>
+
+        <button
+          type="button"
+          className="navbar-menu-toggle"
+          onClick={() => setIsMenuOpen((open) => !open)}
+          aria-label={isMenuOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
+          aria-expanded={isMenuOpen}
+        >
+          {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
         
         {/* Navigation Links */}
-        <nav className="navbar-nav-custom">
+        <nav className={`navbar-nav-custom ${isMenuOpen ? 'is-open' : ''}`}>
           <Link to="/" className={`nav-link-custom ${location.pathname === '/' ? 'active' : ''}`}>Beranda</Link>
           <Link to="/buku-akademik" className={`nav-link-custom ${location.pathname === '/buku-akademik' ? 'active' : ''}`}>Buku Akademik</Link>
           <Link to="/info-akademik" className={`nav-link-custom ${location.pathname === '/info-akademik' ? 'active' : ''}`}>Info Akademik</Link>
@@ -45,7 +60,7 @@ export default function Navbar() {
         </nav>
         
         {/* Actions */}
-        <div className="navbar-actions-custom">
+        <div className={`navbar-actions-custom ${isMenuOpen ? 'is-open' : ''}`}>
           <button 
             onClick={toggleDarkMode} 
             className="btn-icon-custom"
