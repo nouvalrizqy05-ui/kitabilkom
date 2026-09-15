@@ -2760,6 +2760,13 @@ button {
   left: 2rem !important;
 }
 
+@media (max-width: 768px) {
+  .page-header-buku .back-btn-page {
+    top: 86px !important; /* Move up slightly to avoid overlapping with gold strip */
+    left: 1rem !important;
+  }
+}
+
 .banner-buku-pattern {
   height: 28px; /* Slightly taller to show the grid better */
   width: 100%;
