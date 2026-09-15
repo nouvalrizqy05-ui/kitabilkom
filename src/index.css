@@ -3048,6 +3048,7 @@ button {
   background-color: var(--bg-surface);
   position: relative;
   overflow: hidden;
+  margin-bottom: -24px;
 }
 
 .hero-custom-container {
@@ -3269,6 +3270,7 @@ button {
   background-size: cover;
   z-index: 1; /* Sits below the stacked sections */
   overflow: hidden;
+  margin-top: 0;
 }
 
 /* Fallback image if local gedung is missing */
@@ -3439,9 +3441,22 @@ button {
         min-width: 0;
     }
 
+    .hero-custom {
+        margin-bottom: -10px;
+        min-height: 560px;
+        padding-top: 88px;
+        align-items: flex-end;
+    }
+
     .navbar-container-custom {
         padding-left: 1rem;
         padding-right: 1rem;
+    }
+
+    .about-custom-parallax {
+        padding-top: 4.5rem;
+        padding-bottom: 4.5rem;
+        margin-top: 0;
     }
 
     .navbar-nav-custom.is-open {
@@ -3763,9 +3778,10 @@ button {
     }
 
     .hero-custom {
-        min-height: 680px;
+        min-height: 520px;
         padding-top: 88px;
         align-items: flex-end;
+        margin-bottom: -12px;
     }
 
     .hero-image-wrapper {
