@@ -18,6 +18,7 @@ export default function AdminBuku() {
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [customMatkul, setCustomMatkul] = useState(false)
 
   const load = async () => {
     setLoading(true)
@@ -35,6 +36,7 @@ export default function AdminBuku() {
     setEditing(null)
     setForm(emptyForm)
     setError('')
+    setCustomMatkul(false)
     setModalOpen(true)
   }
 
@@ -50,6 +52,14 @@ export default function AdminBuku() {
       file: null,
     })
     setError('')
+
+    const availableMk = MATAKULIAH_DATA[item.prodi]?.[item.semester] || []
+    if (item.mata_kuliah && !availableMk.includes(item.mata_kuliah)) {
+      setCustomMatkul(true)
+    } else {
+      setCustomMatkul(false)
+    }
+
     setModalOpen(true)
   }
 
@@ -145,7 +155,7 @@ export default function AdminBuku() {
                 <td>{item.prodi}</td>
                 <td>{item.kategori}</td>
                 <td>{item.semester}</td>
-                <td>{item.file_url ? '✓ Terunggah' : '— Belum ada'}</td>
+                <td>{item.file_url ? '✨ Terunggah' : '❌ Belum ada'}</td>
                 <td className="admin-table-actions">
                   <button onClick={() => openEdit(item)} aria-label="Edit"><Pencil size={16} /></button>
                   <button onClick={() => handleDelete(item)} aria-label="Hapus" className="danger"><Trash2 size={16} /></button>
@@ -163,33 +173,74 @@ export default function AdminBuku() {
               Judul Materi
               <input required value={form.judul} onChange={(e) => setForm({ ...form, judul: e.target.value })} />
             </label>
-            <label>
-              Mata Kuliah
-              <input 
-                required 
-                list="matkul-list"
-                value={form.mata_kuliah} 
-                onChange={(e) => setForm({ ...form, mata_kuliah: e.target.value })} 
-                placeholder="Pilih atau ketik..."
-              />
-              <datalist id="matkul-list">
-                {(MATAKULIAH_DATA[form.prodi]?.[form.semester] || []).map(mk => (
-                  <option key={mk} value={mk} />
-                ))}
-              </datalist>
-            </label>
-            <label>
-              Nama Dosen
-              <input required value={form.dosen} onChange={(e) => setForm({ ...form, dosen: e.target.value })} />
-            </label>
+
             <label>
               Program Studi
-              <select value={form.prodi} onChange={(e) => setForm({ ...form, prodi: e.target.value })}>
+              <select value={form.prodi} onChange={(e) => {
+                setForm({ ...form, prodi: e.target.value, mata_kuliah: '' })
+                setCustomMatkul(false)
+              }}>
                 {PRODI_OPTIONS.map((p) => (
                   <option key={p} value={p}>{p}</option>
                 ))}
               </select>
             </label>
+
+            <label>
+              Semester
+              <select 
+                value={form.semester} 
+                onChange={(e) => {
+                  setForm({ ...form, semester: Number(e.target.value), mata_kuliah: '' })
+                  setCustomMatkul(false)
+                }}
+              >
+                {[1,2,3,4,5,6,7,8].map(s => (
+                  <option key={s} value={s}>Semester {s}</option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              Mata Kuliah
+              <select 
+                required={!customMatkul}
+                value={customMatkul ? 'lainnya' : form.mata_kuliah} 
+                onChange={(e) => {
+                  if (e.target.value === 'lainnya') {
+                    setCustomMatkul(true)
+                    setForm({ ...form, mata_kuliah: '' })
+                  } else {
+                    setCustomMatkul(false)
+                    setForm({ ...form, mata_kuliah: e.target.value })
+                  }
+                }}
+              >
+                <option value="" disabled>Pilih Mata Kuliah...</option>
+                {(MATAKULIAH_DATA[form.prodi]?.[form.semester] || []).map(mk => (
+                  <option key={mk} value={mk}>{mk}</option>
+                ))}
+                <option value="lainnya">+ Tambah Lainnya</option>
+              </select>
+            </label>
+
+            {customMatkul && (
+              <label>
+                Nama Mata Kuliah Baru
+                <input 
+                  required 
+                  placeholder="Ketik nama mata kuliah baru..."
+                  value={form.mata_kuliah} 
+                  onChange={(e) => setForm({ ...form, mata_kuliah: e.target.value })} 
+                />
+              </label>
+            )}
+
+            <label>
+              Nama Dosen
+              <input required value={form.dosen} onChange={(e) => setForm({ ...form, dosen: e.target.value })} />
+            </label>
+
             <label>
               Kategori
               <select value={form.kategori} onChange={(e) => setForm({ ...form, kategori: e.target.value })}>
@@ -198,24 +249,15 @@ export default function AdminBuku() {
                 ))}
               </select>
             </label>
-            <label>
-              Semester
-              <input
-                type="number"
-                min={1}
-                max={8}
-                required
-                value={form.semester}
-                onChange={(e) => setForm({ ...form, semester: e.target.value })}
-              />
-            </label>
+
             <label>
               File {editing?.file_url ? '(kosongkan jika tidak ingin ganti file)' : ''}
               <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" onChange={(e) => setForm({ ...form, file: e.target.files[0] })} />
             </label>
-            {error && <p className="auth-error">{error}</p>}
-            <button type="submit" className="btn-primary" disabled={saving}>
-              {saving ? 'Menyimpan...' : 'Simpan'}
+
+            {error && <p className="alert-error">{error}</p>}
+            <button type="submit" className="btn-primary" style={{ marginTop: '1rem' }} disabled={saving}>
+              {saving ? 'Menyimpan...' : 'Simpan Materi'}
             </button>
           </form>
         </Modal>
