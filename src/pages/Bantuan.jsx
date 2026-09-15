@@ -113,14 +113,29 @@ export default function Bantuan() {
   return (
     <>
       {/* ===== HEADER ===== */}
-      <section className="page-header">
-        <BackButton />
-        <div className="container">
-          <h1 className="page-title">Pusat Bantuan Mahasiswa</h1>
-          <p className="page-subtitle">
-            Temukan jawaban atas pertanyaanmu, pelajari prosedur akademik, atau sampaikan aspirasi langsung ke HIMA Ilkom.
-          </p>
+      <section className="page-header-buku">
+        <BackButton to="/" />
+        <div className="banner-buku-pattern top">
+          <div className="banner-buku-logos-top">
+            <img src="/assets/Group 100881 (2).png" alt="Logos" />
+          </div>
         </div>
+        <div className="banner-buku-body">
+          <div className="banner-buku-left-ornament">
+             <div className="banner-buku-kitab-ilkom">
+                <span>KITAB</span>
+                <span>ILKOM</span>
+             </div>
+             <div className="banner-buku-vline"></div>
+          </div>
+          <div className="banner-buku-center-text">
+            <span className="banner-buku-subtitle">PUSAT BANTUAN</span>
+            <h1 className="banner-buku-title">BANTUAN MAHASISWA</h1>
+          </div>
+          <div className="banner-buku-speech-bubble">Ada yang bisa<br/>kami bantu?</div>
+          <img src="/assets/lebah akasin.png" alt="Lebah Akasin" className="banner-buku-mascot-right" />
+        </div>
+        <div className="banner-buku-pattern bottom"></div>
       </section>
 
       <section className="page-content">

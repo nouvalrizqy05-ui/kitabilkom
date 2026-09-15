@@ -106,11 +106,11 @@ export default function Calendar() {
               <defs>
                 <linearGradient id="calTitleGrad" x1="3" y1="3" x2="25" y2="25">
                   <stop stopColor="#2F3C6E" />
-                  <stop offset="1" stopColor="#7B68AE" />
+                  <stop offset="1" stopColor="var(--gold-500, #c49630)" />
                 </linearGradient>
               </defs>
             </svg>
-            <CalendarDays size={28} stroke="url(#calTitleGrad)" strokeWidth={2} />
+            <CalendarDays size={28} stroke="var(--gold-500)" strokeWidth={2} />
             Kalender Prestasi
           </h2>
         </div>
@@ -118,11 +118,11 @@ export default function Calendar() {
           {/* Kalender Matriks */}
           <div className="calendar-matrix-container">
             <div className="calendar-month-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <button onClick={prevMonth} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--navy-900)', padding: '5px' }}>
+              <button onClick={prevMonth} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-primary)', padding: '5px' }}>
                 <ChevronLeft size={24} />
               </button>
               <span>{MONTH_NAMES[month]} {year}</span>
-              <button onClick={nextMonth} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--navy-900)', padding: '5px' }}>
+              <button onClick={nextMonth} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-primary)', padding: '5px' }}>
                 <ChevronRight size={24} />
               </button>
             </div>
@@ -153,7 +153,7 @@ export default function Calendar() {
                     key={day} 
                     className={classes} 
                     onClick={() => handleDayClick(day)}
-                    style={isToday(day) && !isSelected ? { border: '2px solid var(--primary-400)', color: 'var(--primary-700)', fontWeight: 'bold' } : {}}
+                    style={isToday(day) && !isSelected ? { border: '2px solid var(--gold-500)', color: 'var(--text-primary)', fontWeight: 'bold' } : {}}
                   >
                     {day}
                   </div>
@@ -169,7 +169,7 @@ export default function Calendar() {
               {selectedDate && (
                 <button 
                   onClick={() => setSelectedDate(null)}
-                  style={{ fontSize: '0.8rem', background: 'var(--primary-100)', color: 'var(--primary-700)', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s' }}
+                  style={{ fontSize: '0.8rem', background: 'var(--primary-100)', color: 'var(--text-primary)', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s' }}
                 >
                   Tampilkan Semua
                 </button>
@@ -198,8 +198,8 @@ export default function Calendar() {
                   );
                 })
               ) : (
-                <div className="no-events" style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--gray-500)', gridColumn: '1 / -1', background: 'rgba(255,255,255,0.5)', borderRadius: 'var(--radius-xl)' }}>
-                  <CalendarDays size={48} stroke="var(--gray-300)" strokeWidth={1} style={{ margin: '0 auto 1rem', display: 'block' }} />
+                <div className="no-events" style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--text-secondary)', gridColumn: '1 / -1', background: 'var(--card-bg)', borderRadius: 'var(--radius-xl)' }}>
+                  <CalendarDays size={48} stroke="var(--text-secondary)" strokeWidth={1} style={{ margin: '0 auto 1rem', display: 'block' }} />
                   <p>Tidak ada jadwal acara pada tanggal ini.</p>
                 </div>
               )}

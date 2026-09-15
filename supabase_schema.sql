@@ -62,6 +62,10 @@ create table public.info_akademik (
   judul text not null,
   kategori text, -- Penting, Berita, Lomba, Beasiswa, Bootcamp
   tanggal date default current_date,
+  batas_pendaftaran date,
+  status text default 'Buka',
+  link_pendaftaran text,
+  poster_url text,
   konten text,
   created_by uuid references public.profiles(id),
   created_at timestamptz default now()

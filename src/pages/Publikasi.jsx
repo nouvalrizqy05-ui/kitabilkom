@@ -30,12 +30,29 @@ export default function Publikasi() {
 
   return (
     <>
-      <section className="page-header">
-        <BackButton />
-        <div className="container">
-          <h1 className="page-title">Database Publikasi Artikel</h1>
-          <p className="page-subtitle">Daftar jurnal dan karya ilmiah yang diterbitkan oleh mahasiswa Ilmu Komputer.</p>
+            <section className="page-header-buku">
+        <BackButton to="/" />
+        <div className="banner-buku-pattern top">
+          <div className="banner-buku-logos-top">
+            <img src="/assets/Group 100881 (2).png" alt="Logos" />
+          </div>
         </div>
+        <div className="banner-buku-body">
+          <div className="banner-buku-left-ornament">
+             <div className="banner-buku-kitab-ilkom">
+                <span>KITAB</span>
+                <span>ILKOM</span>
+             </div>
+             <div className="banner-buku-vline"></div>
+          </div>
+          <div className="banner-buku-center-text">
+            <span className="banner-buku-subtitle">DATABASE</span>
+            <h1 className="banner-buku-title">PUBLIKASI ILMIAH</h1>
+          </div>
+          <div className="banner-buku-speech-bubble">IPK 4 menanti!<br/>Semangat :)</div>
+          <img src="/assets/lebah akasin.png" alt="Lebah Akasin" className="banner-buku-mascot-right" />
+        </div>
+        <div className="banner-buku-pattern bottom"></div>
       </section>
 
       <section className="page-content">

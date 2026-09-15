@@ -59,6 +59,22 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/buku-akademik/:prodi"
+              element={
+                <ProtectedRoute>
+                  <PageTransition><BukuAkademik /></PageTransition>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/buku-akademik/:prodi/:matkul"
+              element={
+                <ProtectedRoute>
+                  <PageTransition><BukuAkademik /></PageTransition>
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path="/admin"
@@ -88,3 +104,5 @@ function NotFound() {
     </section>
   )
 }
+
+

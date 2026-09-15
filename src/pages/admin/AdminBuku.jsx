@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Pencil, Trash2, Plus } from 'lucide-react'
 import { supabase } from '../../lib/supabaseClient'
+import { MATAKULIAH_DATA } from '../../lib/matakuliahData'
 import { useAuth } from '../../context/AuthContext'
 import Modal from '../../components/Modal'
 
@@ -164,7 +165,18 @@ export default function AdminBuku() {
             </label>
             <label>
               Mata Kuliah
-              <input required value={form.mata_kuliah} onChange={(e) => setForm({ ...form, mata_kuliah: e.target.value })} />
+              <input 
+                required 
+                list="matkul-list"
+                value={form.mata_kuliah} 
+                onChange={(e) => setForm({ ...form, mata_kuliah: e.target.value })} 
+                placeholder="Pilih atau ketik..."
+              />
+              <datalist id="matkul-list">
+                {(MATAKULIAH_DATA[form.prodi]?.[form.semester] || []).map(mk => (
+                  <option key={mk} value={mk} />
+                ))}
+              </datalist>
             </label>
             <label>
               Nama Dosen

@@ -7,26 +7,23 @@ export default function AdminOverview() {
     users: 0,
     info: 0,
     buku: 0,
-    dosen: 0,
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
     async function loadMetrics() {
-      const [usersRes, infoRes, bukuRes, dosenRes] = await Promise.all([
+      const [usersRes, infoRes, bukuRes] = await Promise.all([
         supabase.from('profiles').select('id', { count: 'exact', head: true }),
         supabase.from('info_akademik').select('id', { count: 'exact', head: true }),
-        supabase.from('buku_akademik').select('id', { count: 'exact', head: true }),
-        supabase.from('dosen').select('id', { count: 'exact', head: true }),
+        supabase.from('buku_akademik').select('id', { count: 'exact', head: true })
       ]);
 
       if (isMounted) {
         setMetrics({
           users: usersRes.count || 0,
           info: infoRes.count || 0,
-          buku: bukuRes.count || 0,
-          dosen: dosenRes.count || 0,
+          buku: bukuRes.count || 0
         });
         setLoading(false);
       }
@@ -41,9 +38,8 @@ export default function AdminOverview() {
 
   const statCards = [
     { label: 'Total Pengguna', value: metrics.users, icon: Users, color: 'var(--blue-500)', bg: 'var(--blue-50)' },
-    { label: 'Total Info & Artikel', value: metrics.info, icon: Newspaper, color: 'var(--purple-600)', bg: 'var(--purple-50)' },
-    { label: 'Total Buku Akademik', value: metrics.buku, icon: BookOpen, color: 'var(--teal-500)', bg: 'var(--teal-50)' },
-    { label: 'Total Dosen', value: metrics.dosen, icon: GraduationCap, color: 'var(--rose-500)', bg: 'var(--rose-50)' },
+    { label: 'Total Info & Artikel', value: metrics.info, icon: Newspaper, color: 'var(--gold-500)', bg: 'var(--gold-50)' },
+    { label: 'Total Buku Akademik', value: metrics.buku, icon: BookOpen, color: 'var(--teal-500)', bg: 'var(--teal-50)' }
   ];
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, Info, CheckSquare, Users, HelpCircle, ArrowRightLeft, BarChart3, GraduationCap, Library, Star, Trophy, Camera } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, Info, CheckSquare, Users, HelpCircle, ArrowRightLeft, Trophy, Camera, AlertTriangle, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import Calendar from '../components/Calendar';
 
@@ -95,264 +95,166 @@ export default function Home() {
 
   return (
     <>
-      {/* ==================== HERO CAROUSEL ==================== */}
-      <section className="hero" id="beranda">
-        <div className="hero-carousel" id="hero-carousel">
-          {/* Slide 1 */}
-          <div className={`hero-slide ${currentSlide === 0 ? 'active' : ''}`} data-slide="0">
-            <div className="hero-content">
-              <span className="hero-badge">🎓 Portal Akademik</span>
-              <h1 className="hero-title">Selamat Datang,<br/><span className="highlight">Sobat Ilkom!</span></h1>
-              <p className="hero-description">Akses semua informasi akademik Jurusan Ilmu Komputer UNNES dalam satu tempat. Cari mata kuliah, materi, soal, dan raih prestasimu!</p>
-              <a href="#search-section" className="hero-cta">
-                Jelajahi Sekarang
-                <ArrowRight size={20} strokeWidth={2} />
-              </a>
+      {/* ==================== HERO HMTI STYLE ==================== */}
+      <section className="hero-custom stacked-section">
+        <div className="hero-image-wrapper">
+          <img 
+            src="/assets/hero.png" 
+            alt="Background" 
+            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1000'; }}
+          />
+        </div>
+        
+        <div className="hero-custom-container">
+          <div className="hero-content-custom">
+            <div className="hero-brand-logo">
+              <img src="/assets/logo-ilkom.png" alt="Logo Ilkom" style={{ width: '80px', height: 'auto', objectFit: 'contain' }} />
+              <img src="/assets/logo-astasae.png" alt="Logo Astasae" style={{ width: '80px', height: 'auto', objectFit: 'contain' }} />
+              <div style={{ marginLeft: '10px' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1, marginBottom: '-5px' }}>Kitab</div>
+                <div className="hero-title-main" style={{ fontFamily: 'var(--font-display)', fontSize: '4.5rem', fontWeight: 900 }}>ILKOM</div>
+              </div>
             </div>
-          </div>
-
-          {/* Slide 2 */}
-          <div className={`hero-slide ${currentSlide === 1 ? 'active' : ''}`} data-slide="1">
-            <div className="hero-content">
-              <span className="hero-badge">📚 Info Terbaru</span>
-              <h2 className="hero-title">Buku Akademik<br/><span className="highlight">Digital</span></h2>
-              <p className="hero-description">Panduan akademik lengkap dari kurikulum, mata kuliah pilihan, hingga jadwal perkuliahan semester ini. Semua terintegrasi untukmu.</p>
-              <Link to="/buku-akademik" className="hero-cta">
-                Buka Buku Akademik
-                <ArrowRight size={20} strokeWidth={2} />
-              </Link>
-            </div>
-          </div>
-
-          {/* Slide 3 */}
-          <div className={`hero-slide ${currentSlide === 2 ? 'active' : ''}`} data-slide="2">
-            <div className="hero-content">
-              <span className="hero-badge">🏆 Prestasi &amp; Kompetisi</span>
-              <h2 className="hero-title">Raih Prestasi<br/><span className="highlight">Bersama!</span></h2>
-              <p className="hero-description">Temukan informasi lomba, beasiswa, bootcamp, dan kesempatan berkarir. Jangan lewatkan event-event terbaik untuk mahasiswa Ilkom!</p>
-              <a href="#kalender" className="hero-cta">
-                Lihat Kalender
-                <ArrowRight size={20} strokeWidth={2} />
-              </a>
-            </div>
+            
+            <p className="hero-subtitle">
+              Himpunan Mahasiswa Ilmu Komputer<br/>Universitas Negeri Semarang
+            </p>
           </div>
         </div>
-
-
-        {/* Carousel Controls */}
-        <button className="carousel-btn carousel-prev" onClick={goPrev} aria-label="Previous slide">
-          <ChevronLeft size={24} strokeWidth={2.5} />
-        </button>
-        <button className="carousel-btn carousel-next" onClick={goNext} aria-label="Next slide">
-          <ChevronRight size={24} strokeWidth={2.5} />
-        </button>
-
-        {/* Dots */}
-        <div className="carousel-dots">
-          <button className={`dot ${currentSlide === 0 ? 'active' : ''}`} onClick={() => goToSlide(0)} aria-label="Slide 1"></button>
-          <button className={`dot ${currentSlide === 1 ? 'active' : ''}`} onClick={() => goToSlide(1)} aria-label="Slide 2"></button>
-          <button className={`dot ${currentSlide === 2 ? 'active' : ''}`} onClick={() => goToSlide(2)} aria-label="Slide 3"></button>
-        </div>
-
-        {/* Decorative elements */}
-        <div className="hero-decoration hero-decoration-1"></div>
-        <div className="hero-decoration hero-decoration-2"></div>
-        <div className="hero-decoration hero-decoration-3"></div>
       </section>
 
-      {/* ==================== SEARCH BAR ==================== */}
-      <section className="search-section" id="search-section">
-        <div className="container">
-          <form className="search-wrapper" onSubmit={handleSearchSubmit}>
-            <div className="search-dropdown" style={{ position: 'relative' }}>
-              <button 
-                type="button"
-                className="search-dropdown-btn"
-                onClick={() => setIsSearchDropdownOpen(!isSearchDropdownOpen)}
-              >
-                <span>{searchCategory}</span>
-                <ChevronDown size={14} strokeWidth={1.5} style={{ transform: isSearchDropdownOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }} />
-              </button>
+      {/* ==================== ABOUT KITAB ILKOM ==================== */}
+      <section className="about-custom-parallax">
+        <div className="about-overlay"></div>
+        
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}>
+            
+            <div style={{ flex: '1 1 500px' }}>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '3rem', color: 'var(--text-primary)', lineHeight: 1, marginBottom: '-5px' }}>About</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '4rem', fontWeight: 900, color: 'var(--gold-400)', textTransform: 'uppercase', lineHeight: 1 }}>Kitab Ilkom</div>
+              </div>
               
-              <div className={`search-dropdown-menu ${isSearchDropdownOpen ? 'open' : ''}`}>
-                {searchCategories.map((cat) => (
-                  <button 
-                    key={cat}
-                    type="button"
-                    className={`search-dropdown-item ${searchCategory === cat ? 'active' : ''}`}
-                    onClick={() => {
-                      setSearchCategory(cat);
-                      setIsSearchDropdownOpen(false);
-                    }}
-                  >
-                    {cat}
-                  </button>
-                ))}
+              <p style={{ fontSize: '1.1rem', color: 'var(--text-primary)', lineHeight: 1.7, marginBottom: '1.5rem', textAlign: 'justify' }}>
+                <strong>Kitab Ilkom</strong> merupakan sebuah portal akademik terpadu yang dirancang khusus untuk memenuhi kebutuhan mahasiswa Ilmu Komputer Universitas Negeri Semarang (UNNES). Kami hadir sebagai pusat informasi yang memudahkan kegiatan perkuliahan sehari-hari.
+              </p>
+              
+              <p style={{ fontSize: '1.1rem', color: 'var(--text-primary)', lineHeight: 1.7, textAlign: 'justify' }}>
+                Melalui platform ini, Anda dapat mengakses <strong>Database Buku Akademik</strong>, mendapatkan <strong>Info Akademik</strong> terkini terkait jadwal, lomba, hingga beasiswa, serta melihat profil lengkap di <strong>Database Dosen</strong>. Selain itu, Kitab Ilkom menyediakan fasilitas bagi mahasiswa untuk mengeksplorasi dan mengunggah karya ke dalam <strong>Database Artikel Publikasi</strong>, menciptakan lingkungan akademik yang kolaboratif dan inovatif.
+              </p>
+            </div>
+            
+            <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ 
+                position: 'relative', 
+                width: '100%', 
+                maxWidth: '560px', 
+                aspectRatio: '16/9', 
+                borderRadius: '16px', 
+                overflow: 'hidden',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+                border: '1px solid rgba(255,255,255,0.1)'
+              }}>
+                <img src="/assets/about.png" alt="Video Thumbnail" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(100%) brightness(50%)' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1000'; }} />
+                
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 100%)' }}></div>
+                
+                {/* Sabuk Bergembok */}
+                <div style={{ position: 'absolute', top: '50%', left: 0, width: '100%', height: '60px', transform: 'translateY(-50%)', background: 'rgba(30,30,30,0.85)', backdropFilter: 'blur(8px)', borderTop: '2px solid rgba(255,255,255,0.1)', borderBottom: '2px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10, boxShadow: '0 4px 15px rgba(0,0,0,0.5)' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Lock size={20} color="var(--gray-400)" />
+                  </div>
+                </div>
+                
+                <div style={{ position: 'absolute', bottom: '20px', left: '20px', right: '20px', color: 'var(--gray-400)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', userSelect: 'none' }}>
+                  <div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-display)', marginBottom: '4px' }}>Mengenal Kitab Ilkom</div>
+                    <div style={{ fontSize: '0.9rem', opacity: 0.9, fontFamily: 'var(--font-serif)', fontStyle: 'italic' }}>Segera Hadir</div>
+                  </div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', opacity: 0.6 }}>
+                    Tonton di <strong>YouTube</strong>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="search-divider"></div>
-            <label htmlFor="home-search-input" className="sr-only">Cari Mata Kuliah, Judul, Info, atau Dosen</label>
-            <input 
-              id="home-search-input"
-              type="text" 
-              className="search-input" 
-              placeholder="Cari Mata Kuliah, Judul, Info, Dosen..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="Cari Mata Kuliah, Judul, Info, atau Dosen"
-            />
-            <button type="submit" className="search-btn" aria-label="Mulai pencarian">
-              <Search size={22} strokeWidth={2.5} />
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* ==================== QUICK LINKS ==================== */}
-      <section className="quick-links" id="quick-links">
-        <div className="container">
-          <div className="quick-links-grid">
-            <Link to="/buku-akademik" className="quick-link-card">
-              <div className="quick-link-default">
-                <div className="quick-link-icon">
-                  <BookOpen size={48} stroke="var(--purple-600)" strokeWidth={1.5} />
-                </div>
-                <span className="quick-link-label">Buku Akademik</span>
-              </div>
-              <div className="quick-link-hover-content">
-                <h3 className="hover-title">Buku Akademik</h3>
-                <p className="hover-desc">Akses seluruh kurikulum dan panduan mata kuliah secara lengkap.</p>
-                <div className="hover-btn">Lihat Detail</div>
-              </div>
-            </Link>
-            <Link to="/info-akademik" className="quick-link-card">
-              <div className="quick-link-default">
-                <div className="quick-link-icon">
-                  <Info size={48} stroke="var(--navy-600)" strokeWidth={1.5} />
-                </div>
-                <span className="quick-link-label">Info Akademik</span>
-              </div>
-              <div className="quick-link-hover-content">
-                <h3 className="hover-title">Info Akademik</h3>
-                <p className="hover-desc">Informasi terbaru seputar jadwal, kalender, dan pengumuman akademik.</p>
-                <div className="hover-btn">Lihat Detail</div>
-              </div>
-            </Link>
-            <Link to="/dosen" className="quick-link-card">
-              <div className="quick-link-default">
-                <div className="quick-link-icon">
-                  <Users size={48} stroke="var(--gold-400)" strokeWidth={1.5} />
-                </div>
-                <span className="quick-link-label">Dosen Ilkom</span>
-              </div>
-              <div className="quick-link-hover-content">
-                <h3 className="hover-title">Dosen Ilkom</h3>
-                <p className="hover-desc">Daftar dan profil lengkap seluruh dosen pengajar Ilmu Komputer.</p>
-                <div className="hover-btn">Lihat Detail</div>
-              </div>
-            </Link>
-            <a href="https://forms.google.com/" target="_blank" rel="noopener noreferrer" className="quick-link-card">
-              <div className="quick-link-default">
-                <div className="quick-link-icon">
-                  <CheckSquare size={48} stroke="var(--purple-500)" strokeWidth={1.5} />
-                </div>
-                <span className="quick-link-label">Unggah Artikel</span>
-              </div>
-              <div className="quick-link-hover-content">
-                <h3 className="hover-title">Unggah Artikel</h3>
-                <p className="hover-desc">Akses tautan menuju Google Form untuk keperluan unggah artikel atau tugas.</p>
-                <div className="hover-btn">Buka Form</div>
-              </div>
-            </a>
+            
           </div>
         </div>
       </section>
 
-      {/* ==================== INFO BANNERS ==================== */}
-      <section className="info-banners" id="info-banners">
-        <div className="container">
-          <div className="banners-grid">
-            <Link to="/bantuan" className="info-banner banner-pink" style={{ textDecoration: 'none' }}>
-              <div className="banner-content">
-                <h3 className="banner-title">Ada kendala terkait<br/>perkuliahan Ilkom?</h3>
-                <p className="banner-desc">Klik di sini untuk menemukan informasi dan solusi!</p>
+      {/* ==================== QUICK LINKS NAV ==================== */}
+      <section className="quick-links-section stacked-section">
+        <div className="container" style={{ padding: '5rem 20px' }}>
+          <div className="quick-nav-grid">
+            
+            <Link to="/buku-akademik" className="quick-nav-card">
+              <div className="quick-nav-icon">
+                <BookOpen size={42} strokeWidth={1.5} />
               </div>
-              <div className="banner-icon">
-                <HelpCircle size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
-              </div>
+              <span className="quick-nav-label">Buku Akademik</span>
             </Link>
-            <a href="https://forms.gle/cvvpeFXCEd4QLBQn7" target="_blank" rel="noopener noreferrer" className="info-banner banner-purple" style={{ textDecoration: 'none' }}>
-              <div className="banner-content">
-                <h3 className="banner-title">Pendataan Prestasi<br/>Mahasiswa Ilmu Komputer</h3>
-                <p className="banner-desc">Klik di sini untuk mengisi form pendataan prestasi resmi dan dapatkan apresiasi!</p>
+
+            <Link to="/info-akademik" className="quick-nav-card">
+              <div className="quick-nav-icon">
+                <Info size={42} strokeWidth={1.5} />
               </div>
-              <div className="banner-icon">
-                <Trophy size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+              <span className="quick-nav-label">Info Akademik</span>
+            </Link>
+
+            <Link to="/dosen" className="quick-nav-card">
+              <div className="quick-nav-icon">
+                <Users size={42} strokeWidth={1.5} />
               </div>
+              <span className="quick-nav-label">Dosen Ilkom</span>
+            </Link>
+
+            <a href="https://forms.google.com/" target="_blank" rel="noopener noreferrer" className="quick-nav-card">
+              <div className="quick-nav-icon">
+                <CheckSquare size={42} strokeWidth={1.5} />
+              </div>
+              <span className="quick-nav-label">Unggah Artikel</span>
             </a>
+
           </div>
+
+          {/* Info Banners grouped inside Quick Links Section */}
+          <div style={{ marginTop: '4rem' }}>
+            <div className="banners-grid">
+              <Link to="/bantuan" className="info-banner banner-gold" style={{ textDecoration: 'none' }}>
+                <div className="banner-content">
+                  <h3 className="banner-title">Ada kendala terkait Perkuliahan<br/>di Ilmu Komputer?</h3>
+                  <p className="banner-desc">Klik di sini untuk menemukan informasi dan solusi!</p>
+                </div>
+                <div className="banner-icon">
+                  <HelpCircle size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+                </div>
+              </Link>
+              <a href="https://forms.gle/cvvpeFXCEd4QLBQn7" target="_blank" rel="noopener noreferrer" className="info-banner banner-brown" style={{ textDecoration: 'none' }}>
+                <div className="banner-content">
+                  <h3 className="banner-title">Pendataan Minat, Bakat, dan Prestasi<br/>Mahasiswa Ilmu Komputer</h3>
+                  <p className="banner-desc">Klik di sini untuk mengisi form pendataan minat, bakat, dan prestasi resmi dan dapatkan apresiasi!</p>
+                </div>
+                <div className="banner-icon">
+                  <Trophy size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+                </div>
+              </a>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* ==================== KALENDER PRESTASI ==================== */}
       <Calendar />
 
-      {/* ==================== STATISTIK ILKOM ==================== */}
-      <section className="stats-section" id="statistik">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">
-              <BarChart3 size={28} stroke="var(--purple-600)" strokeWidth={2.5} />
-              Statistik Ilkom UNNES
-            </h2>
-          </div>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-header">
-                <div className="stat-icon stat-icon-blue">
-                  <Users size={24} strokeWidth={2} />
-                </div>
-                <div className="stat-label">Mahasiswa Aktif</div>
-              </div>
-              <div className="stat-number">{loading ? '...' : stats.mahasiswa}</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-header">
-                <div className="stat-icon stat-icon-purple">
-                  <GraduationCap size={24} strokeWidth={2} />
-                </div>
-                <div className="stat-label">Dosen Tetap</div>
-              </div>
-              <div className="stat-number">{loading ? '...' : stats.dosen}</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-header">
-                <div className="stat-icon stat-icon-teal">
-                  <Library size={24} strokeWidth={2} />
-                </div>
-                <div className="stat-label">Mata Kuliah / Materi</div>
-              </div>
-              <div className="stat-number">{loading ? '...' : stats.materi}</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-header">
-                <div className="stat-icon stat-icon-gold">
-                  <Star size={24} strokeWidth={2} />
-                </div>
-                <div className="stat-label">Info & Berita Aktif</div>
-              </div>
-              <div className="stat-number">{loading ? '...' : stats.info}</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* ==================== ARTIKEL MAHASISWA ==================== */}
       <section className="kegiatan-section" id="artikel-mahasiswa">
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">
-              <BookOpen size={24} stroke="var(--purple-600)" strokeWidth={2.5} style={{ marginRight: '10px' }} />
+              <BookOpen size={24} stroke="var(--gold-500)" strokeWidth={2.5} style={{ marginRight: '10px' }} />
               Database Publikasi Mahasiswa
             </h2>
             <Link to="/publikasi" className="section-link">Lihat semua publikasi</Link>
@@ -374,7 +276,7 @@ export default function Home() {
                         <Users size={16} strokeWidth={2} color="var(--gray-400)" /> 
                         Mahasiswa Ilmu Komputer
                       </p>
-                      <Link to="/publikasi" className="kegiatan-readmore" style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--primary-600)', fontWeight: 600, fontSize: '0.9rem', textDecoration: 'none' }}>
+                      <Link to="/publikasi" className="kegiatan-readmore" style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--gold-500)', fontWeight: 600, fontSize: '0.9rem', textDecoration: 'none' }}>
                         Baca Artikel <ArrowRight size={16} strokeWidth={2} />
                       </Link>
                     </div>
@@ -382,7 +284,10 @@ export default function Home() {
                 );
               })
             ) : (
-              <p>Belum ada artikel publikasi terbaru.</p>
+              <div style={{ background: 'var(--card-bg)', borderRadius: 'var(--radius-2xl)', padding: '4rem 2rem', textAlign: 'center', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gridColumn: '1 / -1' }}>
+                <AlertTriangle size={56} strokeWidth={1.5} color="var(--gold-500)" style={{ marginBottom: '1.5rem', opacity: 0.8 }} />
+                <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Belum ada artikel publikasi terbaru.</p>
+              </div>
             )}
           </div>
         </div>

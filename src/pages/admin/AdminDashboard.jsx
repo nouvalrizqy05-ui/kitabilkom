@@ -3,7 +3,6 @@ import { BookOpen, Newspaper, Users, Vote, UserCog, LayoutDashboard, FileText, M
 import AdminOverview from './AdminOverview'
 import AdminBuku from './AdminBuku'
 import AdminInfo from './AdminInfo'
-import AdminDosen from './AdminDosen'
 import AdminUsers from './AdminUsers'
 import AdminPublikasi from './AdminPublikasi'
 import AdminAspirasi from './AdminAspirasi'
@@ -14,10 +13,9 @@ const TABS = [
   { key: 'overview', label: 'Ringkasan', icon: LayoutDashboard, Component: AdminOverview },
   { key: 'buku', label: 'Buku', icon: BookOpen, Component: AdminBuku },
   { key: 'info', label: 'Info', icon: Newspaper, Component: AdminInfo },
-  { key: 'publikasi', label: 'Publikasi', icon: FileText, Component: AdminPublikasi },
-  { key: 'dosen', label: 'Dosen', icon: Users, Component: AdminDosen },
-  { key: 'aspirasi', label: 'Aspirasi', icon: MessageSquare, Component: AdminAspirasi },
   { key: 'agenda', label: 'Agenda', icon: Calendar, Component: AdminAgenda },
+  { key: 'publikasi', label: 'Publikasi', icon: FileText, Component: AdminPublikasi },
+  { key: 'aspirasi', label: 'Aspirasi', icon: MessageSquare, Component: AdminAspirasi },
   { key: 'users', label: 'Pengguna', icon: UserCog, Component: AdminUsers },
 ]
 
