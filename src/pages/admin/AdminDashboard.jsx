@@ -6,14 +6,12 @@ import AdminInfo from './AdminInfo'
 import AdminUsers from './AdminUsers'
 import AdminPublikasi from './AdminPublikasi'
 import AdminAspirasi from './AdminAspirasi'
-import AdminAgenda from './AdminAgenda'
 import { useAuth } from '../../context/AuthContext'
 
 const TABS = [
   { key: 'overview', label: 'Ringkasan', icon: LayoutDashboard, Component: AdminOverview },
   { key: 'buku', label: 'Buku', icon: BookOpen, Component: AdminBuku },
   { key: 'info', label: 'Info', icon: Newspaper, Component: AdminInfo },
-  { key: 'agenda', label: 'Agenda', icon: Calendar, Component: AdminAgenda },
   { key: 'publikasi', label: 'Publikasi', icon: FileText, Component: AdminPublikasi },
   { key: 'aspirasi', label: 'Aspirasi', icon: MessageSquare, Component: AdminAspirasi },
   { key: 'users', label: 'Pengguna', icon: UserCog, Component: AdminUsers },

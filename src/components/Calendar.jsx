@@ -3,7 +3,12 @@ import { supabase } from '../lib/supabaseClient';
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const EVENT_TYPES = {
-  kegiatan: { class: 'event-lomba', tagClass: 'tag-lomba', icon: '📅', label: 'Agenda' },
+  'Lomba': { class: 'event-lomba', tagClass: 'tag-lomba', icon: '🏆', label: 'Lomba' },
+  'Beasiswa': { class: 'event-beasiswa', tagClass: 'tag-beasiswa', icon: '🎓', label: 'Beasiswa' },
+  'Bootcamp': { class: 'event-bootcamp', tagClass: 'tag-bootcamp', icon: '💻', label: 'Bootcamp' },
+  'Penting': { class: 'event-penting', tagClass: 'tag-penting', icon: '⚠️', label: 'Penting' },
+  'Berita': { class: 'event-berita', tagClass: 'tag-berita', icon: '📰', label: 'Berita' },
+  'default': { class: 'event-kegiatan', tagClass: 'tag-kegiatan', icon: '📅', label: 'Agenda' }
 };
 
 // generateMockEvents removed to sync with admin database
@@ -29,7 +34,7 @@ export default function Calendar() {
       const endStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(endDay).padStart(2, '0')}`;
 
       const { data, error } = await supabase
-        .from('kalender_akademik')
+        .from('info_akademik')
         .select('*')
         .gte('tanggal', startStr)
         .lte('tanggal', endStr)
@@ -38,14 +43,22 @@ export default function Calendar() {
       if (isMounted && data) {
         const mapped = data.map(item => {
           const [y, m, d] = item.tanggal.split('-');
+          const category = EVENT_TYPES[item.kategori] ? item.kategori : 'default';
+          
+          // Helper to create excerpt
+          const tmp = document.createElement("DIV");
+          tmp.innerHTML = item.konten || '';
+          const text = tmp.textContent || tmp.innerText || "";
+          const desc = text.substring(0, 60) + (text.length > 60 ? "..." : "");
+
           return {
             id: item.id,
             date: new Date(parseInt(y), parseInt(m) - 1, parseInt(d)),
-            type: 'kegiatan',
-            title: item.nama_kegiatan,
-            desc: item.keterangan || '',
-            status: 'Agenda', 
-            statusClass: 'status-upcoming'
+            type: category,
+            title: item.judul,
+            desc: desc,
+            status: item.status || 'Buka', 
+            statusClass: item.status === 'Tutup' ? 'status-past' : 'status-upcoming'
           };
         });
         setEvents(mapped);
