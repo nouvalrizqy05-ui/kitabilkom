@@ -3074,7 +3074,14 @@ button {
   gap: 1rem;
 }
 
-.hero-brand-logo img {
+.hero-logos-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+}
+
+.hero-logos-wrapper img {
   height: 100%;
 }
 
@@ -3815,21 +3822,32 @@ button {
     .hero-content-custom {
         max-width: 100%;
         padding-bottom: 7rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 
     .hero-brand-logo {
         height: auto;
         min-height: 0;
-        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
         gap: 0.5rem;
     }
 
+    .hero-logos-wrapper {
+        justify-content: center;
+        margin-bottom: 0.25rem;
+    }
+
     .hero-brand-mark {
-        width: 54px;
+        width: 64px; /* slightly larger for center */
     }
 
     .hero-brand-name {
-        margin-left: 0.25rem;
+        margin-left: 0;
+        text-align: center;
     }
 
     .hero-title-main {

@@ -108,8 +108,10 @@ export default function Home() {
         <div className="hero-custom-container">
           <div className="hero-content-custom">
             <div className="hero-brand-logo">
-              <img src="/assets/logo-ilkom.png" alt="Logo Ilkom" className="hero-brand-mark" />
-              <img src="/assets/logo-astasae.png" alt="Logo Astasae" className="hero-brand-mark" />
+              <div className="hero-logos-wrapper">
+                <img src="/assets/logo-ilkom.png" alt="Logo Ilkom" className="hero-brand-mark" />
+                <img src="/assets/logo-astasae.png" alt="Logo Astasae" className="hero-brand-mark" />
+              </div>
               <div className="hero-brand-name">
                 <div className="hero-brand-kitab">Kitab</div>
                 <div className="hero-title-main">ILKOM</div>
