@@ -3341,6 +3341,18 @@ button {
   width: auto;
 }
 
+.navbar-brand-text {
+  display: none;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  margin-left: 0.75rem;
+}
+.dark .navbar-brand-text {
+  color: var(--text-primary);
+}
+
 .navbar-nav-custom {
   display: flex;
   align-items: center;
@@ -3779,6 +3791,10 @@ button {
         bottom: auto;
     }
 
+    .navbar-brand-text {
+        display: block;
+    }
+
     .hero-custom {
         min-height: 520px;
         padding-top: 88px;
@@ -3797,7 +3813,7 @@ button {
 
     .hero-content-custom {
         max-width: 100%;
-        padding-bottom: 3rem;
+        padding-bottom: 7rem;
     }
 
     .hero-brand-logo {
