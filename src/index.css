@@ -3796,7 +3796,8 @@ button {
     }
 
     .hero-custom {
-        min-height: 520px;
+        min-height: 100vh;
+        min-height: 100svh;
         padding-top: 88px;
         align-items: flex-end;
         margin-bottom: -12px;
