@@ -3881,11 +3881,11 @@ button {
 
 @media (max-width: 480px) {
     .hero-custom {
-        min-height: 600px;
+        min-height: 100dvh;
     }
 
     .hero-brand-logo {
-        align-items: flex-start;
+        align-items: center;
     }
 
     .hero-brand-mark {
