@@ -9,6 +9,7 @@ export default function Navbar() {
       (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { user, isAdmin } = useAuth();
 
@@ -24,13 +25,21 @@ export default function Navbar() {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     localStorage.setItem('theme', !isDarkMode ? 'dark' : 'light');
   };
 
   return (
-    <header className="navbar-custom">
+    <header className={`navbar-custom ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container-custom">
         {/* Logo Section */}
         <Link to="/" className="navbar-brand-custom">

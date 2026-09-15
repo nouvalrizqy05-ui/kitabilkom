@@ -64,19 +64,19 @@ export default function Aspirasi() {
               <div style={{ width: '64px', height: '64px', background: 'var(--green-100)', color: 'var(--green-600)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                 <CheckCircle size={32} />
               </div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--navy-900)', marginBottom: '1rem' }}>Aspirasi Berhasil Dikirim!</h2>
-              <p style={{ color: 'var(--gray-600)', marginBottom: '2rem' }}>Terima kasih telah menyampaikan aspirasi Anda. Divisi Sinergi akan segera menindaklanjuti laporan ini.</p>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>Aspirasi Berhasil Dikirim!</h2>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Terima kasih telah menyampaikan aspirasi Anda. Divisi Sinergi akan segera menindaklanjuti laporan ini.</p>
               <button onClick={() => { setSubmitted(false); setJudul(''); setDeskripsi(''); }} className="btn-primary" style={{ display: 'inline-flex', padding: '0.8rem 2rem' }}>
                 Kirim Aspirasi Lainnya
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="auth-form">
-              {error && <div style={{ padding: '1rem', background: '#fee2e2', color: '#991b1b', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem' }}>{error}</div>}
+              {error && <div className="alert-error">{error}</div>}
               
               <label className="auth-field">
                 <span>Kategori Aspirasi</span>
-                <select value={kategori} onChange={(e) => setKategori(e.target.value)} required style={{ background: 'white', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-lg)', padding: '0.8rem 1rem', width: '100%', outline: 'none' }}>
+                <select value={kategori} onChange={(e) => setKategori(e.target.value)} required>
                   <option value="Akademik">Akademik & Perkuliahan</option>
                   <option value="Fasilitas">Fasilitas & Sarpras</option>
                   <option value="Administrasi">Layanan Administrasi</option>
@@ -104,12 +104,12 @@ export default function Aspirasi() {
                   placeholder="Ceritakan secara detail mengenai masalah yang Anda hadapi atau saran yang ingin Anda sampaikan..."
                   value={deskripsi}
                   onChange={(e) => setDeskripsi(e.target.value)}
-                  style={{ width: '100%', padding: '1rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--gray-200)', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }}
+                  style={{ resize: 'vertical' }}
                 ></textarea>
               </label>
 
-              <div style={{ padding: '1rem', background: 'var(--blue-50)', color: 'var(--blue-800)', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
-                <strong>Catatan:</strong> Aspirasi Anda akan dikirimkan dengan identitas <strong>{profile?.nama || user?.email || 'Anonim'}</strong>. Jika Anda belum login, silakan login terlebih dahulu.
+              <div style={{ padding: '1rem', background: 'var(--bg-base)', border: '1px solid var(--border-color)', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.85rem', color: 'var(--text-primary)' }}>
+                <strong style={{ color: 'var(--primary-600)' }}>Catatan:</strong> Aspirasi Anda akan dikirimkan dengan identitas <strong>{profile?.nama || user?.email || 'Anonim'}</strong>. Jika Anda belum login, silakan login terlebih dahulu.
               </div>
 
               <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%', padding: '1rem' }}>

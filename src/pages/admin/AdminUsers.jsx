@@ -41,7 +41,7 @@ export default function AdminUsers() {
       <div className="admin-panel-header">
         <h2>Kelola Pengguna ({users.length})</h2>
       </div>
-      <p style={{ fontSize: '0.85rem', color: 'var(--gray-500)', marginBottom: '1rem' }}>
+      <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
         Promosikan mahasiswa jadi admin, atau turunkan admin jadi mahasiswa biasa. Hati-hati, admin bisa mengubah
         semua konten di situs ini.
       </p>

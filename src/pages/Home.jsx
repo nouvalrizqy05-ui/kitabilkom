@@ -3,6 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, Info, CheckSquare, Users, HelpCircle, ArrowRightLeft, Trophy, Camera, AlertTriangle, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import Calendar from '../components/Calendar';
+import { motion } from 'framer-motion';
+
+const PopAnim = ({ children, delay = 0, className = "", style = {} }) => (
+  <motion.div
+    className={className}
+    style={style}
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 1.7, ease: [0.25, 1, 0.5, 1], delay }}
+  >
+    {children}
+  </motion.div>
+);
 
 // mockArticles removed to sync with admin data
 
@@ -106,7 +120,7 @@ export default function Home() {
         </div>
         
         <div className="hero-custom-container">
-          <div className="hero-content-custom">
+          <PopAnim className="hero-content-custom">
             <div className="hero-brand-logo">
               <div className="hero-logos-wrapper">
                 <img src="/assets/logo-ilkom.png" alt="Logo Ilkom" className="hero-brand-mark" />
@@ -121,7 +135,7 @@ export default function Home() {
             <p className="hero-subtitle">
               Himpunan Mahasiswa Ilmu Komputer<br/>Universitas Negeri Semarang
             </p>
-          </div>
+          </PopAnim>
         </div>
       </section>
 
@@ -132,7 +146,7 @@ export default function Home() {
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}>
             
-            <div style={{ flex: '1 1 500px' }}>
+            <PopAnim style={{ flex: '1 1 500px' }} delay={0.1}>
               <div style={{ marginBottom: '1.5rem' }}>
                 <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '3rem', color: 'var(--text-primary)', lineHeight: 1, marginBottom: '-5px' }}>About</div>
                 <div style={{ fontFamily: 'var(--font-display)', fontSize: '4rem', fontWeight: 900, color: 'var(--gold-400)', textTransform: 'uppercase', lineHeight: 1 }}>Kitab Ilkom</div>
@@ -145,9 +159,9 @@ export default function Home() {
               <p style={{ fontSize: '1.1rem', color: 'var(--text-primary)', lineHeight: 1.7, textAlign: 'justify' }}>
                 Melalui platform ini, Anda dapat mengakses <strong>Database Buku Akademik</strong>, mendapatkan <strong>Info Akademik</strong> terkini terkait jadwal, lomba, hingga beasiswa, serta melihat profil lengkap di <strong>Database Dosen</strong>. Selain itu, Kitab Ilkom menyediakan fasilitas bagi mahasiswa untuk mengeksplorasi dan mengunggah karya ke dalam <strong>Database Artikel Publikasi</strong>, menciptakan lingkungan akademik yang kolaboratif dan inovatif.
               </p>
-            </div>
+            </PopAnim>
             
-            <div style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }}>
+            <PopAnim style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }} delay={0.3}>
               <div style={{ 
                 position: 'relative', 
                 width: '100%', 
@@ -179,7 +193,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
+            </PopAnim>
             
           </div>
         </div>
@@ -190,57 +204,69 @@ export default function Home() {
         <div className="container" style={{ padding: '5rem 20px' }}>
           <div className="quick-nav-grid">
             
-            <Link to="/buku-akademik" className="quick-nav-card">
-              <div className="quick-nav-icon">
-                <BookOpen size={42} strokeWidth={1.5} />
-              </div>
-              <span className="quick-nav-label">Buku Akademik</span>
-            </Link>
+            <PopAnim delay={0.1}>
+              <Link to="/buku-akademik" className="quick-nav-card">
+                <div className="quick-nav-icon">
+                  <BookOpen size={42} strokeWidth={1.5} />
+                </div>
+                <span className="quick-nav-label">Buku Akademik</span>
+              </Link>
+            </PopAnim>
 
-            <Link to="/info-akademik" className="quick-nav-card">
-              <div className="quick-nav-icon">
-                <Info size={42} strokeWidth={1.5} />
-              </div>
-              <span className="quick-nav-label">Info Akademik</span>
-            </Link>
+            <PopAnim delay={0.2}>
+              <Link to="/info-akademik" className="quick-nav-card">
+                <div className="quick-nav-icon">
+                  <Info size={42} strokeWidth={1.5} />
+                </div>
+                <span className="quick-nav-label">Info Akademik</span>
+              </Link>
+            </PopAnim>
 
-            <Link to="/dosen" className="quick-nav-card">
-              <div className="quick-nav-icon">
-                <Users size={42} strokeWidth={1.5} />
-              </div>
-              <span className="quick-nav-label">Dosen Ilkom</span>
-            </Link>
+            <PopAnim delay={0.3}>
+              <Link to="/dosen" className="quick-nav-card">
+                <div className="quick-nav-icon">
+                  <Users size={42} strokeWidth={1.5} />
+                </div>
+                <span className="quick-nav-label">Dosen Ilkom</span>
+              </Link>
+            </PopAnim>
 
-            <a href="https://forms.google.com/" target="_blank" rel="noopener noreferrer" className="quick-nav-card">
-              <div className="quick-nav-icon">
-                <CheckSquare size={42} strokeWidth={1.5} />
-              </div>
-              <span className="quick-nav-label">Unggah Artikel</span>
-            </a>
+            <PopAnim delay={0.4}>
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0A7npBXDlGedxykt1YDu4ukIUleilSYPTuk1EP-x5d40RDw/viewform" target="_blank" rel="noopener noreferrer" className="quick-nav-card">
+                <div className="quick-nav-icon">
+                  <CheckSquare size={42} strokeWidth={1.5} />
+                </div>
+                <span className="quick-nav-label">Unggah Artikel</span>
+              </a>
+            </PopAnim>
 
           </div>
 
           {/* Info Banners grouped inside Quick Links Section */}
           <div style={{ marginTop: '4rem' }}>
             <div className="banners-grid">
-              <Link to="/bantuan" className="info-banner banner-gold" style={{ textDecoration: 'none' }}>
-                <div className="banner-content">
-                  <h3 className="banner-title">Ada kendala terkait Perkuliahan<br/>di Ilmu Komputer?</h3>
-                  <p className="banner-desc">Klik di sini untuk menemukan informasi dan solusi!</p>
-                </div>
-                <div className="banner-icon">
-                  <HelpCircle size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
-                </div>
-              </Link>
-              <a href="https://forms.gle/cvvpeFXCEd4QLBQn7" target="_blank" rel="noopener noreferrer" className="info-banner banner-brown" style={{ textDecoration: 'none' }}>
-                <div className="banner-content">
-                  <h3 className="banner-title">Pendataan Minat, Bakat, dan Prestasi<br/>Mahasiswa Ilmu Komputer</h3>
-                  <p className="banner-desc">Klik di sini untuk mengisi form pendataan minat, bakat, dan prestasi resmi dan dapatkan apresiasi!</p>
-                </div>
-                <div className="banner-icon">
-                  <Trophy size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
-                </div>
-              </a>
+              <PopAnim delay={0.1}>
+                <Link to="/bantuan" className="info-banner banner-gold" style={{ textDecoration: 'none', height: '100%' }}>
+                  <div className="banner-content">
+                    <h3 className="banner-title">Ada kendala terkait Perkuliahan<br/>di Ilmu Komputer?</h3>
+                    <p className="banner-desc">Klik di sini untuk menemukan informasi dan solusi!</p>
+                  </div>
+                  <div className="banner-icon">
+                    <HelpCircle size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+                  </div>
+                </Link>
+              </PopAnim>
+              <PopAnim delay={0.2}>
+                <a href="https://forms.gle/cvvpeFXCEd4QLBQn7" target="_blank" rel="noopener noreferrer" className="info-banner banner-brown" style={{ textDecoration: 'none', height: '100%' }}>
+                  <div className="banner-content">
+                    <h3 className="banner-title">Pendataan Minat, Bakat, dan Prestasi<br/>Mahasiswa Ilmu Komputer</h3>
+                    <p className="banner-desc">Klik di sini untuk mengisi form pendataan minat, bakat, dan prestasi resmi dan dapatkan apresiasi!</p>
+                  </div>
+                  <div className="banner-icon">
+                    <Trophy size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+                  </div>
+                </a>
+              </PopAnim>
             </div>
           </div>
 
@@ -263,10 +289,10 @@ export default function Home() {
           </div>
           <div className="kegiatan-grid">
             {latestInfo.length > 0 ? (
-              latestInfo.map(article => {
+              latestInfo.map((article, index) => {
                 const year = article.tanggal ? new Date(article.tanggal).getFullYear() : new Date().getFullYear();
                 return (
-                  <div key={article.id} className="kegiatan-card" style={{ display: 'flex', flexDirection: 'column' }}>
+                  <PopAnim key={article.id} className="kegiatan-card" style={{ display: 'flex', flexDirection: 'column' }} delay={index * 0.1}>
                     <div className="kegiatan-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '1.5rem' }}>
                       <div style={{ fontSize: '0.75rem', color: 'var(--purple-600)', fontWeight: 700, marginBottom: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Jurnal Akademik • {year}
@@ -282,7 +308,7 @@ export default function Home() {
                         Baca Artikel <ArrowRight size={16} strokeWidth={2} />
                       </Link>
                     </div>
-                  </div>
+                  </PopAnim>
                 );
               })
             ) : (

@@ -173,7 +173,7 @@ export default function AdminInfo() {
                   {item.poster_url ? (
                     <img src={item.poster_url} alt="Poster" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px' }} />
                   ) : (
-                    <div style={{ width: '40px', height: '40px', background: 'var(--gray-200)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gray-500)' }}>
+                    <div style={{ width: '40px', height: '40px', background: 'var(--bg-base)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
                       <ImageIcon size={16} />
                     </div>
                   )}
@@ -199,7 +199,7 @@ export default function AdminInfo() {
 
       {modalOpen && (
         <Modal title={editing ? 'Edit Info' : 'Tambah Info'} onClose={() => setModalOpen(false)}>
-          <form onSubmit={handleSubmit} className="admin-form admin-info-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+          <form onSubmit={handleSubmit} className="admin-form admin-info-form admin-form-grid">
             
             <label style={{ gridColumn: '1 / -1' }}>
               Judul Acara / Lomba

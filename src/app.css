@@ -81,6 +81,28 @@
   transform: translateY(-1px);
 }
 
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #e11d48;
+  color: white;
+  font-weight: 600;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.btn-danger:hover {
+  background: #be123c;
+  transform: translateY(-1px);
+}
+
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -396,11 +418,43 @@
 }
 
 .auth-error {
-  color: var(--rose-500);
+  color: var(--rose-600);
   font-size: 0.85rem;
-  background: #fdecee;
+  background: var(--rose-50);
+  border: 1px solid var(--rose-200);
   border-radius: var(--radius-md);
   padding: 0.6rem 0.8rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alert-error {
+  color: var(--rose-600);
+  background: var(--rose-50);
+  border: 1px solid var(--rose-200);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.alert-success {
+  color: var(--teal-600);
+  background: var(--teal-50);
+  border: 1px solid var(--teal-200);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
 }
 
 .auth-switch {
@@ -1969,7 +2023,55 @@
   color: var(--text-primary);
 }
 
+/* ---------- DARK MODE AUTH BOX ---------- */
+.dark .auth-box {
+  background: var(--bg-surface);
+  border-color: var(--border-color);
+}
+
+.dark .auth-box h1 {
+  color: var(--text-primary);
+}
+
+.dark .auth-box p,
+.dark .auth-box .back-btn-page-light {
+  color: var(--text-secondary);
+}
+
+.dark .auth-form label span {
+  color: var(--text-secondary);
+}
+
+.dark .auth-form input,
+.dark .auth-form select,
+.dark .auth-form textarea {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
 /* ---------- DARK MODE ADMIN PANEL ---------- */
+.dark .modal-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+}
+
+.dark .modal-header {
+  border-bottom-color: var(--border-color);
+}
+
+.dark .modal-header h3 {
+  color: var(--text-primary);
+}
+
+.dark .modal-close {
+  color: var(--text-secondary);
+}
+
+.dark .modal-close:hover {
+  color: var(--gold-400);
+}
+
 .dark .admin-header-modern,
 .dark .admin-tabs,
 .dark .admin-panel,
@@ -2298,5 +2400,32 @@
 
   .info-modal-deadline {
     font-size: 0.8rem;
+  }
+}
+
+/* ---------- DARK MODE ALERTS ---------- */
+.dark .auth-error,
+.dark .alert-error {
+  background: rgba(225, 29, 72, 0.1);
+  border-color: rgba(225, 29, 72, 0.2);
+  color: var(--rose-400);
+}
+
+.dark .alert-success {
+  background: rgba(13, 148, 136, 0.1);
+  border-color: rgba(13, 148, 136, 0.2);
+  color: var(--teal-400);
+}
+
+/* ---------- ADMIN RESPONSIVE FIX ---------- */
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .admin-form-grid {
+    grid-template-columns: 1fr;
   }
 }

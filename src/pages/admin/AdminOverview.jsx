@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { Users, BookOpen, Newspaper, GraduationCap, TrendingUp } from 'lucide-react';
+import { Users, BookOpen, Newspaper, GraduationCap, TrendingUp, AlertCircle } from 'lucide-react';
+import Spinner from '../../components/Spinner';
 
 export default function AdminOverview() {
   const [metrics, setMetrics] = useState({
@@ -9,23 +10,33 @@ export default function AdminOverview() {
     buku: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
     async function loadMetrics() {
-      const [usersRes, infoRes, bukuRes] = await Promise.all([
-        supabase.from('profiles').select('id', { count: 'exact', head: true }),
-        supabase.from('info_akademik').select('id', { count: 'exact', head: true }),
-        supabase.from('buku_akademik').select('id', { count: 'exact', head: true })
-      ]);
+      try {
+        const [usersRes, infoRes, bukuRes] = await Promise.all([
+          supabase.from('profiles').select('id', { count: 'exact', head: true }),
+          supabase.from('info_akademik').select('id', { count: 'exact', head: true }),
+          supabase.from('buku_akademik').select('id', { count: 'exact', head: true })
+        ]);
 
-      if (isMounted) {
-        setMetrics({
-          users: usersRes.count || 0,
-          info: infoRes.count || 0,
-          buku: bukuRes.count || 0
-        });
-        setLoading(false);
+        if (usersRes.error) throw usersRes.error;
+        if (infoRes.error) throw infoRes.error;
+        if (bukuRes.error) throw bukuRes.error;
+
+        if (isMounted) {
+          setMetrics({
+            users: usersRes.count || 0,
+            info: infoRes.count || 0,
+            buku: bukuRes.count || 0
+          });
+        }
+      } catch (err) {
+        if (isMounted) setError(err.message);
+      } finally {
+        if (isMounted) setLoading(false);
       }
     }
     loadMetrics();
@@ -33,7 +44,16 @@ export default function AdminOverview() {
   }, []);
 
   if (loading) {
-    return <p className="empty-state">Memuat ringkasan data...</p>;
+    return <Spinner text="Memuat ringkasan data..." />;
+  }
+
+  if (error) {
+    return (
+      <div className="alert-error" style={{ margin: '2rem' }}>
+        <AlertCircle size={20} />
+        <span>Gagal memuat data: {error}</span>
+      </div>
+    );
   }
 
   const statCards = [
@@ -46,7 +66,7 @@ export default function AdminOverview() {
     <div className="admin-overview">
       <div className="admin-overview-header">
         <h2 style={{ fontFamily: 'var(--font-display)', marginBottom: '0.5rem' }}>Ringkasan Sistem</h2>
-        <p style={{ color: 'var(--gray-500)', fontSize: '0.95rem' }}>Pantau statistik utama dari platform Kitab Ilkom secara real-time.</p>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Pantau statistik utama dari platform Kitab Ilkom secara real-time.</p>
       </div>
 
       <div className="admin-stats-grid">

@@ -175,11 +175,16 @@ export default function Bantuan() {
             <div className="bantuan-faq-list">
               {FAQ_DATA.map((item, i) => (
                 <div className={`bantuan-faq-item ${openFaq === i ? 'open' : ''}`} key={i}>
-                  <button className="bantuan-faq-question" onClick={() => toggleFaq(i)}>
+                  <button 
+                    className="bantuan-faq-question" 
+                    onClick={() => toggleFaq(i)}
+                    aria-expanded={openFaq === i}
+                    aria-controls={`faq-answer-${i}`}
+                  >
                     <span>{item.q}</span>
                     <ChevronDown size={20} className="bantuan-faq-chevron" />
                   </button>
-                  <div className="bantuan-faq-answer">
+                  <div className="bantuan-faq-answer" id={`faq-answer-${i}`}>
                     <p>{item.a}</p>
                   </div>
                 </div>

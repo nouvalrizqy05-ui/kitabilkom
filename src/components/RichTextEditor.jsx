@@ -1,26 +1,12 @@
-import ReactQuill from 'react-quill-new'
-import 'react-quill-new/dist/quill.snow.css'
-
 export default function RichTextEditor({ value, onChange, placeholder }) {
-  const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      ['link', 'image'],
-      ['clean']
-    ],
-  }
-
   return (
-    <div className="rich-text-editor-container" style={{ marginBottom: '1rem', background: 'white' }}>
-      <ReactQuill 
-        theme="snow" 
-        value={value} 
-        onChange={onChange} 
-        modules={modules}
+    <div className="rich-text-editor-container" style={{ marginBottom: '1rem' }}>
+      <textarea
+        className="rte-textarea"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder || 'Tulis isi konten di sini...'}
-        style={{ minHeight: '250px' }}
+        style={{ width: '100%', minHeight: '250px', padding: '1rem', borderRadius: '4px', fontFamily: 'inherit' }}
       />
     </div>
   )

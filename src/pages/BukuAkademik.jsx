@@ -1,10 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react'
-import { Download, FileText, Eye, Search, ChevronDown, Folder } from 'lucide-react'
+import { Download, FileText, Eye, Search, ChevronDown, Folder, AlertCircle } from 'lucide-react'
 import { MATAKULIAH_DATA } from '../lib/matakuliahData'
 import { supabase } from '../lib/supabaseClient'
 import BackButton from '../components/BackButton'
 import DocumentPreviewModal from '../components/DocumentPreviewModal'
+import Spinner from '../components/Spinner'
 
 const TABS = ['Semua', 1, 2, 3, 4, 5, 6, 7, 8]
 
@@ -36,8 +37,12 @@ export default function BukuAkademik() {
         .select('id, judul, mata_kuliah, dosen, kategori, semester, file_url, prodi')
         .order('created_at', { ascending: false })
       if (isMounted) {
-        if (error) console.error(error)
-        setItems(data ?? [])
+        if (error) {
+          console.error(error)
+          setErrorMsg(error.message)
+        } else {
+          setItems(data ?? [])
+        }
         setLoading(false)
       }
     }
@@ -205,8 +210,15 @@ export default function BukuAkademik() {
                   <button className="search-btn"><Search size={20} /></button>
                 </div>
 
+              {errorMsg && (
+                <div className="alert-error" style={{ margin: '1rem 0' }}>
+                  <AlertCircle size={20} />
+                  <span>{errorMsg}</span>
+                </div>
+              )}
+
               {loading ? (
-                <p className="empty-state">Memuat materi...</p>
+                <Spinner text="Memuat materi..." />
               ) : searchQuery ? (
                 filtered.length === 0 ? (
                   <p className="empty-state">Tidak ada materi yang sesuai dengan pencarian Anda.</p>

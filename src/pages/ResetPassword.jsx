@@ -266,12 +266,7 @@ export default function ResetPassword() {
           </label>
 
           {error && (
-            <div style={{
-              display: 'flex', alignItems: 'flex-start', gap: '8px',
-              background: '#fef2f2', border: '1px solid #fca5a5',
-              borderRadius: '8px', padding: '0.75rem 1rem',
-              color: '#dc2626', fontSize: '0.85rem',
-            }}>
+            <div className="alert-error">
               <AlertCircle size={16} style={{ flexShrink: 0, marginTop: '1px' }} />
               <span>{error}</span>
             </div>

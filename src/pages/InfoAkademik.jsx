@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import BackButton from '../components/BackButton'
-import { Search, X, ExternalLink } from 'lucide-react'
+import { Search, X, ExternalLink, AlertCircle } from 'lucide-react'
+import Spinner from '../components/Spinner'
 
 export default function InfoAkademik() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [errorMsg, setErrorMsg] = useState('')
   const [selected, setSelected] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('Semua') // Semua, Buka, Tutup
@@ -19,8 +21,12 @@ export default function InfoAkademik() {
         .select('*')
         .order('tanggal', { ascending: false })
       if (isMounted) {
-        if (error) console.error(error)
-        setItems(data ?? [])
+        if (error) {
+          console.error(error)
+          setErrorMsg(error.message)
+        } else {
+          setItems(data ?? [])
+        }
         setLoading(false)
       }
     }
@@ -120,8 +126,15 @@ export default function InfoAkademik() {
           </div>
 
           {/* CONTENT GRID */}
+          {errorMsg && (
+            <div className="alert-error" style={{ margin: '1rem 0' }}>
+              <AlertCircle size={20} />
+              <span>{errorMsg}</span>
+            </div>
+          )}
+
           {loading ? (
-            <p className="empty-state">Memuat info akademik...</p>
+            <Spinner text="Memuat info akademik..." />
           ) : filteredItems.length === 0 ? (
             <p className="empty-state">Tidak ada informasi yang sesuai dengan filter/pencarian Anda.</p>
           ) : (

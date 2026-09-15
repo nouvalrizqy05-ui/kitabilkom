@@ -2,6 +2,20 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const PopAnim = ({ children, delay = 0, className = "", style = {} }) => (
+  <motion.div
+    className={className}
+    style={style}
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 1.7, ease: [0.25, 1, 0.5, 1], delay }}
+  >
+    {children}
+  </motion.div>
+);
 
 const EVENT_TYPES = {
   'Lomba': { class: 'event-lomba', tagClass: 'tag-lomba', icon: '🏆', label: 'Lomba' },
@@ -206,10 +220,10 @@ export default function Calendar() {
             
             <div className="calendar-grid">
               {filteredEvents.length > 0 ? (
-                filteredEvents.map(evt => {
+                filteredEvents.map((evt, index) => {
                   const typeInfo = EVENT_TYPES[evt.type];
                   return (
-                    <div key={evt.id} className={`event-card ${typeInfo.class}`}>
+                    <PopAnim key={evt.id} className={`event-card ${typeInfo.class}`} delay={index * 0.1}>
                       <div className="event-date">
                         {evt.startDate.getTime() !== evt.endDate.getTime() ? (
                           <>
@@ -230,7 +244,7 @@ export default function Calendar() {
                         <h4 className="event-title">{evt.title}</h4>
                       </div>
                       <div className={`event-status ${evt.statusClass}`}>{evt.status}</div>
-                    </div>
+                    </PopAnim>
                   );
                 })
               ) : (

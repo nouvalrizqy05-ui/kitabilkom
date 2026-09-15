@@ -47,15 +47,15 @@ export default function LupaPassword() {
             }}>
               <CheckCircle size={32} color="white" />
             </div>
-            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--gray-800)', marginBottom: '0.75rem' }}>
+            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.75rem' }}>
               Email Terkirim!
             </h1>
-            <p style={{ color: 'var(--gray-600)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+            <p style={{ fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
               Link reset password sudah dikirim ke{' '}
-              <strong style={{ color: 'var(--primary-700)' }}>{email}</strong>.
+              <strong style={{ color: 'var(--primary-600)' }}>{email}</strong>.
               <br />Cek kotak masuk atau folder <em>spam</em> kamu, lalu klik link-nya.
             </p>
-            <p style={{ fontSize: '0.8rem', color: 'var(--gray-400)', marginBottom: '1.5rem' }}>
+            <p style={{ fontSize: '0.8rem', opacity: 0.7, marginBottom: '1.5rem' }}>
               Link berlaku selama <strong>1 jam</strong>.
             </p>
             <Link to="/login" className="btn-primary" style={{ display: 'inline-flex', gap: '8px', alignItems: 'center' }}>
@@ -82,10 +82,10 @@ export default function LupaPassword() {
           <ArrowLeft size={15} /> Kembali ke Login
         </Link>
 
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--gray-800)', marginBottom: '0.5rem' }}>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>
           Lupa Password?
         </h1>
-        <p style={{ color: 'var(--gray-500)', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '1.75rem' }}>
+        <p style={{ fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '1.75rem' }}>
           Masukkan email kampus kamu. Kami akan kirimkan link untuk membuat password baru.
         </p>
 
@@ -103,12 +103,7 @@ export default function LupaPassword() {
           </label>
 
           {error && (
-            <div style={{
-              display: 'flex', alignItems: 'flex-start', gap: '8px',
-              background: '#fef2f2', border: '1px solid #fca5a5',
-              borderRadius: '8px', padding: '0.75rem 1rem',
-              color: '#dc2626', fontSize: '0.85rem',
-            }}>
+            <div className="alert-error">
               <AlertCircle size={16} style={{ flexShrink: 0, marginTop: '1px' }} />
               <span>{error}</span>
             </div>
