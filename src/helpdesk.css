@@ -449,3 +449,68 @@
   font-size: 0.8rem;
   margin-bottom: 0.5rem;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .helpdesk-main {
+    padding: 1rem !important;
+  }
+  
+  .helpdesk-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .helpdesk-alert {
+    padding: 1rem;
+  }
+
+  .helpdesk-table-container {
+    overflow-x: auto;
+  }
+  
+  .helpdesk-table {
+    min-width: 800px;
+  }
+  
+  .chat-bubble-wrapper {
+    max-width: 90%;
+  }
+
+  .chat-messages {
+    padding: 1rem;
+  }
+
+  .discussion-container, .chat-container {
+    height: 75vh;
+  }
+
+  .discussion-body {
+    padding: 1rem;
+  }
+
+  .discussion-message {
+    gap: 0.5rem;
+  }
+
+  .discussion-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .discussion-input-area {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .helpdesk-modal {
+    width: 90%;
+    margin: 0 1rem;
+  }
+
+  .auth-box {
+    padding: 1rem !important;
+  }
+}
