@@ -194,18 +194,27 @@ export default function Bantuan() {
             </div>
           </div>
 
-          {/* ===== QUICK ACTION CARDS ===== */}
-          <div className="bantuan-quick-actions" style={{ marginTop: '3rem' }}>
-            <Link to="/aspirasi" className="bantuan-action-card bantuan-action-aspirasi" style={{ maxWidth: '100%' }}>
-              <div className="bantuan-action-icon">
-                <MessageSquare size={24} />
-              </div>
-              <div className="bantuan-action-text">
-                <h3>Sampaikan Aspirasi</h3>
-                <p>Punya keluhan fasilitas, kritik, atau saran untuk Ilkom? Suarakan di sini!</p>
-              </div>
-              <ChevronRight className="bantuan-action-arrow" size={20} />
-            </Link>
+          {/* ===== LAYANAN ASPIRASI ===== */}
+          <div className="bantuan-section" style={{ marginTop: '4rem', textAlign: 'center' }}>
+            <div className="bantuan-section-header" style={{ justifyContent: 'center' }}>
+              <MessageSquare size={28} />
+              <h2>Layanan Aspirasi Mahasiswa</h2>
+            </div>
+            <p style={{ color: 'var(--gray-600)', marginBottom: '2rem', fontSize: '1rem' }}>
+              Punya keluhan fasilitas, pertanyaan khusus, kritik, atau saran untuk Ilmu Komputer? Suarakan di sini!
+            </p>
+            <div className="bantuan-quick-actions" style={{ display: 'flex', justifyContent: 'center' }}>
+              <Link to="/aspirasi" className="bantuan-action-card bantuan-action-aspirasi" style={{ maxWidth: '600px', width: '100%', textAlign: 'left' }}>
+                <div className="bantuan-action-icon">
+                  <Send size={24} />
+                </div>
+                <div className="bantuan-action-text">
+                  <h3>Sampaikan Aspirasi</h3>
+                  <p>Klik di sini untuk mengisi formulir aspirasi HIMA secara rahasia dan aman.</p>
+                </div>
+                <ChevronRight className="bantuan-action-arrow" size={20} />
+              </Link>
+            </div>
           </div>
 
         </div>
