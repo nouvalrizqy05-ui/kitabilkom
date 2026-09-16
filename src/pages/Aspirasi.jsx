@@ -50,6 +50,19 @@ export default function Aspirasi() {
   }, [user])
 
   useEffect(() => {
+    const channel = supabase
+      .channel('realtime_aspirasi_user')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'aspirasi' }, (payload) => {
+        setTickets(prev => prev.map(t => t.id === payload.new.id ? payload.new : t))
+        setActiveTicket(prev => prev?.id === payload.new.id ? payload.new : prev)
+      })
+      .subscribe()
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
+  useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }

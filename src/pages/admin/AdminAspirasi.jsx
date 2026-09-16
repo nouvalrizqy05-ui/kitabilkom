@@ -24,6 +24,22 @@ export default function AdminAspirasi() {
   }, [])
 
   useEffect(() => {
+    const channel = supabase
+      .channel('realtime_aspirasi_admin')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'aspirasi' }, (payload) => {
+        setItems(prev => prev.map(t => t.id === payload.new.id ? payload.new : t))
+        setActiveTicket(prev => prev?.id === payload.new.id ? payload.new : prev)
+      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'aspirasi' }, (payload) => {
+        setItems(prev => [payload.new, ...prev])
+      })
+      .subscribe()
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
+  useEffect(() => {
     if (discussionEndRef.current) {
       discussionEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
