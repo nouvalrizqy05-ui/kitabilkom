@@ -292,11 +292,11 @@ export default function Aspirasi() {
               </div>
 
               {messages.map((m, i) => (
-                <div key={i} className={chat-bubble-wrapper }>
+                <div key={i} className={`chat-bubble-wrapper ${m.sender === 'user' ? 'right' : 'left'}`}>
                   <div className="chat-meta">
                     {m.sender === 'agent' ? <span>Agnes (Agent)</span> : <span>{userData.nama || 'Anda'}</span>}
                   </div>
-                  <div className={chat-bubble } style={{ whiteSpace: 'pre-line' }}>
+                  <div className={`chat-bubble ${m.sender === 'user' ? 'right' : 'left'}`} style={{ whiteSpace: 'pre-line' }}>
                     {m.text}
                   </div>
                   {m.options && (
