@@ -97,7 +97,9 @@ export default function BukuAkademik() {
   const handleDownload = async (item) => {
     if (!item.file_url) return
     setDownloadingId(item.id)
-    const { data, error } = await supabase.storage.from('buku-files').createSignedUrl(item.file_url, 60, { download: item.judul })
+    const ext = item.file_url.split('.').pop()
+    const downloadFilename = `${item.judul}.${ext}`
+    const { data, error } = await supabase.storage.from('buku-files').createSignedUrl(item.file_url, 60, { download: downloadFilename })
     setDownloadingId(null)
     if (error) {
       setErrorMsg('Gagal membuat link unduhan: ' + error.message)
