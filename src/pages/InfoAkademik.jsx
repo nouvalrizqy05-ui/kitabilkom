@@ -2,7 +2,15 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import BackButton from '../components/BackButton'
 import { Search, X, ExternalLink, AlertCircle } from 'lucide-react'
+import Modal from '../components/Modal'
 import Spinner from '../components/Spinner'
+
+const getDriveImageUrl = (url) => {
+  if (!url) return '';
+  const match = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  return url;
+};
 
 export default function InfoAkademik() {
   const [items, setItems] = useState([])
@@ -146,7 +154,7 @@ export default function InfoAkademik() {
                   {/* Poster Area */}
                   <div className="info-card-poster">
                     {item.poster_url ? (
-                      <img src={item.poster_url} alt={item.judul} />
+                      <img src={getDriveImageUrl(item.poster_url)} alt={item.judul} />
                     ) : (
                       <div className="info-card-no-poster">Tanpa Poster</div>
                     )}
@@ -194,7 +202,7 @@ export default function InfoAkademik() {
                 {/* Left Column: Poster */}
                 <div className="info-modal-left">
                   {selected.poster_url ? (
-                    <img src={selected.poster_url} alt={selected.judul} className="info-modal-poster" />
+                    <img src={getDriveImageUrl(selected.poster_url)} alt={selected.judul} className="info-modal-poster" />
                   ) : (
                     <div className="info-modal-no-poster">Tidak ada poster</div>
                   )}

@@ -7,7 +7,7 @@ import Modal from '../../components/Modal'
 
 const KATEGORI_OPTIONS = ['PDF', 'Modul', 'E-Book']
 const PRODI_OPTIONS = ['S1 Teknik Informatika', 'S1 Sistem Informasi']
-const emptyForm = { judul: '', mata_kuliah: '', kategori: 'PDF', semester: 1, file: null, prodi: 'S1 Teknik Informatika' }
+const emptyForm = { judul: '', mata_kuliah: '', kategori: 'PDF', semester: 1, file_url: '', prodi: 'S1 Teknik Informatika' }
 
 export default function AdminBuku() {
   const { user } = useAuth()
@@ -48,7 +48,7 @@ export default function AdminBuku() {
       kategori: item.kategori || 'PDF',
       semester: item.semester || 1,
       prodi: item.prodi || 'S1 Teknik Informatika',
-      file: null,
+      file_url: item.file_url || '',
     })
     setError('')
 
@@ -64,9 +64,6 @@ export default function AdminBuku() {
 
   const handleDelete = async (item) => {
     if (!confirm(`Hapus materi "${item.judul}"?`)) return
-    if (item.file_url) {
-      await supabase.storage.from('buku-files').remove([item.file_url])
-    }
     const { error } = await supabase.from('buku_akademik').delete().eq('id', item.id)
     if (error) {
       alert('Gagal menghapus: ' + error.message)
@@ -80,27 +77,13 @@ export default function AdminBuku() {
     setSaving(true)
     setError('')
 
-    let file_url = editing?.file_url ?? null
-
-    if (form.file) {
-      const ext = form.file.name.split('.').pop()
-      const path = `materi/${crypto.randomUUID()}.${ext}`
-      const { error: uploadError } = await supabase.storage.from('buku-files').upload(path, form.file)
-      if (uploadError) {
-        setError('Gagal upload file: ' + uploadError.message)
-        setSaving(false)
-        return
-      }
-      file_url = path
-    }
-
     const payload = {
       judul: form.judul,
       mata_kuliah: form.mata_kuliah,
       kategori: form.kategori,
       semester: Number(form.semester),
       prodi: form.prodi,
-      file_url,
+      file_url: form.file_url,
     }
 
     const query = editing
@@ -139,7 +122,7 @@ export default function AdminBuku() {
               <th>Prodi</th>
               <th>Kategori</th>
               <th>Semester</th>
-              <th>File</th>
+              <th>Tautan</th>
               <th></th>
             </tr>
           </thead>
@@ -151,7 +134,7 @@ export default function AdminBuku() {
                 <td>{item.prodi}</td>
                 <td>{item.kategori}</td>
                 <td>{item.semester}</td>
-                <td>{item.file_url ? '✨ Terunggah' : '❌ Belum ada'}</td>
+                <td>{item.file_url ? '🔗 Tersedia' : '❌ Kosong'}</td>
                 <td className="admin-table-actions">
                   <button onClick={() => openEdit(item)} aria-label="Edit"><Pencil size={16} /></button>
                   <button onClick={() => handleDelete(item)} aria-label="Hapus" className="danger"><Trash2 size={16} /></button>
@@ -242,8 +225,8 @@ export default function AdminBuku() {
             </label>
 
             <label>
-              File {editing?.file_url ? '(kosongkan jika tidak ingin ganti file)' : ''}
-              <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" onChange={(e) => setForm({ ...form, file: e.target.files[0] })} />
+              Link Google Drive (URL)
+              <input type="url" placeholder="https://drive.google.com/..." value={form.file_url || ''} onChange={(e) => setForm({ ...form, file_url: e.target.value })} required />
             </label>
 
             {error && <p className="alert-error">{error}</p>}

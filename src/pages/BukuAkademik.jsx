@@ -94,34 +94,14 @@ export default function BukuAkademik() {
     return result
   }, [items, activeTab, selectedProdi, searchQuery, selectedMatkul])
 
-  const handleDownload = async (item) => {
+  const handleDownload = (item) => {
     if (!item.file_url) return
-    setDownloadingId(item.id)
-    const ext = item.file_url.split('.').pop()
-    const downloadFilename = `${item.judul}.${ext}`
-    const { data, error } = await supabase.storage.from('buku-files').createSignedUrl(item.file_url, 60, { download: downloadFilename })
-    setDownloadingId(null)
-    if (error) {
-      setErrorMsg('Gagal membuat link unduhan: ' + error.message)
-      return
-    }
-    window.open(data.signedUrl, '_blank', 'noopener,noreferrer')
+    window.open(item.file_url, '_blank', 'noopener,noreferrer')
   }
 
-  const handlePreview = async (item) => {
+  const handlePreview = (item) => {
     if (!item.file_url) return
-    setPreviewingId(item.id)
-    const { data, error } = await supabase.storage.from('buku-files').createSignedUrl(item.file_url, 60)
-    setPreviewingId(null)
-    if (error) {
-      setErrorMsg('Gagal membuat link preview: ' + error.message)
-      return
-    }
-    setPreviewData({
-      item,
-      url: data.signedUrl,
-      title: item.judul
-    })
+    window.open(item.file_url, '_blank', 'noopener,noreferrer')
   }
 
   return (

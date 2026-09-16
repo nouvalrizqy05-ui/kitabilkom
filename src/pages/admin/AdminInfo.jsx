@@ -72,18 +72,6 @@ export default function AdminInfo() {
 
   const handleDelete = async (item) => {
     if (!confirm(`Hapus info "${item.judul}"?`)) return
-    
-    // Attempt to delete poster file if exists
-    if (item.poster_url && item.poster_url.includes('foto/')) {
-      try {
-        const path = item.poster_url.split('foto/')[1]
-        if (path) {
-          await supabase.storage.from('foto').remove([path])
-        }
-      } catch (err) {
-        console.error('Failed to delete image', err)
-      }
-    }
 
     const { error } = await supabase.from('info_akademik').delete().eq('id', item.id)
     if (error) {
@@ -100,21 +88,6 @@ export default function AdminInfo() {
 
     let finalPosterUrl = form.poster_url
 
-    if (form.posterFile) {
-      const ext = form.posterFile.name.split('.').pop()
-      const path = `poster_info/${crypto.randomUUID()}.${ext}`
-      const { error: uploadError } = await supabase.storage.from('foto').upload(path, form.posterFile)
-      
-      if (uploadError) {
-        setError('Gagal upload poster: ' + uploadError.message)
-        setSaving(false)
-        return
-      }
-
-      const { data: pubData } = supabase.storage.from('foto').getPublicUrl(path)
-      finalPosterUrl = pubData.publicUrl
-    }
-
     const payload = {
       judul: form.judul,
       kategori: form.kategori,
@@ -122,7 +95,7 @@ export default function AdminInfo() {
       konten: form.konten,
       status: form.status,
       batas_pendaftaran: form.batas_pendaftaran || null,
-      link_pendaftaran: form.link_pendaftaran,
+      link_pendaftaran: form.link_pendaftaran || null,
       poster_url: finalPosterUrl
     }
 
@@ -239,16 +212,10 @@ export default function AdminInfo() {
               <input type="url" placeholder="https://..." value={form.link_pendaftaran} onChange={(e) => setForm({ ...form, link_pendaftaran: e.target.value })} />
             </label>
 
-            <div className="admin-field" style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <label>Upload Poster Acara</label>
-              <input type="file" accept="image/*" onChange={(e) => {
-                const file = e.target.files ? e.target.files[0] : null;
-                setForm({ ...form, posterFile: file });
-              }} />
-              {Boolean(form.poster_url) && !form.posterFile ? (
-                <span style={{ fontSize: '0.8rem', color: 'var(--teal-600)', marginTop: '0.25rem' }}>✓ Sudah ada poster terunggah.</span>
-              ) : null}
-            </div>
+              <div className="admin-field" style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <label>URL Gambar Poster (Opsional)</label>
+                <input type="url" placeholder="https://..." value={form.poster_url || ''} onChange={(e) => setForm({ ...form, poster_url: e.target.value })} />
+              </div>
 
             <div className="admin-field" style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label>Detail Informasi</label>
