@@ -74,12 +74,12 @@ const SOP_DATA = [
     color: 'var(--blue-600)',
     bg: 'var(--blue-50)',
     steps: [
-      'Pilih jalur TA (Skripsi/Proyek/Artikel/Prestasi)',
-      'Ajukan usulan topik dan pembimbing ke prodi',
-      'Dapatkan SK Pembimbing dari FMIPA',
-      'Susun dan laksanakan bimbingan (gunakan template UNNES)',
-      'Lakukan Pendaftaran Ujian / Seminar',
-      'Revisi, validasi, dan upload repositori perpustakaan'
+      'Penuhi syarat SKS dan cantumkan mata kuliah TA di KRS',
+      'Ajukan topik, susun proposal, dan laksanakan Seminar Proposal',
+      'Laksanakan penelitian dan bimbingan rutin (via SITEDI)',
+      'Siapkan berkas administrasi dan daftar ujian sidang (pendadaran)',
+      'Laksanakan sidang ujian skripsi dan selesaikan revisi',
+      'Unggah naskah final ke perpustakaan dan ikuti proses Yudisium'
     ]
   },
   {
