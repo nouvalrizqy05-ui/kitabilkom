@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
-import { Send, CheckCircle, Ticket, User, Home, Settings, Eye, Star, Plus, X } from 'lucide-react'
+import { Send, CheckCircle, Ticket, User, Home, Settings, Eye, Star, Plus, X, Paperclip } from 'lucide-react'
 
 export default function Aspirasi() {
   const { user, profile } = useAuth()
@@ -12,7 +12,8 @@ export default function Aspirasi() {
   // Dashboard state
   const [tickets, setTickets] = useState([])
   const [loadingTickets, setLoadingTickets] = useState(true)
-  
+  const [showAlert, setShowAlert] = useState(true)
+
   // Chat state
   const [messages, setMessages] = useState([])
   const [chatStep, setChatStep] = useState(0)
@@ -31,13 +32,26 @@ export default function Aspirasi() {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  // Rating & Discussion state
+  const [showRatingModal, setShowRatingModal] = useState(false)
+  const [ratingTargetId, setRatingTargetId] = useState(null)
+  const [activeTicket, setActiveTicket] = useState(null)
+  const [discussionInput, setDiscussionInput] = useState('')
+  const discussionEndRef = useRef(null)
+
+  useEffect(() => {
+    if (discussionEndRef.current) {
+      discussionEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [activeTicket?.discussion])
+
   useEffect(() => {
     fetchTickets()
   }, [user])
 
   useEffect(() => {
     if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
   }, [messages])
 
@@ -166,25 +180,56 @@ export default function Aspirasi() {
     setMessages([])
   }
 
+  const handleRate = async (val) => {
+    if (!ratingTargetId) return
+    try {
+      await supabase.from('aspirasi').update({ rating: val }).eq('id', ratingTargetId)
+      setShowRatingModal(false)
+      fetchTickets()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const renderStars = (rating) => {
+    const val = rating || 0
+    return [1,2,3,4,5].map(n => <Star key={n} size={12} fill={n <= val ? "#ffc107" : "transparent"} color={n <= val ? "#ffc107" : "#ccc"}/>)
+  }
+
+  const openDiscussion = (t) => {
+    setActiveTicket(t)
+    setFlow('discussion')
+  }
+
+  const handleSendDiscussion = async (e) => {
+    e.preventDefault()
+    if (!discussionInput.trim() || !activeTicket) return
+
+    const newMsg = {
+      sender: 'user',
+      name: profile?.nama || user?.email?.split('@')[0] || 'Mahasiswa',
+      text: discussionInput,
+      timestamp: new Date().toISOString()
+    }
+
+    const currentDisc = activeTicket.discussion || []
+    const updatedDisc = [...currentDisc, newMsg]
+
+    setActiveTicket({ ...activeTicket, discussion: updatedDisc })
+    setDiscussionInput('')
+
+    try {
+      await supabase.from('aspirasi').update({ discussion: updatedDisc }).eq('id', activeTicket.id)
+      fetchTickets()
+    } catch (err) {
+      console.error('Failed to send discussion', err)
+    }
+  }
+
   return (
     <div className="helpdesk-layout">
-      {/* SIDEBAR */}
-      <div className="helpdesk-sidebar">
-        <div style={{ padding: '0 1.5rem 2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 'bold', fontSize: '1.2rem', color: '#1a73e8' }}>
-          <Ticket size={24} /> Helpdesk
-        </div>
-        <div className="helpdesk-menu-title">MENU</div>
-        <div className="helpdesk-menu-title">TICKET</div>
-        <div className="helpdesk-menu-item active">
-          <Ticket className="helpdesk-menu-icon" size={18} /> MyTickets
-        </div>
-        <div className="helpdesk-menu-item">
-          <User className="helpdesk-menu-icon" size={18} /> Profile Info
-        </div>
-      </div>
-
-      {/* MAIN CONTENT */}
-      <div className="helpdesk-main">
+      {/* MAIN CONTENT FULL WIDTH */}
+      <div className="helpdesk-main" style={{ margin: '0 auto', maxWidth: '1200px' }}>
         {/* Top Navbar Header */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem' }}>
           <Home size={20} color="#666" />
@@ -201,11 +246,13 @@ export default function Aspirasi() {
 
         {flow === 'dashboard' && (
           <>
-            <div className="helpdesk-alert">
-              <h4>Penting!</h4>
-              <p>Tiket akan otomatis ditutup jika tidak ada tanggapan dalam waktu 1 minggu setelah balasan terakhir dari Operator atau Layanan Pelanggan (CS).</p>
-              <button style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', cursor: 'pointer', color: '#00838f' }}><X size={18}/></button>
-            </div>
+            {showAlert && (
+              <div className="helpdesk-alert">
+                <h4>Penting!</h4>
+                <p>Tiket akan otomatis ditutup jika tidak ada tanggapan dalam waktu 1 minggu setelah balasan terakhir dari Operator atau Layanan Pelanggan (CS).</p>
+                <button onClick={() => setShowAlert(false)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', cursor: 'pointer', color: '#00838f' }}><X size={18}/></button>
+              </div>
+            )}
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
               <button className="btn-purple" onClick={startChat}>
@@ -244,10 +291,12 @@ export default function Aspirasi() {
                         <td>CS-17<br/><span style={{fontSize:'0.7rem', color:'#888'}}>40 menit setelahnya</span></td>
                         <td>&lt; 1 menit</td>
                         <td><span className="ticket-status">{t.status}</span></td>
-                        <td><Star size={12} fill="#ffc107" color="#ffc107"/><Star size={12} fill="#ffc107" color="#ffc107"/><Star size={12} fill="#ffc107" color="#ffc107"/><Star size={12} fill="#ffc107" color="#ffc107"/><Star size={12} fill="#ffc107" color="#ffc107"/></td>
+                        <td style={{ display: 'flex', gap: '2px', alignItems: 'center', height: '100%', paddingTop: '1.2rem' }}>
+                          {renderStars(t.rating)}
+                        </td>
                         <td>
-                          <button style={{ padding: '0.3rem', marginRight: '0.3rem', border: '1px solid #ddd', background: '#f5f5f5', borderRadius: '4px', cursor: 'pointer' }}><Eye size={14}/></button>
-                          <button style={{ padding: '0.3rem', border: '1px solid #ddd', background: '#f5f5f5', borderRadius: '4px', cursor: 'pointer' }}><Star size={14}/></button>
+                          <button onClick={() => openDiscussion(t)} style={{ padding: '0.3rem', marginRight: '0.3rem', border: '1px solid #ddd', background: '#f5f5f5', borderRadius: '4px', cursor: 'pointer' }} title="Diskusi"><Eye size={14}/></button>
+                          <button onClick={() => { setRatingTargetId(t.id); setShowRatingModal(true) }} style={{ padding: '0.3rem', border: '1px solid #ddd', background: '#f5f5f5', borderRadius: '4px', cursor: 'pointer' }} title="Beri Rating"><Star size={14}/></button>
                         </td>
                       </tr>
                     ))
@@ -272,6 +321,27 @@ export default function Aspirasi() {
                   <div className="helpdesk-modal-footer">
                     <button onClick={handleTokenSubmit} style={{ background: '#7e57c2', color: 'white', border: 'none', padding: '0.5rem 1.5rem', borderRadius: '4px', cursor: 'pointer' }}>OK</button>
                     <button onClick={() => setShowTokenModal(false)} style={{ background: '#757575', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer' }}>Close</button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Rating Modal */}
+            {showRatingModal && (
+              <div className="helpdesk-modal-overlay">
+                <div className="helpdesk-modal" style={{ width: '300px', textAlign: 'center' }}>
+                  <div className="helpdesk-modal-header" style={{ background: '#ff9800' }}>
+                    Beri Rating <button onClick={() => setShowRatingModal(false)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}><X size={18}/></button>
+                  </div>
+                  <div className="helpdesk-modal-body">
+                    <p style={{ marginBottom: '1rem', color: '#666' }}>Berapa bintang untuk layanan ini?</p>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                      {[1,2,3,4,5].map(n => (
+                        <button key={n} onClick={() => handleRate(n)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                          <Star size={24} fill="#ffc107" color="#ffc107" />
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -327,6 +397,74 @@ export default function Aspirasi() {
                 <button type="submit" style={{ background: 'none', border: 'none', color: '#1a73e8', cursor: 'pointer' }} disabled={chatStep === 2 || chatStep === 4}><Send size={24} /></button>
               </form>
             )}
+          </div>
+        )}
+
+        {flow === 'discussion' && activeTicket && (
+          <div className="discussion-container">
+            <div className="discussion-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <button onClick={() => setFlow('dashboard')} className="btn-icon"><X size={20}/></button>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#333' }}>Discussion (#{activeTicket.id.toString().substring(0,5).toUpperCase()})</h3>
+                  <div style={{ fontSize: '0.8rem', color: '#888' }}>{activeTicket.judul}</div>
+                </div>
+              </div>
+            </div>
+            <div className="discussion-body">
+              
+              {/* Initial Ticket Description as first message */}
+              <div className="discussion-message user">
+                <div className="discussion-avatar"><User size={20} color="#999"/></div>
+                <div className="discussion-content">
+                  <div className="discussion-sender">
+                    <span>{activeTicket.nama || 'Mahasiswa'}</span>
+                    <span className="discussion-time">{new Date(activeTicket.created_at).toLocaleDateString('id-ID')}</span>
+                  </div>
+                  <div className="discussion-text user">
+                    <strong>{activeTicket.judul}</strong><br/>
+                    {activeTicket.deskripsi}
+                  </div>
+                </div>
+              </div>
+
+              {/* Loop thru discussion JSON */}
+              {(activeTicket.discussion || []).map((msg, i) => (
+                <div key={i} className={`discussion-message ${msg.sender === 'admin' ? 'agent' : 'user'}`}>
+                  <div className="discussion-avatar">
+                    {msg.sender === 'admin' ? <span style={{fontSize:'1.2rem'}}>🎧</span> : <User size={20} color="#999"/>}
+                  </div>
+                  <div className="discussion-content">
+                    <div className="discussion-sender">
+                      <span>{msg.name || (msg.sender === 'admin' ? 'CS-17 Admisi' : 'Mahasiswa')}</span>
+                      <span className="discussion-time">{new Date(msg.timestamp).toLocaleString('id-ID')}</span>
+                    </div>
+                    <div className={`discussion-text ${msg.sender === 'admin' ? '' : 'user'}`} style={{ whiteSpace: 'pre-line' }}>
+                      {msg.text}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div ref={discussionEndRef} />
+            </div>
+            
+            <form className="discussion-input-area" onSubmit={handleSendDiscussion}>
+              <button type="button" className="btn-icon"><Paperclip size={20}/></button>
+              <textarea 
+                className="discussion-textarea" 
+                placeholder="Ketik balasan Anda..."
+                value={discussionInput}
+                onChange={(e) => setDiscussionInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendDiscussion(e);
+                  }
+                }}
+                rows="1"
+              ></textarea>
+              <button type="submit" className="btn-icon" style={{ color: '#1a73e8' }}><Send size={20}/></button>
+            </form>
           </div>
         )}
 
