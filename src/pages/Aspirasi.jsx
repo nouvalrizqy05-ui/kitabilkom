@@ -406,8 +406,8 @@ export default function Aspirasi() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <button onClick={() => setFlow('dashboard')} className="btn-icon"><X size={20}/></button>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#333' }}>Discussion (#{activeTicket.id.toString().substring(0,5).toUpperCase()})</h3>
-                  <div style={{ fontSize: '0.8rem', color: '#888' }}>{activeTicket.judul}</div>
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Discussion (#{activeTicket.id.toString().substring(0,5).toUpperCase()})</h3>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{activeTicket.judul}</div>
                 </div>
               </div>
             </div>
@@ -463,16 +463,16 @@ export default function Aspirasi() {
                 }}
                 rows="1"
               ></textarea>
-              <button type="submit" className="btn-icon" style={{ color: '#1a73e8' }}><Send size={20}/></button>
+              <button type="submit" className="btn-icon" style={{ color: 'var(--gold-600)' }}><Send size={20}/></button>
             </form>
           </div>
         )}
 
         {flow === 'form' && (
-          <div className="auth-box" style={{ width: '100%', maxWidth: '700px', margin: '0 auto', background: 'white', padding: '2rem', borderRadius: '8px', border: '1px solid #eaeaea' }}>
+          <div className="auth-box" style={{ width: '100%', maxWidth: '700px', margin: '0 auto', background: 'var(--bg-surface)', padding: '2rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <h2 style={{ color: '#333' }}>Formulir Detail Tiket #{selectedToken}</h2>
-              <p style={{ color: '#666', fontSize: '0.9rem' }}>Silakan lengkapi detail permasalahan Anda.</p>
+              <h2 style={{ color: 'var(--text-primary)' }}>Formulir Detail Tiket #{selectedToken}</h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Silakan lengkapi detail permasalahan Anda.</p>
             </div>
 
             {submitted ? (

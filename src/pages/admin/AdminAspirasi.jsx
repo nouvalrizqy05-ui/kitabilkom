@@ -112,7 +112,7 @@ export default function AdminAspirasi() {
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-                <button onClick={() => setActiveTicket(item)} className="btn-primary-small" style={{ background: 'var(--blue-600)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                <button onClick={() => setActiveTicket(item)} className="btn-primary-small" style={{ background: 'var(--gold-600)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <Eye size={14} /> Diskusi ({item.discussion?.length || 0})
                 </button>
                 {item.status === 'pending' ? (
@@ -141,8 +141,8 @@ export default function AdminAspirasi() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <button onClick={() => setActiveTicket(null)} className="btn-icon"><X size={20}/></button>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#333' }}>Discussion (#{activeTicket.id.toString().substring(0,5).toUpperCase()})</h3>
-                  <div style={{ fontSize: '0.8rem', color: '#888' }}>{activeTicket.judul}</div>
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Discussion (#{activeTicket.id.toString().substring(0,5).toUpperCase()})</h3>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{activeTicket.judul}</div>
                 </div>
               </div>
             </div>
@@ -196,7 +196,7 @@ export default function AdminAspirasi() {
                 }}
                 rows="1"
               ></textarea>
-              <button type="submit" className="btn-icon" style={{ color: '#1a73e8' }}><Send size={20}/></button>
+              <button type="submit" className="btn-icon" style={{ color: 'var(--gold-600)' }}><Send size={20}/></button>
             </form>
           </div>
         </div>
