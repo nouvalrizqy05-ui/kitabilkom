@@ -451,7 +451,7 @@ export default function Aspirasi() {
                   </div>
                   <div className="discussion-content">
                     <div className="discussion-sender">
-                      <span>{msg.name || (msg.sender === 'admin' ? 'CS-17 Admisi' : 'Mahasiswa')}</span>
+                      <span>{msg.name || (msg.sender === 'admin' ? 'CS ADMIN' : 'Mahasiswa')}</span>
                       <span className="discussion-time">{new Date(msg.timestamp).toLocaleString('id-ID')}</span>
                     </div>
                     <div className={`discussion-text ${msg.sender === 'admin' ? '' : 'user'}`} style={{ whiteSpace: 'pre-line' }}>
