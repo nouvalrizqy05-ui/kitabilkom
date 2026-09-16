@@ -89,7 +89,7 @@ const SOP_DATA = [
     bg: 'var(--blue-50)',
     steps: [
       'Login ke apps.unnes.ac.id (MYUNNES-STUDENTS)',
-      'Cek tagihan UKT di menu Registrasi > Pembayaran',
+      'Cek tagihan UKT di menu MyUNNES Students > Tagihan',
       'Bayar UKT via Virtual Account BNI/BTN/Mandiri/BRI',
       'Status akademik di SIKADU akan otomatis aktif',
       'Jika baru selesai cuti, pastikan lapor ke Fakultas',
