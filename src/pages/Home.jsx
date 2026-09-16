@@ -257,7 +257,7 @@ export default function Home() {
                 </Link>
               </PopAnim>
               <PopAnim delay={0.2}>
-                <a href="https://forms.gle/cvvpeFXCEd4QLBQn7" target="_blank" rel="noopener noreferrer" className="info-banner banner-brown" style={{ textDecoration: 'none', height: '100%' }}>
+                <a href="https://forms.gle/CHBeYri38fW6iJhw8" target="_blank" rel="noopener noreferrer" className="info-banner banner-brown" style={{ textDecoration: 'none', height: '100%' }}>
                   <div className="banner-content">
                     <h3 className="banner-title">Pendataan Minat, Bakat, dan Prestasi<br/>Mahasiswa Ilmu Komputer</h3>
                     <p className="banner-desc">Klik di sini untuk mengisi form pendataan minat, bakat, dan prestasi resmi dan dapatkan apresiasi!</p>
