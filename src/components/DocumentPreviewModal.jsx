@@ -1,6 +1,6 @@
-import { X, Download, FileText } from 'lucide-react'
+import { X, FileText } from 'lucide-react'
 
-export default function DocumentPreviewModal({ data, onClose, onDownload }) {
+export default function DocumentPreviewModal({ data, onClose }) {
   if (!data) return null
 
   return (
@@ -13,10 +13,6 @@ export default function DocumentPreviewModal({ data, onClose, onDownload }) {
             <h3>{data.title}</h3>
           </div>
           <div className="preview-modal-actions">
-            <button className="preview-btn" onClick={() => onDownload(data.item)} title="Unduh File">
-              <Download size={18} />
-              <span className="preview-btn-text">Unduh</span>
-            </button>
             <button className="preview-btn close" onClick={onClose} title="Tutup">
               <X size={24} />
             </button>

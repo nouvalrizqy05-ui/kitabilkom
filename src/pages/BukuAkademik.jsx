@@ -322,7 +322,6 @@ export default function BukuAkademik() {
       <DocumentPreviewModal
         data={previewData}
         onClose={() => setPreviewData(null)}
-        onDownload={handleDownload}
       />
     </>
   )
