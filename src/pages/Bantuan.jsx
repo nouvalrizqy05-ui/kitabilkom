@@ -3,11 +3,6 @@ import { Link } from 'react-router-dom'
 import { ChevronDown, ExternalLink, MessageCircle, MessageSquare, ChevronRight, FileText, HelpCircle, Send, BookOpen, ClipboardList, GraduationCap, Briefcase } from 'lucide-react'
 import BackButton from '../components/BackButton'
 
-/* ===== KONFIGURASI LINK ===== */
-/* TODO: Ganti nomor WA di bawah dengan nomor pengurus HIMA yang aktif */
-const WHATSAPP_NUMBER = '6281234567890' // Ganti dengan nomor HP aktif
-const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=Halo%20HIMA%20Ilkom%20UNNES%2C%20saya%20ingin%20bertanya...`
-/* ============================== */
 
 const FAQ_DATA = [
   {
@@ -141,31 +136,6 @@ export default function Bantuan() {
       <section className="page-content">
         <div className="container">
 
-          {/* ===== QUICK ACTION CARDS ===== */}
-          <div className="bantuan-quick-actions">
-            <Link to="/aspirasi" className="bantuan-action-card bantuan-action-aspirasi">
-              <div className="bantuan-action-icon">
-                <MessageSquare size={24} />
-              </div>
-              <div className="bantuan-action-text">
-                <h3>Sampaikan Aspirasi</h3>
-                <p>Punya keluhan fasilitas, kritik, atau saran untuk Ilkom? Suarakan di sini!</p>
-              </div>
-              <ChevronRight className="bantuan-action-arrow" size={20} />
-            </Link>
-
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="bantuan-action-card bantuan-action-wa">
-              <div className="bantuan-action-icon">
-                <MessageCircle size={32} />
-              </div>
-              <div className="bantuan-action-text">
-                <h3>Hubungi Kami via WhatsApp</h3>
-                <p>Butuh respons cepat? Chat langsung dengan pengurus HIMA Ilmu Komputer UNNES.</p>
-              </div>
-              <ExternalLink size={20} className="bantuan-action-arrow" />
-            </a>
-          </div>
-
           {/* ===== FAQ ===== */}
           <div className="bantuan-section">
             <div className="bantuan-section-header">
@@ -222,6 +192,20 @@ export default function Bantuan() {
                 )
               })}
             </div>
+          </div>
+
+          {/* ===== QUICK ACTION CARDS ===== */}
+          <div className="bantuan-quick-actions" style={{ marginTop: '3rem' }}>
+            <Link to="/aspirasi" className="bantuan-action-card bantuan-action-aspirasi" style={{ maxWidth: '100%' }}>
+              <div className="bantuan-action-icon">
+                <MessageSquare size={24} />
+              </div>
+              <div className="bantuan-action-text">
+                <h3>Sampaikan Aspirasi</h3>
+                <p>Punya keluhan fasilitas, kritik, atau saran untuk Ilkom? Suarakan di sini!</p>
+              </div>
+              <ChevronRight className="bantuan-action-arrow" size={20} />
+            </Link>
           </div>
 
         </div>
