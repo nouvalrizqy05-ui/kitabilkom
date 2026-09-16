@@ -7,8 +7,17 @@ import Spinner from '../components/Spinner'
 
 const getDriveImageUrl = (url) => {
   if (!url) return '';
-  const match = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
-  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  
+  let id = null;
+  const matchD = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  const matchId = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  
+  if (matchD) id = matchD[1];
+  else if (matchId) id = matchId[1];
+
+  if (id) {
+    return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+  }
   return url;
 };
 
