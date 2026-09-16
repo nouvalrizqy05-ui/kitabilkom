@@ -191,6 +191,22 @@ export default function Aspirasi() {
     }
   }
 
+  const calculateResponseTime = (ticket) => {
+    if (!ticket.discussion || !Array.isArray(ticket.discussion)) return 'Belum ditanggapi'
+    const adminReply = ticket.discussion.find(msg => msg.sender === 'admin')
+    if (!adminReply) return 'Belum ditanggapi'
+    
+    const start = new Date(ticket.created_at)
+    const end = new Date(adminReply.timestamp)
+    const diffMs = end - start
+    const diffMins = Math.floor(diffMs / 60000)
+    
+    if (diffMins < 1) return '< 1 menit setelahnya'
+    if (diffMins < 60) return diffMins + ' menit setelahnya'
+    const diffHours = Math.floor(diffMins / 60)
+    return diffHours + ' jam setelahnya'
+  }
+
   const renderStars = (rating) => {
     const val = rating || 0
     return [1,2,3,4,5].map(n => <Star key={n} size={12} fill={n <= val ? "#ffc107" : "transparent"} color={n <= val ? "#ffc107" : "#ccc"}/>)
@@ -241,7 +257,6 @@ export default function Aspirasi() {
 
         <div className="helpdesk-header">
           <h1>Tickets</h1>
-          <div className="helpdesk-breadcrumb">Dashboard &gt; Tickets</div>
         </div>
 
         {flow === 'dashboard' && (
@@ -288,7 +303,7 @@ export default function Aspirasi() {
                         <td className="ticket-id">#{t.id.toString().substring(0,5).toUpperCase()}</td>
                         <td>{t.judul}</td>
                         <td style={{ maxWidth: '300px' }}>{t.deskripsi}</td>
-                        <td>CS-17<br/><span style={{fontSize:'0.7rem', color:'#888'}}>40 menit setelahnya</span></td>
+                        <td>CS<br/><span style={{fontSize:'0.7rem', color:'var(--text-secondary)'}}>{calculateResponseTime(t)}</span></td>
                         <td>&lt; 1 menit</td>
                         <td><span className="ticket-status">{t.status}</span></td>
                         <td style={{ display: 'flex', gap: '2px', alignItems: 'center', height: '100%', paddingTop: '1.2rem' }}>
