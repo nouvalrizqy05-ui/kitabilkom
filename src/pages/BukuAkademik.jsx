@@ -94,14 +94,39 @@ export default function BukuAkademik() {
     return result
   }, [items, activeTab, selectedProdi, searchQuery, selectedMatkul])
 
+  const getDriveDownloadUrl = (url) => {
+    if (!url) return '';
+    const match = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+    if (match) return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+    return url;
+  }
+
+  const getDrivePreviewUrl = (url) => {
+    if (!url) return '';
+    const match = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+    if (match) return `https://drive.google.com/file/d/${match[1]}/preview`;
+    return url;
+  }
+
   const handleDownload = (item) => {
     if (!item.file_url) return
-    window.open(item.file_url, '_blank', 'noopener,noreferrer')
+    const url = getDriveDownloadUrl(item.file_url)
+    if (url.includes('export=download')) {
+      window.location.href = url
+    } else {
+      window.open(url, '_blank', 'noopener,noreferrer')
+    }
   }
 
   const handlePreview = (item) => {
     if (!item.file_url) return
-    window.open(item.file_url, '_blank', 'noopener,noreferrer')
+    
+    // Instead of opening a new tab, use the existing DocumentPreviewModal
+    setPreviewData({
+      item,
+      url: getDrivePreviewUrl(item.file_url),
+      title: item.judul
+    })
   }
 
   return (
