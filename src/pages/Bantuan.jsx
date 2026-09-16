@@ -7,35 +7,35 @@ import BackButton from '../components/BackButton'
 const FAQ_DATA = [
   {
     q: 'Bagaimana cara mengisi KRS?',
-    a: 'Pengisian KRS dilakukan secara online melalui SIKADU (akademik.unnes.ac.id). Pastikan Anda sudah membayar UKT semester berjalan, lalu login ke SIKADU, lakukan pemesanan mata kuliah sesuai jadwal pendaftaran, dan simpan KRS Anda. Jika ada kendala, hubungi dosen wali/PA Anda.'
+    a: 'Pengisian KRS dilakukan secara online melalui portal UNNES Application Gateway (apps.unnes.ac.id). Login menggunakan email UNNES, masuk ke menu SIKADU, lalu pada bagian Aktivitas Kuliah pilih mata kuliah yang ditawarkan sesuai batas SKS. Terakhir, simpan dan tunggu validasi dari Dosen Wali.'
   },
   {
     q: 'Berapa batas maksimal SKS yang bisa diambil per semester?',
-    a: 'Sesuai Panduan Akademik UNNES, batas SKS ditentukan oleh IPS Anda sebelumnya:\n• 3.00 < IPS ≤ 4.00 → Maks. 24 SKS\n• 2.50 < IPS ≤ 3.00 → Maks. 22 SKS\n• 2.00 < IPS ≤ 2.50 → Maks. 20 SKS\n• 1.50 < IPS ≤ 2.00 → Maks. 16 SKS\n• IPS ≤ 1.50 → Maks. 12 SKS'
+    a: 'Berdasarkan Panduan Akademik UNNES terbaru, batas SKS ditentukan oleh IPS Anda sebelumnya:\n• IPS > 3.00 - 4.00 → Maks. 24 SKS\n• IPS 2.51 - 3.00 → Maks. 20 - 22 SKS\n• IPS 2.00 - 2.50 → Maks. 18 SKS\n• IPS 1.50 - 1.99 → Maks. 16 SKS\n• IPS < 1.50 → Maks. 12 SKS'
   },
   {
     q: 'Apa saja pilihan Tugas Akhir di UNNES?',
-    a: 'Berdasarkan kebijakan terbaru UNNES, mahasiswa Ilmu Komputer dapat memilih berbagai jenis tugas akhir selain Skripsi reguler, yaitu: Proyek, Prototipe, Publikasi Ilmiah (Artikel Jurnal), Penyetaraan Prestasi Kejuaraan, atau Book Chapter.'
+    a: 'Sesuai Permendikbudristek No. 53/2023, mahasiswa Ilkom UNNES memiliki 5 alternatif non-skripsi reguler:\n1. Prototipe: Pembuatan produk/aplikasi (Web/Mobile/IoT/AI) fungsional.\n2. Proyek: Implementasi teknologi/solusi IT di industri atau masyarakat.\n3. Publikasi Ilmiah: Bisa bebas sidang (nilai A otomatis) jika terbit di jurnal Sinta 1/2 atau Scopus.\n4. Prestasi Kejuaraan: Konversi juara kompetisi IT (misal PIMNAS, Gemastik).\n5. Book Chapter: Menulis bab buku ilmiah ber-ISBN.\n*Syarat dan format konversi wajib dikonsultasikan dengan Kaprodi.'
   },
   {
     q: 'Bagaimana prosedur permohonan surat izin Kerja Praktik (PKL)?',
-    a: 'Kerja Praktik (PKL) wajib didaftarkan di KRS. Setelah itu, surat permohonan izin observasi atau pelaksanaan magang dapat diajukan secara online melalui layanan administrasi akademik FMIPA UNNES (SIVELA) untuk diproses.'
+    a: 'Pastikan syarat SKS terpenuhi dan PKL masuk di KRS. Setelah mendapat persetujuan instansi dari Kaprodi, ajukan pembuatan surat pengantar secara digital via layanan administrasi Fakultas (SIVELA). Ambil surat resmi dari TU dan kirimkan ke instansi mitra.'
   },
   {
     q: 'Di mana saya bisa mendapatkan template penulisan Skripsi?',
-    a: 'Template dokumen Skripsi (tersedia dalam format DOCX maupun LaTeX) dan buku Panduan Tugas Akhir Sarjana UNNES dapat diunduh melalui portal resmi prodi atau halaman layanan administrasi FMIPA.'
+    a: 'Buku panduan resmi dapat diunduh di situs FMIPA UNNES. Untuk template penulisan, Anda bisa menggunakan format LaTeX siap pakai dari GitHub komunitas mahasiswa (misal: ajienator/template-skripsi-latex-ilkom), melihat web panduan komunitas, atau meminta format Word (.docx) terbaru dari Dosen Pembimbing maupun HIMA Ilkom.'
   },
   {
     q: 'Bagaimana prosedur pengajuan cuti akademik?',
-    a: 'Syarat utama: minimal telah menempuh 2 semester. Pengajuan cuti dilakukan via online di laman apps.unnes.ac.id (menu MYUNNES-STUDENTS). Anda tetap wajib bayar biaya cuti dan menyelesaikan administrasi sesuai Kalender Akademik UNNES.'
+    a: 'Pengajuan cuti dilakukan secara daring melalui portal MyUNNES atau Apps UNNES. Setelah berkonsultasi dengan Dosen Wali, isi formulir pengajuan di sistem. Setelah divalidasi oleh Kaprodi, lakukan pembayaran administrasi via Virtual Account untuk dapat mencetak Kartu Cuti. Pastikan pengajuan tidak melewati batas waktu di kalender akademik.'
   },
   {
     q: 'Bagaimana jika saya terlambat mengisi KRS?',
-    a: 'Jika melewati batas waktu di SIKADU, Anda harus melapor ke sub-bagian Akademik FMIPA dan dosen PA. Biasanya memerlukan surat permohonan keterlambatan atau dikenakan cuti paksa jika tidak segera diurus sebelum masa perkuliahan dimulai.'
+    a: 'Status akademik Anda terancam tidak aktif (nama tidak masuk absen & nilai tidak bisa diinput). Langkah penanganannya: 1) Segera hubungi Dosen Wali untuk konsultasi; 2) Temui Kaprodi Ilmu Komputer untuk meminta izin/kebijakan susulan; 3) Jika disetujui, urus pembukaan akses sistem ke bagian Akademik Fakultas.'
   },
   {
     q: 'Di mana saya bisa mengakses nilai dan transkrip?',
-    a: 'Semua rekam jejak nilai dapat dilihat di SIKADU pada menu "KHS" (Kartu Hasil Studi) dan "Transkrip". Untuk pencetakan transkrip berlegalisir, Anda bisa memintanya di loket layanan Akademik FMIPA UNNES.'
+    a: 'Anda dapat mengaksesnya melalui portal Akademik UNNES (akademik.unnes.ac.id). Login dengan email student, masuk ke SIKADU. Untuk nilai per semester (KHS), cek di menu Aktivitas Kuliah > Riwayat Akademik. Untuk nilai keseluruhan (Transkrip), pilih menu Pencetakan > Riwayat Akademik.'
   }
 ]
 
@@ -46,33 +46,33 @@ const SOP_DATA = [
     color: 'var(--blue-600)',
     bg: 'var(--blue-50)',
     steps: [
-      'Lakukan pembayaran UKT di bank mitra UNNES',
-      'Login ke SIKADU (akademik.unnes.ac.id)',
-      'Lakukan pemesanan mata kuliah sesuai jadwal',
-      'Pilih rombel mata kuliah yang sesuai',
-      'Simpan dan cetak KRS',
-      'Konsultasi dan minta persetujuan Dosen PA'
+      'Login ke apps.unnes.ac.id menggunakan email UNNES',
+      'Buka tab Akademik lalu masuk ke aplikasi SIKADU',
+      'Klik ikon kalender untuk memilih semester aktif',
+      'Klik menu Aktivitas Kuliah atau Rencana Studi',
+      'Pilih mata kuliah sesuai kurikulum dan batas SKS',
+      'Simpan rencana studi dan tunggu validasi Dosen Wali'
     ]
   },
   {
     icon: Briefcase,
     title: 'Alur Kerja Praktik (PKL)',
-    color: 'var(--purple-600)',
-    bg: 'var(--purple-50)',
+    color: 'var(--blue-600)',
+    bg: 'var(--blue-50)',
     steps: [
-      'Cantumkan mata kuliah PKL di KRS',
-      'Tentukan instansi/perusahaan tujuan PKL',
-      'Ajukan surat izin pengantar via SIVELA FMIPA',
-      'Laksanakan PKL dan buat logbook kegiatan',
-      'Susun laporan di bawah bimbingan dosen',
-      'Daftar ujian responsi PKL di prodi'
+      'Penuhi SKS dan masukkan mata kuliah PKL ke KRS',
+      'Konsultasi persetujuan instansi dengan Kaprodi',
+      'Ajukan formulir surat izin via administrasi Fakultas',
+      'Ambil surat resmi TU dan serahkan ke instansi mitra',
+      'Serahkan surat balasan penerimaan ke Jurusan',
+      'Laksanakan PKL, catat logbook, dan susun laporan'
     ]
   },
   {
     icon: GraduationCap,
     title: 'Alur Tugas Akhir (Skripsi)',
-    color: 'var(--green-600)',
-    bg: 'var(--green-50)',
+    color: 'var(--blue-600)',
+    bg: 'var(--blue-50)',
     steps: [
       'Pilih jalur TA (Skripsi/Proyek/Artikel/Prestasi)',
       'Ajukan usulan topik dan pembimbing ke prodi',
@@ -85,8 +85,8 @@ const SOP_DATA = [
   {
     icon: BookOpen,
     title: 'Prosedur Herregistrasi',
-    color: 'var(--orange-600)',
-    bg: 'var(--orange-50)',
+    color: 'var(--blue-600)',
+    bg: 'var(--blue-50)',
     steps: [
       'Login ke apps.unnes.ac.id (MYUNNES-STUDENTS)',
       'Cek tagihan UKT di menu Registrasi > Pembayaran',
@@ -94,6 +94,20 @@ const SOP_DATA = [
       'Status akademik di SIKADU akan otomatis aktif',
       'Jika baru selesai cuti, pastikan lapor ke Fakultas',
       'Lanjutkan pengisian KRS secara mandiri di SIKADU'
+    ]
+  },
+  {
+    icon: FileText,
+    title: 'Pengajuan Cuti Akademik',
+    color: 'var(--blue-600)',
+    bg: 'var(--blue-50)',
+    steps: [
+      'Konsultasi rencana cuti dengan Dosen Wali',
+      'Login ke portal MyUNNES atau Apps UNNES',
+      'Isi formulir pengajuan cuti beserta alasannya',
+      'Tunggu validasi persetujuan dari Kaprodi',
+      'Bayar administrasi cuti via Virtual Account',
+      'Cetak Kartu Cuti setelah status tersinkronisasi'
     ]
   }
 ]
