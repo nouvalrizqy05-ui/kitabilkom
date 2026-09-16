@@ -7,7 +7,7 @@ import Modal from '../../components/Modal'
 
 const KATEGORI_OPTIONS = ['PDF', 'Modul', 'E-Book']
 const PRODI_OPTIONS = ['S1 Teknik Informatika', 'S1 Sistem Informasi']
-const emptyForm = { judul: '', mata_kuliah: '', dosen: '', kategori: 'PDF', semester: 1, file: null, prodi: 'S1 Teknik Informatika' }
+const emptyForm = { judul: '', mata_kuliah: '', kategori: 'PDF', semester: 1, file: null, prodi: 'S1 Teknik Informatika' }
 
 export default function AdminBuku() {
   const { user } = useAuth()
@@ -45,7 +45,6 @@ export default function AdminBuku() {
     setForm({
       judul: item.judul || '',
       mata_kuliah: item.mata_kuliah || '',
-      dosen: item.dosen || '',
       kategori: item.kategori || 'PDF',
       semester: item.semester || 1,
       prodi: item.prodi || 'S1 Teknik Informatika',
@@ -98,7 +97,6 @@ export default function AdminBuku() {
     const payload = {
       judul: form.judul,
       mata_kuliah: form.mata_kuliah,
-      dosen: form.dosen,
       kategori: form.kategori,
       semester: Number(form.semester),
       prodi: form.prodi,
@@ -138,7 +136,6 @@ export default function AdminBuku() {
             <tr>
               <th>Judul</th>
               <th>Mata Kuliah</th>
-              <th>Dosen</th>
               <th>Prodi</th>
               <th>Kategori</th>
               <th>Semester</th>
@@ -151,7 +148,6 @@ export default function AdminBuku() {
               <tr key={item.id}>
                 <td>{item.judul}</td>
                 <td>{item.mata_kuliah}</td>
-                <td>{item.dosen}</td>
                 <td>{item.prodi}</td>
                 <td>{item.kategori}</td>
                 <td>{item.semester}</td>
@@ -235,11 +231,6 @@ export default function AdminBuku() {
                 />
               </label>
             )}
-
-            <label>
-              Nama Dosen
-              <input required value={form.dosen} onChange={(e) => setForm({ ...form, dosen: e.target.value })} />
-            </label>
 
             <label>
               Kategori

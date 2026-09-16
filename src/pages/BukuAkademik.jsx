@@ -34,7 +34,7 @@ export default function BukuAkademik() {
     async function loadBuku() {
       const { data, error } = await supabase
         .from('buku_akademik')
-        .select('id, judul, mata_kuliah, dosen, kategori, semester, file_url, prodi')
+        .select('id, judul, mata_kuliah, kategori, semester, file_url, prodi')
         .order('created_at', { ascending: false })
       if (isMounted) {
         if (error) {
@@ -86,7 +86,6 @@ export default function BukuAkademik() {
       result = result.filter(item =>
         (item.judul && item.judul.toLowerCase().includes(q)) ||
         (item.mata_kuliah && item.mata_kuliah.toLowerCase().includes(q)) ||
-        (item.dosen && item.dosen.toLowerCase().includes(q)) ||
         (item.kategori && item.kategori.toLowerCase().includes(q))
       )
     } else if (selectedMatkul) {
@@ -203,7 +202,7 @@ export default function BukuAkademik() {
                 </div>
                 <input
                   type="text"
-                  placeholder="Cari Mata Kuliah, Judul, Info, Dosen..."
+                  placeholder="Cari Mata Kuliah, Judul, Info..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -233,7 +232,6 @@ export default function BukuAkademik() {
                           </div>
                           <h3 className="card-title">{item.judul}</h3>
                           <p className="card-meta">Mata Kuliah: {item.mata_kuliah || '-'}</p>
-                          <p className="card-meta">Dosen: {item.dosen || '-'}</p>
                         </div>
                         <div className="buku-card-actions">
                           <button
@@ -293,7 +291,6 @@ export default function BukuAkademik() {
                             </div>
                             <h3 className="card-title">{item.judul}</h3>
                             <p className="card-meta">Mata Kuliah: {item.mata_kuliah || '-'}</p>
-                            <p className="card-meta">Dosen: {item.dosen || '-'}</p>
                           </div>
                           <div className="buku-card-actions">
                             <button
