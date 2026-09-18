@@ -205,6 +205,14 @@ export default function Home() {
       {/* ==================== QUICK LINKS NAV ==================== */}
       <section className="quick-links-section stacked-section">
         <div className="container" style={{ padding: '5rem 20px' }}>
+
+          <PopAnim delay={0.05}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '1.15rem', color: 'var(--gold-500)', marginBottom: '0.25rem' }}>Layanan Terpadu</div>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.25rem', fontWeight: 800, color: 'var(--text-primary)', textTransform: 'uppercase', margin: 0 }}>Eksplorasi Kitab Ilkom</h2>
+            </div>
+          </PopAnim>
+
           <div className="quick-nav-grid">
             
             <PopAnim delay={0.1}>
@@ -243,34 +251,24 @@ export default function Home() {
               </a>
             </PopAnim>
 
-          </div>
+            <PopAnim delay={0.5}>
+              <Link to="/bantuan" className="quick-nav-card">
+                <div className="quick-nav-icon">
+                  <HelpCircle size={42} strokeWidth={1.5} />
+                </div>
+                <span className="quick-nav-label">Aspirasi</span>
+              </Link>
+            </PopAnim>
 
-          {/* Info Banners grouped inside Quick Links Section */}
-          <div style={{ marginTop: '4rem' }}>
-            <div className="banners-grid">
-              <PopAnim delay={0.1}>
-                <Link to="/bantuan" className="info-banner banner-gold" style={{ textDecoration: 'none', height: '100%' }}>
-                  <div className="banner-content">
-                    <h3 className="banner-title">Ada kendala terkait Perkuliahan<br/>di Ilmu Komputer?</h3>
-                    <p className="banner-desc">Klik di sini untuk menemukan informasi dan solusi!</p>
-                  </div>
-                  <div className="banner-icon">
-                    <HelpCircle size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
-                  </div>
-                </Link>
-              </PopAnim>
-              <PopAnim delay={0.2}>
-                <a href="https://forms.gle/CHBeYri38fW6iJhw8" target="_blank" rel="noopener noreferrer" className="info-banner banner-brown" style={{ textDecoration: 'none', height: '100%' }}>
-                  <div className="banner-content">
-                    <h3 className="banner-title">Pendataan Minat, Bakat, dan Prestasi<br/>Mahasiswa Ilmu Komputer</h3>
-                    <p className="banner-desc">Klik di sini untuk mengisi form pendataan minat, bakat, dan prestasi resmi dan dapatkan apresiasi!</p>
-                  </div>
-                  <div className="banner-icon">
-                    <Trophy size={100} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
-                  </div>
-                </a>
-              </PopAnim>
-            </div>
+            <PopAnim delay={0.6}>
+              <a href="https://forms.gle/CHBeYri38fW6iJhw8" target="_blank" rel="noopener noreferrer" className="quick-nav-card">
+                <div className="quick-nav-icon">
+                  <Trophy size={42} strokeWidth={1.5} />
+                </div>
+                <span className="quick-nav-label">Data Prestasi</span>
+              </a>
+            </PopAnim>
+
           </div>
 
         </div>
