@@ -3231,6 +3231,11 @@ button {
   border-color: var(--gold-400);
 }
 
+.dark .quick-nav-card:hover {
+  box-shadow: 0 20px 35px rgba(0,0,0,0.4), 0 0 25px rgba(196, 150, 48, 0.3);
+  border-color: var(--gold-400);
+}
+
 .quick-nav-icon {
   color: var(--gold-400);
   margin-bottom: 1.5rem;
