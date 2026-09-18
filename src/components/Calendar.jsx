@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -26,14 +26,45 @@ const EVENT_TYPES = {
   'default': { class: 'event-kegiatan', tagClass: 'tag-kegiatan', icon: '📅', label: 'Agenda' }
 };
 
-// generateMockEvents removed to sync with admin database
-
 const MONTH_NAMES = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 const DAY_NAMES = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+
+function buildDateStr(evt) {
+  const formatDate = (d) => `${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
+  const sameDay = evt.startDate.getTime() === evt.endDate.getTime();
+  const sameMonth = evt.startDate.getMonth() === evt.endDate.getMonth() && evt.startDate.getFullYear() === evt.endDate.getFullYear();
+  const sameYear = evt.startDate.getFullYear() === evt.endDate.getFullYear();
+
+  if (sameDay) return `${formatDate(evt.startDate)} ${evt.startDate.getFullYear()}`;
+  if (sameMonth) return `${evt.startDate.getDate()} – ${evt.endDate.getDate()} ${MONTH_NAMES[evt.startDate.getMonth()]} ${evt.endDate.getFullYear()}`;
+  if (sameYear) return `${formatDate(evt.startDate)} – ${formatDate(evt.endDate)} ${evt.endDate.getFullYear()}`;
+  return `${formatDate(evt.startDate)} ${evt.startDate.getFullYear()} – ${formatDate(evt.endDate)} ${evt.endDate.getFullYear()}`;
+}
+
+function EventCard({ evt, index }) {
+  const typeInfo = EVENT_TYPES[evt.type] || EVENT_TYPES['default'];
+  const dateStr = buildDateStr(evt);
+
+  return (
+    <PopAnim className={`event-card ${typeInfo.class}`} delay={index * 0.1}>
+      <div className="event-info">
+        <span className={`event-tag ${typeInfo.tagClass}`}>
+          {typeInfo.icon} {typeInfo.label}
+        </span>
+        <h4 className="event-title">{evt.title}</h4>
+        <span className="event-date-range">
+          <CalendarDays size={14} strokeWidth={2} />
+          {dateStr}
+        </span>
+      </div>
+    </PopAnim>
+  );
+}
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
+  const carouselRef = useRef(null);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -43,7 +74,6 @@ export default function Calendar() {
   useEffect(() => {
     let isMounted = true;
     async function loadEvents() {
-      // Hitung tanggal awal dan akhir bulan yang sedang dilihat
       const startStr = `${year}-${String(month + 1).padStart(2, '0')}-01`;
       const endDay = new Date(year, month + 1, 0).getDate();
       const endStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(endDay).padStart(2, '0')}`;
@@ -67,7 +97,6 @@ export default function Calendar() {
 
           const category = EVENT_TYPES[item.kategori] ? item.kategori : 'default';
 
-          // Helper to create excerpt
           const tmp = document.createElement("DIV");
           tmp.innerHTML = item.konten || '';
           const text = tmp.textContent || tmp.innerText || "";
@@ -109,7 +138,7 @@ export default function Calendar() {
   const handleDayClick = (day) => {
     const clickedDate = new Date(year, month, day);
     if (selectedDate && selectedDate.getTime() === clickedDate.getTime()) {
-      setSelectedDate(null); // Deselect if already selected
+      setSelectedDate(null);
     } else {
       setSelectedDate(clickedDate);
     }
@@ -138,6 +167,15 @@ export default function Calendar() {
     const today = new Date();
     return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
   };
+  
+  const gridEvents = filteredEvents.slice(0, 4);
+  const carouselEvents = filteredEvents.slice(4);
+
+  const scrollCarousel = (dir) => {
+    if (!carouselRef.current) return;
+    const scrollAmount = 300;
+    carouselRef.current.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+  };
 
   return (
     <section className="calendar-section" id="kalender">
@@ -157,7 +195,6 @@ export default function Calendar() {
           </h2>
         </div>
         <div className="calendar-layout">
-          {/* Kalender Matriks */}
           <div className="calendar-matrix-container">
             <div className="calendar-month-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <button onClick={prevMonth} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-primary)', padding: '5px' }}>
@@ -171,12 +208,10 @@ export default function Calendar() {
             <div className="calendar-matrix">
               {DAY_NAMES.map(d => <div key={d} className="cal-day-name">{d}</div>)}
 
-              {/* Offset start */}
               {Array.from({ length: firstDayOfMonth }).map((_, i) => (
                 <div key={`empty-${i}`} className="cal-day empty"></div>
               ))}
 
-              {/* Tanggal 1 - End */}
               {Array.from({ length: daysInMonth }).map((_, i) => {
                 const day = i + 1;
                 const evt = getEventForDay(day);
@@ -204,67 +239,55 @@ export default function Calendar() {
             </div>
           </div>
 
-          {/* Detail Acara (Card) */}
           <div className="calendar-events-container">
             <h3 className="events-date-title" id="events-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               {getEventTitle()}
               {selectedDate && (
                 <button
                   onClick={() => setSelectedDate(null)}
-                  style={{ fontSize: '0.8rem', background: 'var(--primary-100)', color: 'var(--primary-900)', border: 'none', padding: '0.3rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s' }}
+                  className="btn-show-all"
                 >
                   Tampilkan Semua
                 </button>
               )}
             </h3>
 
-            <div className="calendar-grid">
-              {filteredEvents.length > 0 ? (
-                filteredEvents.map((evt, index) => {
-                  const typeInfo = EVENT_TYPES[evt.type];
-
-                  // Build detailed date string
-                  const formatDate = (d) => `${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
-                  const sameDay = evt.startDate.getTime() === evt.endDate.getTime();
-                  const sameMonth = evt.startDate.getMonth() === evt.endDate.getMonth() && evt.startDate.getFullYear() === evt.endDate.getFullYear();
-                  const sameYear = evt.startDate.getFullYear() === evt.endDate.getFullYear();
-
-                  let dateStr;
-                  if (sameDay) {
-                    dateStr = `${formatDate(evt.startDate)} ${evt.startDate.getFullYear()}`;
-                  } else if (sameMonth) {
-                    dateStr = `${evt.startDate.getDate()} – ${evt.endDate.getDate()} ${MONTH_NAMES[evt.startDate.getMonth()]} ${evt.endDate.getFullYear()}`;
-                  } else if (sameYear) {
-                    dateStr = `${formatDate(evt.startDate)} – ${formatDate(evt.endDate)} ${evt.endDate.getFullYear()}`;
-                  } else {
-                    dateStr = `${formatDate(evt.startDate)} ${evt.startDate.getFullYear()} – ${formatDate(evt.endDate)} ${evt.endDate.getFullYear()}`;
-                  }
-
-                  return (
-                    <PopAnim key={evt.id} className={`event-card ${typeInfo.class}`} delay={index * 0.1}>
-                      <div className="event-info">
-                        <span className={`event-tag ${typeInfo.tagClass}`}>
-                          {typeInfo.icon} {typeInfo.label}
-                        </span>
-                        <h4 className="event-title">{evt.title}</h4>
-                        <span className="event-date-range">
-                          <CalendarDays size={14} strokeWidth={2} />
-                          {dateStr}
-                        </span>
-                      </div>
-                    </PopAnim>
-                  );
-                })
-              ) : (
-                <div className="no-events" style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--text-secondary)', gridColumn: '1 / -1', background: 'var(--card-bg)', borderRadius: 'var(--radius-xl)' }}>
-                  <CalendarDays size={48} stroke="var(--text-secondary)" strokeWidth={1} style={{ margin: '0 auto 1rem', display: 'block' }} />
-                  <p>Tidak ada jadwal acara pada tanggal ini.</p>
+            {filteredEvents.length > 0 ? (
+              <div className="events-lists">
+                <div className="calendar-grid">
+                  {gridEvents.map((evt, index) => (
+                    <EventCard key={evt.id} evt={evt} index={index} />
+                  ))}
                 </div>
-              )}
-            </div>
+
+                {carouselEvents.length > 0 && (
+                  <div className="calendar-carousel-wrapper">
+                    <div className="carousel-header">
+                      <h4 className="carousel-title">Agenda Lainnya</h4>
+                      <div className="carousel-nav">
+                        <button onClick={() => scrollCarousel(-1)} className="carousel-nav-btn" aria-label="Scroll kiri"><ChevronLeft size={18} /></button>
+                        <button onClick={() => scrollCarousel(1)} className="carousel-nav-btn" aria-label="Scroll kanan"><ChevronRight size={18} /></button>
+                      </div>
+                    </div>
+                    <div className="calendar-carousel" ref={carouselRef}>
+                      {carouselEvents.map((evt, index) => (
+                        <div key={evt.id} className="carousel-item">
+                           <EventCard evt={evt} index={index + 4} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="no-events" style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--text-secondary)', background: 'var(--card-bg)', borderRadius: 'var(--radius-xl)' }}>
+                <CalendarDays size={48} stroke="var(--text-secondary)" strokeWidth={1} style={{ margin: '0 auto 1rem', display: 'block' }} />
+                <p>Tidak ada jadwal acara pada tanggal ini.</p>
+              </div>
+            )}
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
-              <Link to="/info-akademik" className="btn-primary" style={{ padding: '0.6rem 1.25rem', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', borderRadius: 'var(--radius-full)' }}>
+              <Link to="/info-akademik" className="btn-view-detail">
                 View Detail <ArrowRight size={16} />
               </Link>
             </div>

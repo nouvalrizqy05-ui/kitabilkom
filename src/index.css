@@ -1258,6 +1258,11 @@ button {
     box-shadow: var(--shadow-md);
 }
 
+.dark .cal-day.active {
+    background: var(--gold-500) !important;
+    color: var(--navy-900) !important;
+}
+
 .calendar-events-container {
     display: flex;
     flex-direction: column;
@@ -1391,7 +1396,7 @@ button {
 
 /* Dark mode event cards */
 .dark .event-card {
-    background: var(--card-bg);
+    background: var(--card-bg) !important;
     border-color: var(--card-border);
 }
 
@@ -1406,6 +1411,163 @@ button {
 
 .dark .event-date-range {
     color: var(--text-secondary);
+}
+
+/* Event Lists & Carousel */
+.events-lists {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.calendar-carousel-wrapper {
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--gray-200);
+}
+
+.carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.carousel-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gray-700);
+    font-family: var(--font-display);
+}
+
+.dark .carousel-title {
+    color: var(--text-primary);
+}
+
+.carousel-nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.carousel-nav-btn {
+    background: var(--primary-50);
+    border: none;
+    color: var(--primary-700);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dark .carousel-nav-btn {
+    background: rgba(255,255,255,0.05);
+    color: var(--gold-500);
+}
+
+.carousel-nav-btn:hover {
+    background: var(--gold-500);
+    color: white;
+}
+
+.dark .carousel-nav-btn:hover {
+    background: var(--gold-500);
+    color: white;
+}
+
+.calendar-carousel {
+    display: flex;
+    gap: 1.2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scroll-behavior: smooth;
+    /* Custom Scrollbar for Carousel - Brown */
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-500) var(--gray-100);
+}
+
+.dark .calendar-carousel {
+    scrollbar-color: var(--gold-500) var(--bg-surface);
+}
+
+.calendar-carousel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.calendar-carousel::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 4px;
+}
+
+.dark .calendar-carousel::-webkit-scrollbar-track {
+    background: var(--bg-surface);
+}
+
+.calendar-carousel::-webkit-scrollbar-thumb {
+    background: var(--gold-500);
+    border-radius: 4px;
+}
+
+.carousel-item {
+    min-width: 280px;
+    max-width: 320px;
+    flex-shrink: 0;
+}
+
+/* Custom Buttons (Brown Theme) */
+.btn-view-detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gold-500);
+    color: white;
+    font-weight: 600;
+    padding: 0.6rem 1.25rem;
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-view-detail:hover {
+    background: var(--gold-600);
+    transform: translateY(-2px);
+    color: white;
+}
+
+.btn-show-all {
+    font-size: 0.8rem;
+    background: var(--gold-50);
+    color: var(--gold-600);
+    border: 1px solid var(--gold-200);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.dark .btn-show-all {
+    background: rgba(196, 150, 48, 0.1);
+    color: var(--gold-400);
+    border-color: rgba(196, 150, 48, 0.3);
+}
+
+.btn-show-all:hover {
+    background: var(--gold-500);
+    color: white;
+    border-color: var(--gold-500);
+}
+
+.dark .btn-show-all:hover {
+    background: var(--gold-500);
+    color: white;
+    border-color: var(--gold-500);
 }
 
 /* ==================== STATISTICS ==================== */
