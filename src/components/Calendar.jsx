@@ -222,28 +222,36 @@ export default function Calendar() {
               {filteredEvents.length > 0 ? (
                 filteredEvents.map((evt, index) => {
                   const typeInfo = EVENT_TYPES[evt.type];
+
+                  // Build detailed date string
+                  const formatDate = (d) => `${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
+                  const sameDay = evt.startDate.getTime() === evt.endDate.getTime();
+                  const sameMonth = evt.startDate.getMonth() === evt.endDate.getMonth() && evt.startDate.getFullYear() === evt.endDate.getFullYear();
+                  const sameYear = evt.startDate.getFullYear() === evt.endDate.getFullYear();
+
+                  let dateStr;
+                  if (sameDay) {
+                    dateStr = `${formatDate(evt.startDate)} ${evt.startDate.getFullYear()}`;
+                  } else if (sameMonth) {
+                    dateStr = `${evt.startDate.getDate()} – ${evt.endDate.getDate()} ${MONTH_NAMES[evt.startDate.getMonth()]} ${evt.endDate.getFullYear()}`;
+                  } else if (sameYear) {
+                    dateStr = `${formatDate(evt.startDate)} – ${formatDate(evt.endDate)} ${evt.endDate.getFullYear()}`;
+                  } else {
+                    dateStr = `${formatDate(evt.startDate)} ${evt.startDate.getFullYear()} – ${formatDate(evt.endDate)} ${evt.endDate.getFullYear()}`;
+                  }
+
                   return (
                     <PopAnim key={evt.id} className={`event-card ${typeInfo.class}`} delay={index * 0.1}>
-                      <div className="event-date">
-                        {evt.startDate.getTime() !== evt.endDate.getTime() ? (
-                          <>
-                            <span className="event-day" style={{ fontSize: '1.2rem', lineHeight: 1.2 }}>{evt.startDate.getDate().toString().padStart(2, '0')}-{evt.endDate.getDate().toString().padStart(2, '0')}</span>
-                            <span className="event-month">{MONTH_NAMES[evt.startDate.getMonth()].substring(0, 3)}</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="event-day">{evt.startDate.getDate().toString().padStart(2, '0')}</span>
-                            <span className="event-month">{MONTH_NAMES[evt.startDate.getMonth()].substring(0, 3)}</span>
-                          </>
-                        )}
-                      </div>
                       <div className="event-info">
                         <span className={`event-tag ${typeInfo.tagClass}`}>
                           {typeInfo.icon} {typeInfo.label}
                         </span>
                         <h4 className="event-title">{evt.title}</h4>
+                        <span className="event-date-range">
+                          <CalendarDays size={14} strokeWidth={2} />
+                          {dateStr}
+                        </span>
                       </div>
-                      <div className={`event-status ${evt.statusClass}`}>{evt.status}</div>
                     </PopAnim>
                   );
                 })

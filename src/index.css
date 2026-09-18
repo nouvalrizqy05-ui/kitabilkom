@@ -1286,9 +1286,8 @@ button {
 
 .event-card {
     display: flex;
-    align-items: flex-start;
-    gap: 0.85rem;
-    padding: 1rem 1.2rem;
+    align-items: stretch;
+    padding: 1.15rem 1.35rem;
     background: white;
     border-radius: var(--radius-xl);
     border: 1px solid var(--gray-200);
@@ -1317,45 +1316,23 @@ button {
     border-color: var(--primary-300);
 }
 
-.event-date {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--primary-50);
-    border-radius: var(--radius-md);
-    padding: 0.5rem 0.6rem;
-    min-width: 50px;
-}
-
-.event-day {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.35rem;
-    color: var(--primary-700);
-    line-height: 1;
-}
-
-.event-month {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: var(--primary-500);
-    text-transform: uppercase;
-}
-
 .event-info {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
 }
 
 .event-tag {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
     font-size: 0.72rem;
     font-weight: 700;
     padding: 0.2rem 0.6rem;
     border-radius: var(--radius-full);
-    margin-bottom: 0.3rem;
+    width: fit-content;
 }
 
 .tag-lomba {
@@ -1373,49 +1350,62 @@ button {
     color: var(--blue-600);
 }
 
+.tag-penting {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+}
+
+.tag-berita {
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+}
+
+.tag-kegiatan {
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--gray-600);
+}
+
 .event-title {
     font-family: var(--font-display);
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--gray-800);
-    margin-bottom: 0.3rem;
-    line-height: 1.3;
+    line-height: 1.35;
+    margin: 0;
 }
 
-.event-desc {
-    font-size: 0.82rem;
+.event-date-range {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--gray-500);
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    margin-top: 0.15rem;
 }
 
-.event-status {
+.event-date-range svg {
     flex-shrink: 0;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.3rem 0.7rem;
-    border-radius: var(--radius-full);
-    align-self: flex-start;
-    white-space: nowrap;
+    color: var(--gold-500);
 }
 
-.status-open {
-    background: rgba(16, 185, 129, 0.1);
-    color: #059669;
+/* Dark mode event cards */
+.dark .event-card {
+    background: var(--card-bg);
+    border-color: var(--card-border);
 }
 
-.status-closing {
-    background: rgba(239, 68, 68, 0.1);
-    color: #dc2626;
+.dark .event-card:hover {
+    border-color: var(--gold-400);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 15px rgba(196, 150, 48, 0.15);
 }
 
-.status-upcoming {
-    background: rgba(47, 60, 110, 0.1);
-    color: var(--primary-600);
+.dark .event-title {
+    color: var(--text-primary);
+}
+
+.dark .event-date-range {
+    color: var(--text-secondary);
 }
 
 /* ==================== STATISTICS ==================== */
