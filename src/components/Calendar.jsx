@@ -97,18 +97,12 @@ export default function Calendar() {
 
           const category = EVENT_TYPES[item.kategori] ? item.kategori : 'default';
 
-          const tmp = document.createElement("DIV");
-          tmp.innerHTML = item.konten || '';
-          const text = tmp.textContent || tmp.innerText || "";
-          const desc = text.substring(0, 60) + (text.length > 60 ? "..." : "");
-
           return {
             id: item.id,
             startDate,
             endDate,
             type: category,
             title: item.judul,
-            desc: desc,
             status: item.status || 'Buka',
             statusClass: item.status === 'Tutup' ? 'status-past' : 'status-upcoming'
           };
@@ -167,13 +161,11 @@ export default function Calendar() {
     const today = new Date();
     return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
   };
-  
-  const gridEvents = filteredEvents.slice(0, 4);
-  const carouselEvents = filteredEvents.slice(4);
 
   const scrollCarousel = (dir) => {
     if (!carouselRef.current) return;
-    const scrollAmount = 300;
+    // Scroll ~1 column width
+    const scrollAmount = carouselRef.current.offsetWidth / 2;
     carouselRef.current.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
   };
 
@@ -240,44 +232,29 @@ export default function Calendar() {
           </div>
 
           <div className="calendar-events-container">
-            <h3 className="events-date-title" id="events-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              {getEventTitle()}
-              {selectedDate && (
-                <button
-                  onClick={() => setSelectedDate(null)}
-                  className="btn-show-all"
-                >
-                  Tampilkan Semua
-                </button>
+            <div className="events-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+              <h3 className="events-date-title" id="events-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                {getEventTitle()}
+                {selectedDate && (
+                  <button onClick={() => setSelectedDate(null)} className="btn-show-all">
+                    Tampilkan Semua
+                  </button>
+                )}
+              </h3>
+              
+              {filteredEvents.length > 4 && (
+                <div className="carousel-nav" style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button onClick={() => scrollCarousel(-1)} className="carousel-nav-btn" aria-label="Scroll kiri"><ChevronLeft size={18} /></button>
+                  <button onClick={() => scrollCarousel(1)} className="carousel-nav-btn" aria-label="Scroll kanan"><ChevronRight size={18} /></button>
+                </div>
               )}
-            </h3>
+            </div>
 
             {filteredEvents.length > 0 ? (
-              <div className="events-lists">
-                <div className="calendar-grid">
-                  {gridEvents.map((evt, index) => (
-                    <EventCard key={evt.id} evt={evt} index={index} />
-                  ))}
-                </div>
-
-                {carouselEvents.length > 0 && (
-                  <div className="calendar-carousel-wrapper">
-                    <div className="carousel-header">
-                      <h4 className="carousel-title">Agenda Lainnya</h4>
-                      <div className="carousel-nav">
-                        <button onClick={() => scrollCarousel(-1)} className="carousel-nav-btn" aria-label="Scroll kiri"><ChevronLeft size={18} /></button>
-                        <button onClick={() => scrollCarousel(1)} className="carousel-nav-btn" aria-label="Scroll kanan"><ChevronRight size={18} /></button>
-                      </div>
-                    </div>
-                    <div className="calendar-carousel" ref={carouselRef}>
-                      {carouselEvents.map((evt, index) => (
-                        <div key={evt.id} className="carousel-item">
-                           <EventCard evt={evt} index={index + 4} />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+              <div className="calendar-grid" ref={carouselRef}>
+                {filteredEvents.map((evt, index) => (
+                  <EventCard key={evt.id} evt={evt} index={index} />
+                ))}
               </div>
             ) : (
               <div className="no-events" style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--text-secondary)', background: 'var(--card-bg)', borderRadius: 'var(--radius-xl)' }}>
