@@ -3205,7 +3205,7 @@ button {
 
 .quick-nav-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 2rem;
   max-width: 1000px;
   margin: 0 auto;
@@ -3956,4 +3956,15 @@ button {
     transform: translateY(-6px) scale(1.02);
     box-shadow: 0 25px 50px -10px rgba(184, 134, 11, 0.25), 0 15px 25px -10px rgba(0, 0, 0, 0.2) !important;
     border-color: var(--gold-400) !important;
+}
+
+
+.banner-card-theme {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary) !important;
+}
+
+.banner-card-theme .banner-desc {
+    color: var(--text-secondary);
 }
