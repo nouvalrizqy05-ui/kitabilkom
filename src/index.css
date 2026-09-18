@@ -3060,6 +3060,10 @@ button {
   margin-bottom: -24px;
 }
 
+.dark .hero-custom {
+  background-color: var(--bg-base);
+}
+
 .hero-custom-container {
   width: 100%;
   max-width: 1200px;
@@ -3184,6 +3188,26 @@ button {
   object-position: center;
 }
 
+.dark .hero-image-wrapper::before {
+    background: 
+      linear-gradient(to right, 
+        var(--bg-base) 0%, 
+        var(--bg-base) 15%, 
+        rgba(var(--bg-base-rgb), 0.95) 25%, 
+        rgba(var(--bg-base-rgb), 0.8) 35%, 
+        rgba(var(--bg-base-rgb), 0.5) 50%, 
+        rgba(var(--bg-base-rgb), 0.2) 65%, 
+        rgba(var(--bg-base-rgb), 0.05) 80%, 
+        transparent 100%
+      ),
+      linear-gradient(to top, 
+        var(--bg-base) 0%, 
+        rgba(var(--bg-base-rgb), 0.8) 8%, 
+        rgba(var(--bg-base-rgb), 0.3) 20%, 
+        transparent 35%
+      );
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero-content-custom {
@@ -3201,6 +3225,14 @@ button {
   box-shadow: 0 -15px 40px rgba(0,0,0,0.15), 0 15px 40px rgba(0,0,0,0.05);
   margin-top: -20px;
   background-color: var(--bg-surface);
+}
+
+.dark .quick-links-section.stacked-section {
+  background-color: var(--bg-base);
+}
+
+.dark .stacked-section {
+  background-color: var(--bg-base);
 }
 
 .quick-nav-grid {
