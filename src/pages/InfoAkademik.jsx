@@ -4,6 +4,20 @@ import BackButton from '../components/BackButton'
 import { Search, X, ExternalLink, AlertCircle } from 'lucide-react'
 import Spinner from '../components/Spinner'
 
+const getDriveImageUrl = (url) => {
+  if (!url) return '';
+  let id = null;
+  const matchD = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  const matchId = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (matchD) id = matchD[1];
+  else if (matchId) id = matchId[1];
+  
+  if (id) {
+    return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+  }
+  return url;
+};
+
 export default function InfoAkademik() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -146,7 +160,7 @@ export default function InfoAkademik() {
                   {/* Poster Area */}
                   <div className="info-card-poster">
                     {item.poster_url ? (
-                      <img src={item.poster_url} alt={item.judul} />
+                      <img src={getDriveImageUrl(item.poster_url)} alt={item.judul} />
                     ) : (
                       <div className="info-card-no-poster">Tanpa Poster</div>
                     )}
@@ -194,7 +208,7 @@ export default function InfoAkademik() {
                 {/* Left Column: Poster */}
                 <div className="info-modal-left">
                   {selected.poster_url ? (
-                    <img src={selected.poster_url} alt={selected.judul} className="info-modal-poster" />
+                    <img src={getDriveImageUrl(selected.poster_url)} alt={selected.judul} className="info-modal-poster" />
                   ) : (
                     <div className="info-modal-no-poster">Tidak ada poster</div>
                   )}
