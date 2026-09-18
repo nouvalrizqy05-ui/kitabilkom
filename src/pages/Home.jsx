@@ -162,16 +162,19 @@ export default function Home() {
             </PopAnim>
             
             <PopAnim style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center' }} delay={0.3}>
-              <div style={{ 
-                position: 'relative', 
-                width: '100%', 
-                maxWidth: '560px', 
-                aspectRatio: '16/9', 
-                borderRadius: '16px', 
-                overflow: 'hidden',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-                border: '1px solid rgba(255,255,255,0.1)'
-              }}>
+              <div 
+                className="yt-thumbnail-card"
+                onClick={() => window.open('https://youtube.com', '_blank')}
+                style={{ 
+                  position: 'relative', 
+                  width: '100%', 
+                  maxWidth: '560px', 
+                  aspectRatio: '16/9', 
+                  borderRadius: '16px', 
+                  overflow: 'hidden',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+                  border: '1px solid rgba(255,255,255,0.1)'
+                }}>
                 <img src="/assets/about.png" alt="Video Thumbnail" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(100%) brightness(50%)' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1000'; }} />
                 
                 <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 100%)' }}></div>
