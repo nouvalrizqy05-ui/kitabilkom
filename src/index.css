@@ -1449,7 +1449,36 @@ button {
     color: var(--text-secondary);
 }
 
+.carousel-nav-btn {
+    background: var(--primary-50);
+    border: none;
+    color: var(--primary-700);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
+.dark .carousel-nav-btn {
+    background: var(--card-border);
+    color: var(--gold-400);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.carousel-nav-btn:hover {
+    background: var(--gold-500);
+    color: white;
+}
+
+.dark .carousel-nav-btn:hover {
+    background: var(--gold-500);
+    color: white;
+    border-color: var(--gold-500);
+}
 
 /* Custom Buttons (Brown Theme) */
 .btn-view-detail {
