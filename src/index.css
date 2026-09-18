@@ -1450,9 +1450,9 @@ button {
 }
 
 .carousel-nav-btn {
-    background: var(--primary-50);
+    background: var(--gold-50);
     border: none;
-    color: var(--primary-700);
+    color: var(--gold-600);
     width: 32px;
     height: 32px;
     border-radius: 50%;
