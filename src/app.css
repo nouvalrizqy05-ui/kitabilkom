@@ -1896,11 +1896,13 @@
     border: 1px solid var(--border-color) !important;
     border-radius: var(--radius-xl) !important;
     box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease !important;
 }
 
 .buku-card-custom:hover {
     border-color: var(--gold-400) !important;
-    box-shadow: 0 20px 35px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 20px 35px rgba(207, 156, 42, 0.15) !important;
+    transform: translateY(-3px) !important;
 }
 
 .buku-card-custom .card-title {
@@ -1912,35 +1914,39 @@
 }
 
 .buku-card-custom .card-image-wrap {
-    background: var(--text-primary) !important;
+    /* Always keeps the dark navy-gold gradient regardless of theme */
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0d2137 100%) !important;
     color: var(--gold-400) !important;
 }
 
 .buku-card-custom .card-badge {
-    background: var(--gold-500) !important;
-    color: white !important;
+    background: linear-gradient(135deg, var(--gold-500), var(--gold-600)) !important;
+    color: #1a0f00 !important;
 }
 
 /* 3. Buku Akademik Action Buttons */
 .buku-card-actions .btn-outline-small {
-    border-color: var(--text-primary) !important;
-    color: var(--text-primary) !important;
+    border-color: var(--gold-500) !important;
+    color: var(--gold-600) !important;
     background: transparent !important;
 }
 
 .buku-card-actions .btn-outline-small:hover:not(:disabled) {
-    background: var(--gold-100) !important;
-    border-color: var(--text-primary) !important;
-    color: var(--text-primary) !important;
+    background: var(--gold-50, rgba(207, 156, 42, 0.08)) !important;
+    border-color: var(--gold-600) !important;
+    color: var(--gold-700) !important;
 }
 
 .buku-card-actions .btn-primary-small {
-    background: var(--text-primary) !important;
-    color: var(--bg-base) !important;
+    background: linear-gradient(135deg, var(--gold-500), var(--gold-600)) !important;
+    color: #1a0f00 !important;
+    font-weight: 700 !important;
+    border: none !important;
 }
 
 .buku-card-actions .btn-primary-small:hover:not(:disabled) {
-    background: var(--gold-600) !important;
+    background: linear-gradient(135deg, var(--gold-600), var(--gold-700)) !important;
+    box-shadow: 0 4px 12px rgba(207, 156, 42, 0.4) !important;
 }
 
 /* 4. Search Filter Bar */
