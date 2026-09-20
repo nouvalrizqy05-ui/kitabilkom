@@ -241,15 +241,21 @@ export default function BukuAkademik() {
             </div>
           ) : (
             <>
-              {!selectedMatkul && (
+              {!selectedMatkul ? (
                 <button
                   onClick={() => navigate('/buku-akademik')}
-                  style={{ marginBottom: '2rem', background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}
+                  style={{ marginBottom: '1.5rem', background: 'transparent', border: 'none', color: 'var(--gold-600)', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}
                 >
                   &larr; Kembali Pilih Prodi
                 </button>
+              ) : (
+                <button
+                  onClick={() => navigate(`/buku-akademik/${prodiParam}`)}
+                  style={{ marginBottom: '1.5rem', background: 'transparent', border: 'none', color: 'var(--gold-600)', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}
+                >
+                  &larr; Kembali ke Daftar Mata Kuliah
+                </button>
               )}
-
 
               <h2 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>Perpustakaan {selectedProdi}</h2>
 
@@ -334,12 +340,7 @@ export default function BukuAkademik() {
                 </div>
               ) : (
                 <>
-                  <button
-                    onClick={() => navigate(`/buku-akademik/${prodiParam}`)}
-                    style={{ marginBottom: '1.5rem', background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}
-                  >
-                    &larr; Kembali ke Daftar Mata Kuliah
-                  </button>
+
                   {filtered.length === 0 ? (
                     <p className="empty-state">Belum ada materi untuk mata kuliah ini.</p>
                   ) : (
