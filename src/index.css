@@ -2788,7 +2788,6 @@ button {
     width: 64px;
     height: 64px;
     color: var(--gold-400);
-    filter: drop-shadow(0 4px 12px rgba(207, 156, 42, 0.5));
 }
 
 .card-badge {
