@@ -24,7 +24,7 @@ export default function AdminBuku() {
 
   const load = async () => {
     setLoading(true)
-    const { data, error } = await supabase.from('buku_akademik').select('*').order('judul', { ascending: true })
+    const { data, error } = await supabase.from('buku_akademik').select('*').order('created_at', { ascending: true })
     if (error) console.error(error)
     setItems(data ?? [])
     setLoading(false)
