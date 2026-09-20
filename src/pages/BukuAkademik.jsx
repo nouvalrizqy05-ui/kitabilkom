@@ -262,22 +262,25 @@ export default function BukuAkademik() {
               <h2 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>Perpustakaan {selectedProdi}</h2>
 
               <div className="search-filter-bar">
-                <div className="search-filter-dropdown">
-                  <select value={activeKategori} onChange={(e) => setActiveKategori(e.target.value)}>
-                    <option value="Semua">Semua Kategori</option>
-                    <option value="Materi">Materi</option>
-                    <option value="Latihan">Latihan</option>
-                  </select>
-                  <ChevronDown size={16} />
-                </div>
-                <div className="search-filter-dropdown">
-                  <select value={activeTab} onChange={(e) => setActiveTab(e.target.value)}>
-                    {TABS.map((tab) => (
-                      <option key={tab} value={tab}>{tab === 'Semua' ? 'Semua Semester' : `Semester ${tab}`}</option>
-                    ))}
-                  </select>
-                  <ChevronDown size={16} />
-                </div>
+                {selectedMatkul ? (
+                  <div className="search-filter-dropdown">
+                    <select value={activeKategori} onChange={(e) => setActiveKategori(e.target.value)}>
+                      <option value="Semua">Semua Kategori</option>
+                      <option value="Materi">Materi</option>
+                      <option value="Latihan">Latihan</option>
+                    </select>
+                    <ChevronDown size={16} />
+                  </div>
+                ) : (
+                  <div className="search-filter-dropdown">
+                    <select value={activeTab} onChange={(e) => setActiveTab(e.target.value)}>
+                      {TABS.map((tab) => (
+                        <option key={tab} value={tab}>{tab === 'Semua' ? 'Semua Semester' : `Semester ${tab}`}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={16} />
+                  </div>
+                )}
                 <input
                   type="text"
                   placeholder="Cari Mata Kuliah, Judul, Info..."
