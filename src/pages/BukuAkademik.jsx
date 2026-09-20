@@ -150,10 +150,8 @@ export default function BukuAkademik() {
             <span className="banner-buku-subtitle">DIREKTORI</span>
             <h1 className="banner-buku-title">BUKU AKADEMIK</h1>
           </div>
-          <div className="banner-buku-mascot-group">
-            <div className="banner-buku-speech-bubble">IPK 4 menanti!<br />Semangat :)</div>
-            <img src="/assets/lebah akasin.png" alt="Lebah Akasin" className="banner-buku-mascot-right" />
-          </div>
+          <div className="banner-buku-speech-bubble">IPK 4 menanti!<br />Semangat :)</div>
+          <img src="/assets/lebah akasin.png" alt="Lebah Akasin" className="banner-buku-mascot-right" />
         </div>
         <div className="banner-buku-pattern bottom"></div>
       </section>

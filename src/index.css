@@ -3002,13 +3002,13 @@ button {
 }
 
 .banner-buku-mascot-right {
-  position: relative;
-  right: unset;
-  bottom: unset;
-  height: 160px;
+  position: absolute;
+  right: -40px; /* Fixed px ensures it doesn't drift on wide screens */
+  bottom: -50px; /* Deep drop down past the grey strip */
+  height: 200px; /* Reverted to original size */
   z-index: 5;
   transform: rotate(-20deg);
-  transform-origin: bottom center;
+  transform-origin: bottom right; /* Anchor to the corner */
   filter: drop-shadow(-4px 4px 6px rgba(0,0,0,0.3));
 }
 
@@ -3018,25 +3018,16 @@ button {
     transform: translateY(-50%) scale(0.7);
   }
   .banner-buku-mascot-right {
-    height: 120px;
+    right: -25px;
+    height: 130px;
+    bottom: -35px;
   }
 }
 
-.banner-buku-mascot-group {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 200px; /* Fixed width so layout never shifts */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 6;
-}
-
 .banner-buku-speech-bubble {
-  position: relative;
-  right: unset;
-  bottom: unset;
+  position: absolute;
+  right: 125px; /* Fixed distance from right edge so it sticks near the bee */
+  bottom: 30px;
   background: white;
   color: #361d0f;
   padding: 0.6rem 1rem;
@@ -3051,8 +3042,6 @@ button {
   transform: rotate(-3deg);
   animation: float-bubble 3s ease-in-out infinite;
   border: 2px solid var(--gold-500, #cf9c2a);
-  margin-bottom: 8px;
-  white-space: nowrap;
 }
 
 /* Ekor balon mengarah ke lebah */
@@ -3060,7 +3049,7 @@ button {
   content: '';
   position: absolute;
   bottom: -7px;
-  right: 24px;
+  right: 10px;
   width: 16px;
   height: 16px;
   background: white;
@@ -3077,12 +3066,11 @@ button {
 }
 
 @media (max-width: 768px) {
-  .banner-buku-mascot-group {
-    width: 140px;
-  }
   .banner-buku-speech-bubble {
-    font-size: 0.72rem;
-    padding: 0.45rem 0.7rem;
+    right: 85px;
+    bottom: 55px;
+    font-size: 0.75rem;
+    padding: 0.5rem 0.8rem;
   }
 }
 
