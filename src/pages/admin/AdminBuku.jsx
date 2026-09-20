@@ -5,9 +5,9 @@ import { MATAKULIAH_DATA } from '../../lib/matakuliahData'
 import { useAuth } from '../../context/AuthContext'
 import Modal from '../../components/Modal'
 
-const KATEGORI_OPTIONS = ['PDF', 'Modul', 'E-Book']
+const KATEGORI_OPTIONS = ['Materi', 'Latihan']
 const PRODI_OPTIONS = ['S1 Teknik Informatika', 'S1 Sistem Informasi']
-const emptyForm = { judul: '', mata_kuliah: '', kategori: 'PDF', semester: 1, file_url: '', prodi: 'S1 Teknik Informatika' }
+const emptyForm = { judul: '', mata_kuliah: '', kategori: 'Materi', semester: 1, file_url: '', prodi: 'S1 Teknik Informatika' }
 
 export default function AdminBuku() {
   const { user } = useAuth()
@@ -20,9 +20,11 @@ export default function AdminBuku() {
   const [error, setError] = useState('')
   const [customMatkul, setCustomMatkul] = useState(false)
 
+  const [filterKategori, setFilterKategori] = useState('Semua')
+
   const load = async () => {
     setLoading(true)
-    const { data, error } = await supabase.from('buku_akademik').select('*').order('created_at', { ascending: false })
+    const { data, error } = await supabase.from('buku_akademik').select('*').order('judul', { ascending: true })
     if (error) console.error(error)
     setItems(data ?? [])
     setLoading(false)
@@ -45,7 +47,7 @@ export default function AdminBuku() {
     setForm({
       judul: item.judul || '',
       mata_kuliah: item.mata_kuliah || '',
-      kategori: item.kategori || 'PDF',
+      kategori: item.kategori || 'Materi',
       semester: item.semester || 1,
       prodi: item.prodi || 'S1 Teknik Informatika',
       file_url: item.file_url || '',
@@ -106,9 +108,16 @@ export default function AdminBuku() {
     <div>
       <div className="admin-panel-header">
         <h2>Buku Akademik ({items.length})</h2>
-        <button className="btn-primary-small" onClick={openCreate}>
-          <Plus size={16} /> Tambah Materi
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <select value={filterKategori} onChange={(e) => setFilterKategori(e.target.value)} style={{ padding: '0.4rem 0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)', fontSize: '0.9rem' }}>
+            <option value="Semua">Semua Kategori</option>
+            <option value="Materi">Materi</option>
+            <option value="Latihan">Latihan</option>
+          </select>
+          <button className="btn-primary-small" onClick={openCreate}>
+            <Plus size={16} /> Tambah Materi
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -127,7 +136,7 @@ export default function AdminBuku() {
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
+            {items.filter(item => filterKategori === 'Semua' || item.kategori === filterKategori).map((item) => (
               <tr key={item.id}>
                 <td>{item.judul}</td>
                 <td>{item.mata_kuliah}</td>

@@ -35,7 +35,7 @@ export default function BukuAkademik() {
       const { data, error } = await supabase
         .from('buku_akademik')
         .select('id, judul, mata_kuliah, kategori, semester, file_url, prodi')
-        .order('created_at', { ascending: false })
+        .order('judul', { ascending: true })
       if (isMounted) {
         if (error) {
           console.error(error)
