@@ -224,14 +224,19 @@ export default function BukuAkademik() {
                 </button>
               </div>
 
-              {/* Bottom tip */}
-              <div style={{ textAlign: 'center', marginTop: '2.5rem', padding: '1.2rem', background: 'var(--card-bg)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border-color)' }}>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.7 }}>
-                  📚 Tidak menemukan buku yang kamu cari? <br />
-                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0A7npBXDlGedxykt1YDu4ukIUleilSYPTuk1EP-x5d40RDw/viewform" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-600)', fontWeight: 700 }}>
-                    Unggah artikelmu di sini →
-                  </a>
-                </p>
+              {/* Bottom info strip */}
+              <div style={{ marginTop: '2.5rem', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                {[
+                  { icon: '📖', label: 'Modul Kuliah', desc: 'Materi resmi per mata kuliah' },
+                  { icon: '🗂️', label: 'Referensi Akademik', desc: 'Buku teks & referensi pendukung' },
+                  { icon: '📅', label: 'Per Semester', desc: 'Diorganisir dari semester 1–8' },
+                ].map((item) => (
+                  <div key={item.label} style={{ textAlign: 'center', padding: '1.1rem 0.75rem', background: 'var(--card-bg)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border-color)' }}>
+                    <div style={{ fontSize: '1.6rem', marginBottom: '0.4rem' }}>{item.icon}</div>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{item.label}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</div>
+                  </div>
+                ))}
               </div>
             </div>
           ) : (
