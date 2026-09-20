@@ -3002,13 +3002,13 @@ button {
 }
 
 .banner-buku-mascot-right {
-  position: absolute;
-  right: -4%; /* Pushed closer to the corner */
-  bottom: -50px; /* Drops down past the grey strip, deep into the bottom brown grid */
-  height: 200px; /* Slightly larger so it reaches well */
+  position: relative;
+  right: unset;
+  bottom: unset;
+  height: 160px;
   z-index: 5;
-  transform: rotate(-20deg); /* Maintains the tilt */
-  transform-origin: bottom right; /* Anchor to the corner */
+  transform: rotate(-20deg);
+  transform-origin: bottom center;
   filter: drop-shadow(-4px 4px 6px rgba(0,0,0,0.3));
 }
 
@@ -3018,18 +3018,27 @@ button {
     transform: translateY(-50%) scale(0.7);
   }
   .banner-buku-mascot-right {
-    right: -6%;
-    height: 130px;
-    bottom: -35px;
+    height: 120px;
   }
 }
 
-.banner-buku-speech-bubble {
+.banner-buku-mascot-group {
   position: absolute;
-  right: 11%;
-  bottom: 30px;
+  right: 0;
+  bottom: 0;
+  width: 200px; /* Fixed width so layout never shifts */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 6;
+}
+
+.banner-buku-speech-bubble {
+  position: relative;
+  right: unset;
+  bottom: unset;
   background: white;
-  color: #361d0f; /* Hardcoded brown to prevent inversion in dark mode */
+  color: #361d0f;
   padding: 0.6rem 1rem;
   border-radius: 12px;
   font-family: var(--font-sans);
@@ -3042,14 +3051,16 @@ button {
   transform: rotate(-3deg);
   animation: float-bubble 3s ease-in-out infinite;
   border: 2px solid var(--gold-500, #cf9c2a);
+  margin-bottom: 8px;
+  white-space: nowrap;
 }
 
-/* Ekor balon mengarah ke lebah (menggunakan rotated square) */
+/* Ekor balon mengarah ke lebah */
 .banner-buku-speech-bubble::after {
   content: '';
   position: absolute;
   bottom: -7px;
-  right: 10px;
+  right: 24px;
   width: 16px;
   height: 16px;
   background: white;
@@ -3066,11 +3077,12 @@ button {
 }
 
 @media (max-width: 768px) {
+  .banner-buku-mascot-group {
+    width: 140px;
+  }
   .banner-buku-speech-bubble {
-    right: 14%;
-    bottom: 55px;
-    font-size: 0.75rem;
-    padding: 0.5rem 0.8rem;
+    font-size: 0.72rem;
+    padding: 0.45rem 0.7rem;
   }
 }
 

@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react'
-import { Download, FileText, Eye, Search, ChevronDown, Folder, AlertCircle } from 'lucide-react'
+import { Download, FileText, Eye, Search, ChevronDown, Folder, AlertCircle, BookOpen } from 'lucide-react'
 import { MATAKULIAH_DATA } from '../lib/matakuliahData'
 import { supabase } from '../lib/supabaseClient'
 import BackButton from '../components/BackButton'
@@ -150,8 +150,10 @@ export default function BukuAkademik() {
             <span className="banner-buku-subtitle">DIREKTORI</span>
             <h1 className="banner-buku-title">BUKU AKADEMIK</h1>
           </div>
-          <div className="banner-buku-speech-bubble">IPK 4 menanti!<br />Semangat :)</div>
-          <img src="/assets/lebah akasin.png" alt="Lebah Akasin" className="banner-buku-mascot-right" />
+          <div className="banner-buku-mascot-group">
+            <div className="banner-buku-speech-bubble">IPK 4 menanti!<br />Semangat :)</div>
+            <img src="/assets/lebah akasin.png" alt="Lebah Akasin" className="banner-buku-mascot-right" />
+          </div>
         </div>
         <div className="banner-buku-pattern bottom"></div>
       </section>
@@ -166,22 +168,70 @@ export default function BukuAkademik() {
           )}
           {!selectedProdi ? (
             <div className="prodi-gate-container">
-              <h2 style={{ textAlign: 'center', marginBottom: '2rem', fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>Pilih Program Studi</h2>
+              {/* Header */}
+              <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--gold-50)', border: '1px solid var(--gold-200)', borderRadius: '999px', padding: '0.35rem 1rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--gold-700)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '1rem' }}>
+                  <BookOpen size={14} /> Direktori Digital
+                </div>
+                <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', color: 'var(--text-primary)', marginBottom: '0.75rem', fontWeight: 800 }}>
+                  Pilih Program Studi
+                </h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', maxWidth: '480px', margin: '0 auto', lineHeight: 1.6 }}>
+                  Akses koleksi buku, modul, dan referensi akademik sesuai program studimu.
+                </p>
+              </div>
+
+              {/* Info banner */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'linear-gradient(135deg, var(--gold-50), var(--amber-50, #fffbeb))', border: '1px solid var(--gold-200)', borderRadius: 'var(--radius-xl)', padding: '0.85rem 1.25rem', marginBottom: '2rem', fontSize: '0.88rem', color: 'var(--gold-800)' }}>
+                <span style={{ fontSize: '1.2rem' }}>💡</span>
+                <span>Pilih prodi terlebih dahulu untuk melihat daftar mata kuliah dan unduh materi yang tersedia.</span>
+              </div>
+
               <div className="prodi-gate-grid">
                 <button className="prodi-gate-card" onClick={() => navigate('/buku-akademik/ti')}>
-                  <div className="prodi-gate-icon" style={{ color: 'var(--gold-400)' }}>
-                    <FileText size={40} aria-hidden="true" />
+                  <div className="prodi-gate-icon" style={{ background: 'linear-gradient(135deg, var(--gold-50), var(--gold-100))', border: '2px solid var(--gold-200)', color: 'var(--gold-500)' }}>
+                    <FileText size={36} aria-hidden="true" />
                   </div>
-                  <h3>S1 Teknik Informatika</h3>
-                  <p>Kumpulan buku akademik khusus mahasiswa Teknik Informatika.</p>
+                  <div>
+                    <h3>S1 Teknik Informatika</h3>
+                    <p>Kumpulan buku akademik khusus mahasiswa Teknik Informatika.</p>
+                  </div>
+                  <div style={{ width: '100%', padding: '0.65rem 1rem', background: 'var(--gray-50)', borderRadius: 'var(--radius-lg)', display: 'flex', justifyContent: 'center', gap: '1.5rem', borderTop: '1px solid var(--gray-100)' }}>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <Folder size={13} /> 8 Semester
+                    </span>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--gold-600)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      → Lihat Koleksi
+                    </span>
+                  </div>
                 </button>
                 <button className="prodi-gate-card" onClick={() => navigate('/buku-akademik/si')}>
-                  <div className="prodi-gate-icon" style={{ color: 'var(--gold-400)' }}>
-                    <FileText size={40} aria-hidden="true" />
+                  <div className="prodi-gate-icon" style={{ background: 'linear-gradient(135deg, var(--primary-50), var(--primary-100))', border: '2px solid var(--primary-200)', color: 'var(--primary-500)' }}>
+                    <FileText size={36} aria-hidden="true" />
                   </div>
-                  <h3>S1 Sistem Informasi</h3>
-                  <p>Kumpulan buku akademik khusus mahasiswa Sistem Informasi.</p>
+                  <div>
+                    <h3>S1 Sistem Informasi</h3>
+                    <p>Kumpulan buku akademik khusus mahasiswa Sistem Informasi.</p>
+                  </div>
+                  <div style={{ width: '100%', padding: '0.65rem 1rem', background: 'var(--gray-50)', borderRadius: 'var(--radius-lg)', display: 'flex', justifyContent: 'center', gap: '1.5rem', borderTop: '1px solid var(--gray-100)' }}>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <Folder size={13} /> 8 Semester
+                    </span>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--primary-600)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      → Lihat Koleksi
+                    </span>
+                  </div>
                 </button>
+              </div>
+
+              {/* Bottom tip */}
+              <div style={{ textAlign: 'center', marginTop: '2.5rem', padding: '1.2rem', background: 'var(--card-bg)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border-color)' }}>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.7 }}>
+                  📚 Tidak menemukan buku yang kamu cari? <br />
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0A7npBXDlGedxykt1YDu4ukIUleilSYPTuk1EP-x5d40RDw/viewform" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-600)', fontWeight: 700 }}>
+                    Unggah artikelmu di sini →
+                  </a>
+                </p>
               </div>
             </div>
           ) : (
