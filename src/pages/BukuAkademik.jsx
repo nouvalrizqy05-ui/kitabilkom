@@ -13,6 +13,7 @@ export default function BukuAkademik() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('Semua')
+  const [activeKategori, setActiveKategori] = useState('Semua')
   const [downloadingId, setDownloadingId] = useState(null)
   const [previewingId, setPreviewingId] = useState(null)
   const [previewData, setPreviewData] = useState(null)
@@ -81,6 +82,9 @@ export default function BukuAkademik() {
     if (activeTab !== 'Semua') {
       result = result.filter((item) => String(item.semester) === String(activeTab))
     }
+    if (activeKategori !== 'Semua') {
+      result = result.filter((item) => item.kategori === activeKategori)
+    }
     if (searchQuery) {
       const q = searchQuery.toLowerCase()
       result = result.filter(item =>
@@ -92,7 +96,7 @@ export default function BukuAkademik() {
       result = result.filter(item => item.mata_kuliah === selectedMatkul)
     }
     return result
-  }, [items, activeTab, selectedProdi, searchQuery, selectedMatkul])
+  }, [items, activeTab, activeKategori, selectedProdi, searchQuery, selectedMatkul])
 
   const getDriveDownloadUrl = (url) => {
     if (!url) return '';
@@ -259,9 +263,17 @@ export default function BukuAkademik() {
 
               <div className="search-filter-bar">
                 <div className="search-filter-dropdown">
+                  <select value={activeKategori} onChange={(e) => setActiveKategori(e.target.value)}>
+                    <option value="Semua">Semua Kategori</option>
+                    <option value="Materi">Materi</option>
+                    <option value="Latihan">Latihan</option>
+                  </select>
+                  <ChevronDown size={16} />
+                </div>
+                <div className="search-filter-dropdown">
                   <select value={activeTab} onChange={(e) => setActiveTab(e.target.value)}>
                     {TABS.map((tab) => (
-                      <option key={tab} value={tab}>{tab === 'Semua' ? 'Semua' : `Semester ${tab}`}</option>
+                      <option key={tab} value={tab}>{tab === 'Semua' ? 'Semua Semester' : `Semester ${tab}`}</option>
                     ))}
                   </select>
                   <ChevronDown size={16} />
