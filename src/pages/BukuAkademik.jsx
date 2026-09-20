@@ -14,6 +14,8 @@ export default function BukuAkademik() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('Semua')
   const [activeKategori, setActiveKategori] = useState('Semua')
+  const [visibleMatkul, setVisibleMatkul] = useState(8)
+  const [visibleBuku, setVisibleBuku] = useState(8)
   const [downloadingId, setDownloadingId] = useState(null)
   const [previewingId, setPreviewingId] = useState(null)
   const [previewData, setPreviewData] = useState(null)
@@ -73,6 +75,10 @@ export default function BukuAkademik() {
 
     return Array.from(courses).sort();
   }, [items, selectedProdi, activeTab])
+
+  // Reset visible counts whenever filters change
+  useEffect(() => { setVisibleMatkul(8) }, [activeTab, selectedProdi])
+  useEffect(() => { setVisibleBuku(8) }, [activeKategori, selectedMatkul, searchQuery])
 
   const filtered = useMemo(() => {
     let result = items
@@ -335,58 +341,85 @@ export default function BukuAkademik() {
                   </div>
                 )
               ) : !selectedMatkul ? (
-                <div className="prodi-gate-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
-                  {availableCourses.length === 0 ? (
-                    <p className="empty-state" style={{ gridColumn: '1 / -1' }}>Belum ada daftar mata kuliah untuk kategori ini.</p>
-                  ) : availableCourses.map(mk => {
-                    const count = items.filter(i => i.prodi === selectedProdi && (activeTab === 'Semua' || String(i.semester) === String(activeTab)) && i.mata_kuliah === mk).length;
-                    return (
-                      <button key={mk} className="prodi-gate-card" onClick={() => navigate(`/buku-akademik/${prodiParam}/${encodeURIComponent(mk)}`)} style={{ padding: '1.5rem', minHeight: 'auto', textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <div className="prodi-gate-icon" style={{ color: 'var(--gold-400)', marginBottom: '1rem', alignSelf: 'center' }}>
-                          <Folder size={48} />
-                        </div>
-                        <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', fontFamily: 'var(--font-sans)', color: 'var(--text-primary)', textAlign: 'center', width: '100%' }}>{mk}</h4>
-                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textAlign: 'center', width: '100%', margin: 0 }}>{count} Dokumen</p>
+                <div>
+                  <div className="prodi-gate-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+                    {availableCourses.length === 0 ? (
+                      <p className="empty-state" style={{ gridColumn: '1 / -1' }}>Belum ada daftar mata kuliah untuk kategori ini.</p>
+                    ) : availableCourses.slice(0, visibleMatkul).map(mk => {
+                      const count = items.filter(i => i.prodi === selectedProdi && (activeTab === 'Semua' || String(i.semester) === String(activeTab)) && i.mata_kuliah === mk).length;
+                      return (
+                        <button key={mk} className="prodi-gate-card" onClick={() => navigate(`/buku-akademik/${prodiParam}/${encodeURIComponent(mk)}`)} style={{ padding: '1.5rem', minHeight: 'auto', textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                          <div className="prodi-gate-icon" style={{ color: 'var(--gold-400)', marginBottom: '1rem', alignSelf: 'center' }}>
+                            <Folder size={48} />
+                          </div>
+                          <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', fontFamily: 'var(--font-sans)', color: 'var(--text-primary)', textAlign: 'center', width: '100%' }}>{mk}</h4>
+                          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textAlign: 'center', width: '100%', margin: 0 }}>{count} Dokumen</p>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {visibleMatkul < availableCourses.length && (
+                    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                      <button
+                        onClick={() => setVisibleMatkul(v => v + 8)}
+                        style={{ background: 'transparent', border: '2px solid var(--gold-500)', color: 'var(--gold-600)', fontWeight: 700, padding: '0.65rem 2rem', borderRadius: '999px', cursor: 'pointer', fontSize: '0.95rem', transition: 'all 0.2s' }}
+                        onMouseEnter={e => { e.target.style.background = 'var(--gold-500)'; e.target.style.color = '#1a0f00' }}
+                        onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = 'var(--gold-600)' }}
+                      >
+                        Lihat Lebih Banyak ({availableCourses.length - visibleMatkul} lagi)
                       </button>
-                    )
-                  })}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <>
-
                   {filtered.length === 0 ? (
                     <p className="empty-state">Belum ada materi untuk mata kuliah ini.</p>
                   ) : (
-                    <div className="buku-cards-grid">
-                      {filtered.map((item) => (
-                        <div className="card-3d buku-card-custom" key={item.id}>
-                          <div className="buku-card-content">
-                            <div className="card-image-wrap">
-                              <span className="card-badge">{item.kategori}</span>
-                              <FileText size={48} />
+                    <>
+                      <div className="buku-cards-grid">
+                        {filtered.slice(0, visibleBuku).map((item) => (
+                          <div className="card-3d buku-card-custom" key={item.id}>
+                            <div className="buku-card-content">
+                              <div className="card-image-wrap">
+                                <span className="card-badge">{item.kategori}</span>
+                                <FileText size={48} />
+                              </div>
+                              <h3 className="card-title">{item.judul}</h3>
+                              <p className="card-meta">Mata Kuliah: {item.mata_kuliah || '-'}</p>
                             </div>
-                            <h3 className="card-title">{item.judul}</h3>
-                            <p className="card-meta">Mata Kuliah: {item.mata_kuliah || '-'}</p>
+                            <div className="buku-card-actions">
+                              <button
+                                className="btn-outline-small"
+                                onClick={() => handlePreview(item)}
+                                disabled={!item.file_url || previewingId === item.id}
+                              >
+                                <Eye size={16} /> {previewingId === item.id ? 'Memuat...' : 'Preview'}
+                              </button>
+                              <button
+                                className="btn-primary-small"
+                                onClick={() => handleDownload(item)}
+                                disabled={!item.file_url || downloadingId === item.id}
+                              >
+                                <Download size={16} /> {downloadingId === item.id ? 'Menyiapkan...' : 'Unduh'}
+                              </button>
+                            </div>
                           </div>
-                          <div className="buku-card-actions">
-                            <button
-                              className="btn-outline-small"
-                              onClick={() => handlePreview(item)}
-                              disabled={!item.file_url || previewingId === item.id}
-                            >
-                              <Eye size={16} /> {previewingId === item.id ? 'Memuat...' : 'Preview'}
-                            </button>
-                            <button
-                              className="btn-primary-small"
-                              onClick={() => handleDownload(item)}
-                              disabled={!item.file_url || downloadingId === item.id}
-                            >
-                              <Download size={16} /> {downloadingId === item.id ? 'Menyiapkan...' : 'Unduh'}
-                            </button>
-                          </div>
+                        ))}
+                      </div>
+                      {visibleBuku < filtered.length && (
+                        <div style={{ textAlign: 'center', marginTop: '2rem', marginBottom: '1rem' }}>
+                          <button
+                            onClick={() => setVisibleBuku(v => v + 8)}
+                            style={{ background: 'transparent', border: '2px solid var(--gold-500)', color: 'var(--gold-600)', fontWeight: 700, padding: '0.65rem 2rem', borderRadius: '999px', cursor: 'pointer', fontSize: '0.95rem', transition: 'all 0.2s' }}
+                            onMouseEnter={e => { e.target.style.background = 'var(--gold-500)'; e.target.style.color = '#1a0f00' }}
+                            onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = 'var(--gold-600)' }}
+                          >
+                            Lihat Lebih Banyak ({filtered.length - visibleBuku} lagi)
+                          </button>
                         </div>
-                      ))}
-                    </div>
+                      )}
+                    </>
                   )}
                 </>
               )}
