@@ -2603,12 +2603,12 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--primary-400), var(--primary-600));
+    background: linear-gradient(180deg, var(--gold-400), var(--gold-600));
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--primary-500), var(--primary-700));
+    background: linear-gradient(180deg, var(--gold-500), var(--gold-700));
 }
 
 /* ==================== SELECTION ==================== */
@@ -3495,15 +3495,17 @@ button {
   max-width: 1200px;
   border-radius: 50px;
   border-bottom: none;
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(40px) saturate(1.6);
+  -webkit-backdrop-filter: blur(40px) saturate(1.6);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
 .dark .navbar-custom.scrolled {
-  background-color: rgba(31, 31, 31, 0.85);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  background-color: rgba(20, 20, 20, 0.92);
+  backdrop-filter: blur(40px) saturate(1.6);
+  -webkit-backdrop-filter: blur(40px) saturate(1.6);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .navbar-container-custom {
