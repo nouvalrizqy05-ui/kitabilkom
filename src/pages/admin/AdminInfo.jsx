@@ -5,12 +5,14 @@ import { useAuth } from '../../context/AuthContext'
 import Modal from '../../components/Modal'
 import RichTextEditor from '../../components/RichTextEditor'
 
-const KATEGORI_OPTIONS = ['Penting', 'Berita', 'Lomba', 'Beasiswa', 'Bootcamp']
+const KATEGORI_OPTIONS = ['Lomba', 'Beasiswa', 'Bootcamp']
 const STATUS_OPTIONS = ['Buka', 'Tutup']
+const LOMBA_SUBCATS = ['Web Dev', 'Game Dev', 'UI/UX Design', 'Businessplan', 'Competitive Programming', 'Data Science']
 
 const emptyForm = { 
   judul: '', 
-  kategori: 'Penting', 
+  kategori: 'Lomba', 
+  sub_kategori: '',
   tanggal: '', 
   konten: '',
   status: 'Buka',
@@ -57,7 +59,8 @@ export default function AdminInfo() {
     setEditing(item)
     setForm({
       judul: item.judul || '',
-      kategori: item.kategori || 'Penting',
+      kategori: item.kategori || 'Lomba',
+      sub_kategori: item.sub_kategori || '',
       tanggal: item.tanggal || '',
       konten: item.konten || '',
       status: item.status || 'Buka',
@@ -118,6 +121,7 @@ export default function AdminInfo() {
     const payload = {
       judul: form.judul,
       kategori: form.kategori,
+      sub_kategori: form.kategori === 'Lomba' ? form.sub_kategori : null,
       tanggal: form.tanggal || null,
       konten: form.konten,
       status: form.status,
@@ -161,6 +165,7 @@ export default function AdminInfo() {
               <th>Poster</th>
               <th>Judul</th>
               <th>Kategori</th>
+              <th>Bidang Lomba</th>
               <th>Status</th>
               <th>Tenggat</th>
               <th></th>
@@ -180,6 +185,7 @@ export default function AdminInfo() {
                 </td>
                 <td style={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.judul}</td>
                 <td>{item.kategori}</td>
+                <td>{item.kategori === 'Lomba' ? (item.sub_kategori || '-') : '-'}</td>
                 <td>
                   <span className="status-pill" style={{ background: item.status === 'Buka' ? 'var(--teal-50)' : 'var(--rose-50)', color: item.status === 'Buka' ? 'var(--teal-600)' : 'var(--rose-600)' }}>
                     {item.status || 'Buka'}
@@ -207,7 +213,7 @@ export default function AdminInfo() {
             </label>
 
             <label>
-              Kategori
+              Kategori Utama
               <select value={form.kategori} onChange={(e) => setForm({ ...form, kategori: e.target.value })}>
                 {KATEGORI_OPTIONS.map((k) => (
                   <option key={k} value={k}>{k}</option>
@@ -223,6 +229,26 @@ export default function AdminInfo() {
                 ))}
               </select>
             </label>
+            
+            {form.kategori === 'Lomba' && (
+              <label style={{ gridColumn: '1 / -1' }}>
+                Bidang / Sub Kategori Lomba IT
+                <input 
+                  list="lomba-subcats"
+                  placeholder="Ketik sendiri atau pilih..."
+                  value={form.sub_kategori}
+                  onChange={(e) => setForm({ ...form, sub_kategori: e.target.value })}
+                />
+                <datalist id="lomba-subcats">
+                  {LOMBA_SUBCATS.map((sub, idx) => (
+                    <option key={idx} value={sub} />
+                  ))}
+                </datalist>
+                <small style={{ display: 'block', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                  Bisa dipilih dari list, atau ketik langsung bidang lain (contoh: IoT, Robotics, dsb).
+                </small>
+              </label>
+            )}
 
             <label>
               Tanggal Upload (Berita)
