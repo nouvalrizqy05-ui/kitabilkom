@@ -101,6 +101,33 @@ export default function AdminInfo() {
     setSaving(true)
     setError('')
 
+    // --- AUTO DELETE LOGIC ---
+    if (form.status === 'Tutup') {
+      if (!confirm('Anda mengatur status menjadi "Tutup". Info ini dan posternya akan DIHAPUS PERMANEN dari sistem. Lanjutkan?')) {
+        setSaving(false)
+        return
+      }
+
+      // If it's an existing item, delete the image and record
+      if (editing) {
+        if (editing.poster_url && editing.poster_url.includes('foto/')) {
+          try {
+            const path = editing.poster_url.split('foto/')[1]
+            if (path) await supabase.storage.from('foto').remove([path])
+          } catch (err) {
+            console.error('Failed to delete image', err)
+          }
+        }
+        await supabase.from('info_akademik').delete().eq('id', editing.id)
+      }
+      
+      setSaving(false)
+      setModalOpen(false)
+      load()
+      return
+    }
+    // -------------------------
+
     let finalPosterUrl = form.poster_url
 
     if (form.posterFile) {
