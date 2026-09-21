@@ -15,7 +15,6 @@ const emptyForm = {
   sub_kategori: '',
   tanggal: '', 
   konten: '',
-  status: 'Buka',
   batas_pendaftaran: '',
   link_pendaftaran: '',
   posterFile: null,
@@ -39,8 +38,40 @@ export default function AdminInfo() {
       .select('*')
       .neq('kategori', 'Artikel Publikasi')
       .order('tanggal', { ascending: false })
-    if (error) console.error(error)
-    setItems(data ?? [])
+      
+    if (error) {
+      console.error(error)
+      setLoading(false)
+      return
+    }
+
+    // --- AUTO CLEANUP SYSTEM ---
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    const validItems = []
+    
+    for (const item of (data || [])) {
+      if (item.batas_pendaftaran) {
+        const deadline = new Date(item.batas_pendaftaran)
+        deadline.setHours(0, 0, 0, 0)
+        
+        if (deadline < today) {
+          // EXPIRED! Auto delete from storage and DB
+          if (item.poster_url && item.poster_url.includes('foto/')) {
+            try {
+              const path = item.poster_url.split('foto/')[1]
+              if (path) await supabase.storage.from('foto').remove([path])
+            } catch (err) {}
+          }
+          await supabase.from('info_akademik').delete().eq('id', item.id)
+          continue // skip adding to validItems
+        }
+      }
+      validItems.push(item)
+    }
+
+    setItems(validItems)
     setLoading(false)
   }
 
@@ -63,7 +94,6 @@ export default function AdminInfo() {
       sub_kategori: item.sub_kategori || '',
       tanggal: item.tanggal || '',
       konten: item.konten || '',
-      status: item.status || 'Buka',
       batas_pendaftaran: item.batas_pendaftaran || '',
       link_pendaftaran: item.link_pendaftaran || '',
       posterFile: null,
@@ -101,33 +131,6 @@ export default function AdminInfo() {
     setSaving(true)
     setError('')
 
-    // --- AUTO DELETE LOGIC ---
-    if (form.status === 'Tutup') {
-      if (!confirm('Anda mengatur status menjadi "Tutup". Info ini dan posternya akan DIHAPUS PERMANEN dari sistem. Lanjutkan?')) {
-        setSaving(false)
-        return
-      }
-
-      // If it's an existing item, delete the image and record
-      if (editing) {
-        if (editing.poster_url && editing.poster_url.includes('foto/')) {
-          try {
-            const path = editing.poster_url.split('foto/')[1]
-            if (path) await supabase.storage.from('foto').remove([path])
-          } catch (err) {
-            console.error('Failed to delete image', err)
-          }
-        }
-        await supabase.from('info_akademik').delete().eq('id', editing.id)
-      }
-      
-      setSaving(false)
-      setModalOpen(false)
-      load()
-      return
-    }
-    // -------------------------
-
     let finalPosterUrl = form.poster_url
 
     if (form.posterFile) {
@@ -151,7 +154,6 @@ export default function AdminInfo() {
       sub_kategori: form.kategori === 'Lomba' ? form.sub_kategori : null,
       tanggal: form.tanggal || null,
       konten: form.konten,
-      status: form.status,
       batas_pendaftaran: form.batas_pendaftaran || null,
       link_pendaftaran: form.link_pendaftaran,
       poster_url: finalPosterUrl
@@ -193,7 +195,6 @@ export default function AdminInfo() {
               <th>Judul</th>
               <th>Kategori</th>
               <th>Bidang Lomba</th>
-              <th>Status</th>
               <th>Tenggat</th>
               <th></th>
             </tr>
@@ -213,11 +214,6 @@ export default function AdminInfo() {
                 <td style={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.judul}</td>
                 <td>{item.kategori}</td>
                 <td>{item.kategori === 'Lomba' ? (item.sub_kategori || '-') : '-'}</td>
-                <td>
-                  <span className="status-pill" style={{ background: item.status === 'Buka' ? 'var(--teal-50)' : 'var(--rose-50)', color: item.status === 'Buka' ? 'var(--teal-600)' : 'var(--rose-600)' }}>
-                    {item.status || 'Buka'}
-                  </span>
-                </td>
                 <td>{item.batas_pendaftaran || '-'}</td>
                 <td className="admin-table-actions">
                   <button onClick={() => openEdit(item)} aria-label="Edit"><Pencil size={16} /></button>
@@ -243,15 +239,6 @@ export default function AdminInfo() {
               Kategori Utama
               <select value={form.kategori} onChange={(e) => setForm({ ...form, kategori: e.target.value })}>
                 {KATEGORI_OPTIONS.map((k) => (
-                  <option key={k} value={k}>{k}</option>
-                ))}
-              </select>
-            </label>
-
-            <label>
-              Status Pendaftaran
-              <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
-                {STATUS_OPTIONS.map((k) => (
                   <option key={k} value={k}>{k}</option>
                 ))}
               </select>

@@ -71,15 +71,9 @@ export default function InfoAkademik() {
     const matchesSearch = item.judul?.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           item.konten?.toLowerCase().includes(searchQuery.toLowerCase())
     
-    let matchesStatus = true
-    if (statusFilter !== 'Semua') {
-      matchesStatus = (item.status || 'Buka') === statusFilter
-    }
-    
     let matchesSubKategori = true
     if (kategori === 'lomba' && subKategoriFilter !== 'Semua') {
       if (subKategoriFilter === 'Lainnya') {
-        // If 'Lainnya', match anything not in the predefined list (except 'Semua' and 'Lainnya')
         const predefined = LOMBA_IT_CATEGORIES.filter(c => c !== 'Semua' && c !== 'Lainnya')
         matchesSubKategori = !predefined.includes(item.sub_kategori)
       } else {
@@ -87,7 +81,7 @@ export default function InfoAkademik() {
       }
     }
 
-    return matchesSearch && matchesStatus && matchesSubKategori
+    return matchesSearch && matchesSubKategori
   })
 
   // Excerpt Helper for HTML content
@@ -242,17 +236,7 @@ export default function InfoAkademik() {
               </div>
             )}
 
-            <div className="info-filter-group">
-              {['Semua', 'Buka', 'Tutup'].map(status => (
-                <button 
-                  key={status}
-                  className={`info-filter-btn ${statusFilter === status ? 'active' : ''}`}
-                  onClick={() => setStatusFilter(status)}
-                >
-                  {status}
-                </button>
-              ))}
-            </div>
+            {/* Status filter removed */}
           </div>
 
           {/* CONTENT GRID */}
@@ -270,7 +254,6 @@ export default function InfoAkademik() {
           ) : (
             <div className="info-grid">
               {filteredItems.map((item) => {
-                const itemStatus = item.status || 'Buka';
                 return (
                 <div className="info-card" key={item.id}>
                   {/* Poster Area */}
@@ -286,9 +269,6 @@ export default function InfoAkademik() {
                   <div className="info-card-body">
                     <div className="info-card-header">
                       <h3 className="info-card-title">{item.judul}</h3>
-                      <span className={`info-status-badge ${itemStatus.toLowerCase()}`}>
-                        {itemStatus}
-                      </span>
                     </div>
 
                     <div className="info-card-deadline">
