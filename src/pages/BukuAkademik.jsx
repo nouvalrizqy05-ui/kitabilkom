@@ -14,7 +14,7 @@ export default function BukuAkademik() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('Semua')
   const [activeKategori, setActiveKategori] = useState('Semua')
-  const [visibleMatkul, setVisibleMatkul] = useState(8)
+  const [visibleMatkul, setVisibleMatkul] = useState(9)
   const [visibleBuku, setVisibleBuku] = useState(8)
   const [downloadingId, setDownloadingId] = useState(null)
   const [previewingId, setPreviewingId] = useState(null)
@@ -77,7 +77,7 @@ export default function BukuAkademik() {
   }, [items, selectedProdi, activeTab])
 
   // Reset visible counts whenever filters change
-  useEffect(() => { setVisibleMatkul(8) }, [activeTab, selectedProdi])
+  useEffect(() => { setVisibleMatkul(9) }, [activeTab, selectedProdi])
   useEffect(() => { setVisibleBuku(8) }, [activeKategori, selectedMatkul, searchQuery])
 
   const filtered = useMemo(() => {
@@ -361,12 +361,12 @@ export default function BukuAkademik() {
                   {visibleMatkul < availableCourses.length && (
                     <div style={{ textAlign: 'center', marginTop: '2rem' }}>
                       <button
-                        onClick={() => setVisibleMatkul(v => v + 8)}
+                        onClick={() => setVisibleMatkul(v => v + 9)}
                         style={{ background: 'transparent', border: '2px solid var(--gold-500)', color: 'var(--gold-600)', fontWeight: 700, padding: '0.65rem 2rem', borderRadius: '999px', cursor: 'pointer', fontSize: '0.95rem', transition: 'all 0.2s' }}
                         onMouseEnter={e => { e.target.style.background = 'var(--gold-500)'; e.target.style.color = '#1a0f00' }}
                         onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = 'var(--gold-600)' }}
                       >
-                        Lihat Lebih Banyak ({availableCourses.length - visibleMatkul} lagi)
+                        Lihat Lebih Banyak
                       </button>
                     </div>
                   )}
@@ -415,7 +415,7 @@ export default function BukuAkademik() {
                             onMouseEnter={e => { e.target.style.background = 'var(--gold-500)'; e.target.style.color = '#1a0f00' }}
                             onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = 'var(--gold-600)' }}
                           >
-                            Lihat Lebih Banyak ({filtered.length - visibleBuku} lagi)
+                            Lihat Lebih Banyak
                           </button>
                         </div>
                       )}
