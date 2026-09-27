@@ -128,12 +128,16 @@ export default function PublikasiDetail() {
             {/* Abstrak */}
             <div className="pub-detail-section">
               <h2 className="pub-section-heading">Abstrak</h2>
-              <div
-                className="pub-abstrak-content"
-                dangerouslySetInnerHTML={item.abstrak ? { __html: item.abstrak } : undefined}
-              >
-                {!item.abstrak && <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Abstrak tidak tersedia.</p>}
-              </div>
+              {item.abstrak ? (
+                <div
+                  className="pub-abstrak-content"
+                  dangerouslySetInnerHTML={{ __html: item.abstrak }}
+                />
+              ) : (
+                <div className="pub-abstrak-content">
+                  <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Abstrak tidak tersedia.</p>
+                </div>
+              )}
             </div>
 
             {/* Tautan DOI */}

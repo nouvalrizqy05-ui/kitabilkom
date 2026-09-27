@@ -168,10 +168,11 @@ export default function Publikasi() {
                   {/* Link ke halaman detail */}
                   <Link
                     to={`/publikasi/${item.id}`}
-                    className="btn-primary"
+                    className="btn-view-detail"
                     style={{
                       textAlign: 'center', display: 'flex', justifyContent: 'center',
-                      alignItems: 'center', gap: '8px', textDecoration: 'none', width: '100%'
+                      alignItems: 'center', gap: '8px', textDecoration: 'none', width: '100%',
+                      marginTop: 'auto'
                     }}
                   >
                     Lihat Detail <ArrowRight size={16} />
