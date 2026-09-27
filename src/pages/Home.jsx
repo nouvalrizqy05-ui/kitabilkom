@@ -303,14 +303,14 @@ export default function Home() {
                 return (
                   <PopAnim key={article.id} className="kegiatan-card" style={{ display: 'flex', flexDirection: 'column' }} delay={index * 0.1}>
                     <div className="kegiatan-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '1.5rem' }}>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--purple-600)', fontWeight: 700, marginBottom: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--gold-600)', fontWeight: 700, marginBottom: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Jurnal Akademik • {article.tahun}
                       </div>
-                      <h4 className="kegiatan-title" style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.8rem', lineHeight: 1.4, color: 'var(--navy-900)' }}>
+                      <h4 className="kegiatan-title" style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.8rem', lineHeight: 1.4, color: 'var(--text-primary)' }}>
                         {article.judul}
                       </h4>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--gray-600)', marginBottom: '1.5rem', flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Users size={16} strokeWidth={2} color="var(--gray-400)" /> 
+                      <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem', flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Users size={16} strokeWidth={2} style={{ color: 'inherit', opacity: 0.7 }} /> 
                         {article.penulis || 'Mahasiswa Ilmu Komputer'}
                       </p>
                       <Link to="/publikasi" className="kegiatan-readmore" style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--gold-500)', fontWeight: 600, fontSize: '0.9rem', textDecoration: 'none' }}>

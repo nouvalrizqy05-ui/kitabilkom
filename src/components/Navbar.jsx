@@ -63,7 +63,7 @@ export default function Navbar() {
           <Link to="/buku-akademik" className={`nav-link-custom ${location.pathname === '/buku-akademik' ? 'active' : ''}`}>Buku Akademik</Link>
           <Link to="/info-akademik" className={`nav-link-custom ${location.pathname === '/info-akademik' ? 'active' : ''}`}>Info Akademik</Link>
           <Link to="/dosen" className={`nav-link-custom ${location.pathname === '/dosen' ? 'active' : ''}`}>Dosen</Link>
-          <Link to="/publikasi" className={`nav-link-custom ${location.pathname === '/publikasi' ? 'active' : ''}`}>Database Artikel</Link>
+          <Link to="/publikasi" className={`nav-link-custom ${location.pathname === '/publikasi' ? 'active' : ''}`}>Publikasi</Link>
             {isAdmin && (
               <Link to="/admin" className={`nav-link-custom ${location.pathname.startsWith('/admin') ? 'active' : ''}`}>Dashboard Admin</Link>
             )}

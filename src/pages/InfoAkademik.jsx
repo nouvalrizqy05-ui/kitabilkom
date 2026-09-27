@@ -66,11 +66,31 @@ export default function InfoAkademik() {
     }
   }, [kategori])
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const ITEMS_PER_PAGE = 9
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [kategori, searchQuery, subKategoriFilter])
+
   // Filter Logic
   const filteredItems = items.filter(item => {
+    // 1. Deadline check
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const deadlineStr = item.batas_pendaftaran || item.tanggal
+    if (deadlineStr) {
+      const deadlineDate = new Date(deadlineStr)
+      if (deadlineDate < today) {
+        return false // exclude past items
+      }
+    }
+
+    // 2. Search check
     const matchesSearch = item.judul?.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           item.konten?.toLowerCase().includes(searchQuery.toLowerCase())
     
+    // 3. SubKategori check
     let matchesSubKategori = true
     if (kategori === 'lomba' && subKategoriFilter !== 'Semua') {
       if (subKategoriFilter === 'Lainnya') {
@@ -84,8 +104,15 @@ export default function InfoAkademik() {
     return matchesSearch && matchesSubKategori
   })
 
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE)
+  const paginatedItems = filteredItems.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  )
+
   // Excerpt Helper for HTML content
-  const createExcerpt = (htmlContent, maxLen = 90) => {
+  const createExcerpt = (htmlContent, maxLen = 300) => {
     if (!htmlContent) return ''
     const tmp = document.createElement("DIV")
     tmp.innerHTML = htmlContent
@@ -249,51 +276,67 @@ export default function InfoAkademik() {
 
           {loading ? (
             <Spinner text={`Memuat info ${kategoriTitle.toLowerCase()}...`} />
-          ) : filteredItems.length === 0 ? (
+          ) : paginatedItems.length === 0 ? (
             <p className="empty-state">Tidak ada informasi yang sesuai dengan filter/pencarian Anda.</p>
           ) : (
-            <div className="info-grid">
-              {filteredItems.map((item) => {
-                return (
-                <div className="info-card" key={item.id}>
-                  {/* Poster Area */}
-                  <div className="info-card-poster">
-                    {item.poster_url ? (
-                      <img src={getDriveImageUrl(item.poster_url)} alt={item.judul} />
-                    ) : (
-                      <div className="info-card-no-poster">Tanpa Poster</div>
-                    )}
-                  </div>
-                  
-                  {/* Body Area */}
-                  <div className="info-card-body">
-                    <div className="info-card-header">
-                      <h3 className="info-card-title">{item.judul}</h3>
-                    </div>
-
-                    <div className="info-card-deadline">
-                      Batas Pendaftaran : {formatDate(item.batas_pendaftaran || item.tanggal)}
+            <>
+              <div className="info-grid">
+                {paginatedItems.map((item) => {
+                  return (
+                  <div className="info-card" key={item.id}>
+                    {/* Poster Area */}
+                    <div className="info-card-poster">
+                      {item.poster_url ? (
+                        <img src={getDriveImageUrl(item.poster_url)} alt={item.judul} />
+                      ) : (
+                        <div className="info-card-no-poster">Tanpa Poster</div>
+                      )}
                     </div>
                     
-                    {kategori === 'lomba' && item.sub_kategori && (
-                      <div style={{ display: 'inline-block', background: 'rgba(255,193,7,0.2)', color: 'var(--gold-600)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, marginBottom: '0.5rem' }}>
-                        {item.sub_kategori}
+                    {/* Body Area */}
+                    <div className="info-card-body">
+                      <div className="info-card-header">
+                        <h3 className="info-card-title">{item.judul}</h3>
                       </div>
-                    )}
 
-                    <div className="info-card-excerpt">
-                      {createExcerpt(item.konten)}
-                    </div>
+                      <div className="info-card-deadline">
+                        Batas Pendaftaran : {formatDate(item.batas_pendaftaran || item.tanggal)}
+                      </div>
+                      
+                      {kategori === 'lomba' && item.sub_kategori && (
+                        <div style={{ display: 'inline-block', background: 'rgba(255,193,7,0.2)', color: 'var(--gold-600)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+                          {item.sub_kategori}
+                        </div>
+                      )}
 
-                    <div className="info-card-footer">
-                      <button className="info-btn-outline" onClick={() => setSelected(item)}>
-                        Lihat Detail &rarr;
-                      </button>
+                      <div className="info-card-excerpt">
+                        {createExcerpt(item.konten)}
+                      </div>
+
+                      <div className="info-card-footer">
+                        <button className="info-btn-outline" onClick={() => setSelected(item)}>
+                          Lihat Detail &rarr;
+                        </button>
+                      </div>
                     </div>
                   </div>
+                )})}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="pagination-container" style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '3rem', flexWrap: 'wrap' }}>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      className={`pagination-btn ${page === currentPage ? 'active' : ''}`}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
                 </div>
-              )})}
-            </div>
+              )}
+            </>
           )}
         </div>
 

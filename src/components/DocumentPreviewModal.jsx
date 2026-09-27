@@ -1,6 +1,6 @@
-import { X, FileText } from 'lucide-react'
+import { X, FileText, Download } from 'lucide-react'
 
-export default function DocumentPreviewModal({ data, onClose }) {
+export default function DocumentPreviewModal({ data, onClose, onDownload }) {
   if (!data) return null
 
   return (
@@ -13,8 +13,13 @@ export default function DocumentPreviewModal({ data, onClose }) {
             <h3>{data.title}</h3>
           </div>
           <div className="preview-modal-actions">
+            {onDownload && (
+              <button className="preview-btn download" onClick={onDownload} title="Unduh">
+                <Download size={20} />
+              </button>
+            )}
             <button className="preview-btn close" onClick={onClose} title="Tutup">
-              <X size={24} />
+              <X size={20} />
             </button>
           </div>
         </div>
