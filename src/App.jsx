@@ -10,6 +10,7 @@ import ResetPassword from './pages/ResetPassword'
 import BukuAkademik from './pages/BukuAkademik'
 import InfoAkademik from './pages/InfoAkademik'
 import Publikasi from './pages/Publikasi'
+import PublikasiDetail from './pages/PublikasiDetail'
 import DosenIlkom from './pages/DosenIlkom'
 
 import Bantuan from './pages/Bantuan'
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/info-akademik" element={<PageTransition><InfoAkademik /></PageTransition>} />
             <Route path="/info-akademik/:kategori" element={<PageTransition><InfoAkademik /></PageTransition>} />
             <Route path="/publikasi" element={<PageTransition><Publikasi /></PageTransition>} />
+            <Route path="/publikasi/:id" element={<PageTransition><PublikasiDetail /></PageTransition>} />
             <Route path="/dosen" element={<PageTransition><DosenIlkom /></PageTransition>} />
             <Route path="/bantuan" element={<PageTransition><Bantuan /></PageTransition>} />
             <Route path="/aspirasi" element={<PageTransition><Aspirasi /></PageTransition>} />
