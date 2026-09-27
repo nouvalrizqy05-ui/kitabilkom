@@ -43,7 +43,7 @@ export default function Navbar() {
       <div className="navbar-container-custom">
         {/* Logo Section */}
         <Link to="/" className="navbar-brand-custom">
-          <img src="/assets/logo-ilkom.png" alt="Logo" className="navbar-logo-custom" />
+          <img src="/assets/logo-ilkom-benar.png" alt="Logo" className="navbar-logo-custom" />
           <span className="navbar-brand-text">KITAB ILKOM</span>
         </Link>
 

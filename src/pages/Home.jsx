@@ -122,7 +122,7 @@ export default function Home() {
           <PopAnim className="hero-content-custom">
             <div className="hero-brand-logo">
               <div className="hero-logos-wrapper">
-                <img src="/assets/logo-ilkom.png" alt="Logo Ilkom" className="hero-brand-mark" />
+                <img src="/assets/logo-ilkom-benar.png" alt="Logo Ilkom" className="hero-brand-mark" />
                 <img src="/assets/logo-astasae.png" alt="Logo Astasae" className="hero-brand-mark" />
               </div>
               <div className="hero-brand-name">

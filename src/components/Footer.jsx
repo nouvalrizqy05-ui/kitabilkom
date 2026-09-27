@@ -43,7 +43,7 @@ export default function Footer() {
             <div className="footer-main">
               <div className="footer-brand">
                 <div className="footer-logos">
-                  <img src="/assets/logo-ilkom.png" alt="Logo Ilmu Komputer" className="footer-logo-img" />
+                  <img src="/assets/logo-ilkom-benar.png" alt="Logo Ilmu Komputer" className="footer-logo-img" />
                   <img src="/assets/logo-astasae.png" alt="Logo Astasae" className="footer-logo-img" />
                 </div>
                 <div className="footer-brand-info">
