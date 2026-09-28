@@ -1302,13 +1302,18 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1.25rem 1.5rem;
+  background: rgba(207, 156, 42, 0.08);
+}
+
+.bantuan-sop-icon {
+  color: var(--gold-600);
 }
 
 .bantuan-sop-card-header h3 {
   font-family: var(--font-display);
   font-size: 1.15rem;
   margin: 0;
-  color: var(--text-primary);
+  color: var(--gold-700);
 }
 
 .bantuan-sop-steps {
@@ -1342,6 +1347,8 @@
   justify-content: center;
   font-weight: 700;
   font-size: 0.8rem;
+  background: rgba(207, 156, 42, 0.1);
+  color: var(--gold-600);
 }
 
 /* Responsive */
@@ -2278,7 +2285,9 @@
 .dark .bantuan-faq-question:hover { color: var(--gold-400); }
 .dark .bantuan-faq-item.open { border-color: var(--gold-500); box-shadow: 0 4px 16px rgba(207, 156, 42, 0.2); }
 .dark .bantuan-faq-item.open .bantuan-faq-chevron { color: var(--gold-400); }
-.dark .bantuan-step-number { opacity: 0.9; }
+.dark .bantuan-sop-icon { color: var(--gold-400); }
+.dark .bantuan-sop-card-header h3 { color: var(--gold-400); }
+.dark .bantuan-step-number { background: rgba(207, 156, 42, 0.15); color: var(--gold-400); }
 
 /* ==================== RESPONSIVE CONTENT ==================== */
 @media (max-width: 768px) {

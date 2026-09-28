@@ -190,14 +190,14 @@ export default function Bantuan() {
                 const Icon = sop.icon
                 return (
                   <div className="bantuan-sop-card" key={i}>
-                    <div className="bantuan-sop-card-header" style={{ background: sop.bg }}>
-                      <Icon size={24} style={{ color: sop.color }} />
-                      <h3 style={{ color: sop.color }}>{sop.title}</h3>
+                    <div className="bantuan-sop-card-header">
+                      <Icon size={24} className="bantuan-sop-icon" />
+                      <h3>{sop.title}</h3>
                     </div>
                     <ol className="bantuan-sop-steps">
                       {sop.steps.map((step, j) => (
                         <li key={j}>
-                          <span className="bantuan-step-number" style={{ background: sop.bg, color: sop.color }}>{j + 1}</span>
+                          <span className="bantuan-step-number">{j + 1}</span>
                           <span>{step}</span>
                         </li>
                       ))}
@@ -211,22 +211,20 @@ export default function Bantuan() {
           {/* ===== LAYANAN ASPIRASI ===== */}
           <div className="bantuan-section" style={{ marginTop: '4rem', textAlign: 'center' }}>
             <div className="bantuan-section-header" style={{ justifyContent: 'center' }}>
-              <MessageSquare size={28} />
               <h2>Layanan Aspirasi Mahasiswa</h2>
             </div>
-            <p style={{ color: 'var(--gray-600)', marginBottom: '2rem', fontSize: '1rem' }}>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '1rem' }}>
               Punya keluhan fasilitas, pertanyaan khusus, kritik, atau saran untuk Ilmu Komputer? Suarakan di sini!
             </p>
             <div className="bantuan-quick-actions" style={{ display: 'flex', justifyContent: 'center' }}>
-              <Link to="/aspirasi" className="bantuan-action-card bantuan-action-aspirasi" style={{ maxWidth: '600px', width: '100%', textAlign: 'left' }}>
-                <div className="bantuan-action-icon">
-                  <Send size={24} />
+              <Link to="/aspirasi" className="info-banner banner-card-theme" style={{ textDecoration: 'none', maxWidth: '600px', width: '100%', textAlign: 'left', minHeight: 'auto', padding: '2rem' }}>
+                <div className="banner-content">
+                  <h3 className="banner-title" style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}>Sampaikan Aspirasi</h3>
+                  <p className="banner-desc">Klik di sini untuk mengisi formulir aspirasi HIMA secara rahasia dan aman.</p>
                 </div>
-                <div className="bantuan-action-text">
-                  <h3>Sampaikan Aspirasi</h3>
-                  <p>Klik di sini untuk mengisi formulir aspirasi HIMA secara rahasia dan aman.</p>
+                <div className="banner-icon">
+                  <Send size={70} color="var(--gold-500)" strokeWidth={1.5} />
                 </div>
-                <ChevronRight className="bantuan-action-arrow" size={20} />
               </Link>
             </div>
           </div>
