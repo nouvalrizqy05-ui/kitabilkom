@@ -77,7 +77,7 @@
 }
 
 .btn-primary:hover {
-  background: var(--navy-700);
+  background: var(--gold-700);
   transform: translateY(-1px);
 }
 
@@ -2204,7 +2204,7 @@
 /* ==================== INFO AKADEMIK REVAMP ==================== */
 .info-tools-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem; }
 .info-search-wrapper { position: relative; flex: 1 1 300px; max-width: 400px; }
-.info-search-input { width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: var(--radius-lg); border: 1px solid var(--gray-300); font-family: var(--font-body); font-size: 0.95rem; background: white; color: var(--navy-900); }
+.info-search-input { width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: var(--radius-lg); border: 1px solid var(--gray-300); font-family: var(--font-body); font-size: 0.95rem; background: white; color: var(--text-primary); }
 .dark .info-search-input { background: var(--bg-surface); border-color: var(--border-color); color: var(--text-primary); }
 .info-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gray-400); }
 .info-filter-group { display: flex; gap: 0.5rem; }
@@ -2717,3 +2717,14 @@
   }
 }
 
+/* Admin Search and Pagination Styles */
+.admin-search-box { position: relative; display: flex; align-items: center; }
+.admin-search-icon { position: absolute; left: 10px; color: var(--gray-500); }
+.dark .admin-search-icon { color: var(--text-muted); }
+.admin-search-input { padding: 0.5rem 0.5rem 0.5rem 2rem; border-radius: 6px; border: 1px solid var(--gray-300); font-size: 0.9rem; background: white; color: var(--text-primary); min-width: 250px; }
+.dark .admin-search-input { background: var(--bg-base); border-color: var(--border-color); color: var(--text-primary); }
+.admin-filter-select { padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px solid var(--gray-300); font-size: 0.9rem; background: white; color: var(--text-primary); }
+.dark .admin-filter-select { background: var(--bg-base); border-color: var(--border-color); color: var(--text-primary); }
+.admin-pagination { display: flex; gap: 0.25rem; justify-content: center; margin-top: 1.5rem; }
+.admin-table-scroll { overflow-x: auto; width: 100%; }
+.pagination-btn.active { background: var(--gold-600); color: white; border-color: var(--gold-600); }

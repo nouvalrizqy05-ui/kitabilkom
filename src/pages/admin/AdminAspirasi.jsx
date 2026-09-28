@@ -1,15 +1,18 @@
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '../../lib/supabaseClient'
-import { CheckCircle, Clock, Trash2, MessageSquare, Eye, X, Send, Paperclip, User } from 'lucide-react'
+import { CheckCircle, Clock, Trash2, MessageSquare, Eye, X, Send, Paperclip, User, Search } from 'lucide-react'
+
+const PAGE_SIZE = 10
 
 export default function AdminAspirasi() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
-
-  // Discussion state
   const [activeTicket, setActiveTicket] = useState(null)
   const [discussionInput, setDiscussionInput] = useState('')
   const discussionEndRef = useRef(null)
+  
+  const [searchQuery, setSearchQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   const load = async () => {
     setLoading(true)
@@ -19,9 +22,7 @@ export default function AdminAspirasi() {
     setLoading(false)
   }
 
-  useEffect(() => {
-    load()
-  }, [])
+  useEffect(() => { load() }, [])
 
   useEffect(() => {
     const channel = supabase
@@ -34,9 +35,7 @@ export default function AdminAspirasi() {
         setItems(prev => [payload.new, ...prev])
       })
       .subscribe()
-    return () => {
-      supabase.removeChannel(channel)
-    }
+    return () => { supabase.removeChannel(channel) }
   }, [])
 
   useEffect(() => {
@@ -77,76 +76,99 @@ export default function AdminAspirasi() {
 
     try {
       await supabase.from('aspirasi').update({ discussion: updatedDisc }).eq('id', activeTicket.id)
-      load() // refresh list in background
-    } catch (err) {
-      console.error('Failed to send discussion', err)
-    }
+      load() 
+    } catch (err) { console.error('Failed to send discussion', err) }
   }
+
+  const filtered = items.filter(item => {
+    const q = searchQuery.toLowerCase()
+    return !q || item.judul?.toLowerCase().includes(q) || item.nama?.toLowerCase().includes(q) || item.user_email?.toLowerCase().includes(q) || item.kategori?.toLowerCase().includes(q)
+  })
+  
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
 
   return (
     <div>
       <div className="admin-panel-header">
-        <h2>Kelola Aspirasi Mahasiswa ({items.length})</h2>
+        <h2>Kelola Aspirasi Mahasiswa ({filtered.length})</h2>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <div className="admin-search-box">
+            <Search size={15} className="admin-search-icon" />
+            <input className="admin-search-input" placeholder="Cari judul, nama, email..." value={searchQuery} onChange={e => { setSearchQuery(e.target.value); setCurrentPage(1) }} />
+          </div>
+        </div>
       </div>
 
       {loading ? (
         <p className="empty-state">Memuat...</p>
-      ) : items.length === 0 ? (
+      ) : paginated.length === 0 ? (
         <div className="empty-state" style={{ padding: '3rem', textAlign: 'center' }}>
           <MessageSquare size={48} style={{ color: 'var(--text-muted)', margin: '0 auto 1rem' }} />
-          <p>Belum ada aspirasi yang masuk.</p>
+          <p>{searchQuery ? 'Tidak ada data ditemukan untuk pencarian ini.' : 'Belum ada aspirasi yang masuk.'}</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {items.map((item) => (
-            <div key={item.id} style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <span style={{ display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600, background: 'var(--purple-100)', color: 'var(--purple-700)', marginBottom: '0.5rem' }}>
-                    {item.kategori}
-                  </span>
-                  <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '0.2rem' }}>{item.judul}</h3>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                    Dari: <strong>{item.nama}</strong> ({item.user_email}) &bull; {new Date(item.created_at).toLocaleDateString('id-ID')}
-                  </p>
+        <>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {paginated.map((item) => (
+              <div key={item.id} style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <span style={{ display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600, background: 'var(--gold-100)', color: 'var(--gold-700)', border: '1px solid var(--gold-200)', marginBottom: '0.5rem' }}>
+                      {item.kategori}
+                    </span>
+                    <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '0.2rem' }}>{item.judul}</h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                      Dari: <strong>{item.nama}</strong> ({item.user_email}) &bull; {new Date(item.created_at).toLocaleDateString('id-ID')}
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {item.status === 'pending' ? (
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--orange-600)', background: 'var(--orange-100)', padding: '0.4rem 0.8rem', borderRadius: 'var(--radius-md)' }}>
+                        <Clock size={14} /> Menunggu
+                      </span>
+                    ) : (
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--green-600)', background: 'var(--green-100)', padding: '0.4rem 0.8rem', borderRadius: 'var(--radius-md)' }}>
+                        <CheckCircle size={14} /> Selesai
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+
+                <div style={{ background: 'var(--bg-base)', padding: '1rem', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', color: 'var(--text-primary)', whiteSpace: 'pre-wrap', lineHeight: 1.6, border: '1px solid var(--border-color)' }}>
+                  {item.deskripsi}
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                  <button onClick={() => setActiveTicket(item)} className="btn-primary-small" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                    <Eye size={14} /> Diskusi ({item.discussion?.length || 0})
+                  </button>
                   {item.status === 'pending' ? (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--orange-600)', background: 'var(--orange-100)', padding: '0.4rem 0.8rem', borderRadius: 'var(--radius-md)' }}>
-                      <Clock size={14} /> Menunggu
-                    </span>
+                    <button onClick={() => handleUpdateStatus(item.id, 'selesai')} className="btn-primary-small" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                      <CheckCircle size={14} /> Tandai Selesai
+                    </button>
                   ) : (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--green-600)', background: 'var(--green-100)', padding: '0.4rem 0.8rem', borderRadius: 'var(--radius-md)' }}>
-                      <CheckCircle size={14} /> Selesai
-                    </span>
+                    <button onClick={() => handleUpdateStatus(item.id, 'pending')} className="btn-secondary-small" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                      <Clock size={14} /> Tandai Menunggu
+                    </button>
                   )}
+                  <button onClick={() => handleDelete(item.id)} className="btn-secondary-small" style={{ color: 'var(--red-600)', borderColor: 'var(--red-200)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                    <Trash2 size={14} /> Hapus
+                  </button>
                 </div>
               </div>
-
-              <div style={{ background: 'var(--bg-base)', padding: '1rem', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', color: 'var(--text-primary)', whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
-                {item.deskripsi}
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-                <button onClick={() => setActiveTicket(item)} className="btn-primary-small" style={{ background: 'var(--gold-600)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                  <Eye size={14} /> Diskusi ({item.discussion?.length || 0})
-                </button>
-                {item.status === 'pending' ? (
-                  <button onClick={() => handleUpdateStatus(item.id, 'selesai')} className="btn-primary-small" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                    <CheckCircle size={14} /> Tandai Selesai
-                  </button>
-                ) : (
-                  <button onClick={() => handleUpdateStatus(item.id, 'pending')} className="btn-secondary-small" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                    <Clock size={14} /> Tandai Menunggu
-                  </button>
-                )}
-                <button onClick={() => handleDelete(item.id)} className="btn-secondary-small" style={{ color: 'var(--red-600)', borderColor: 'var(--red-200)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                  <Trash2 size={14} /> Hapus
-                </button>
-              </div>
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <div className="admin-pagination" style={{ marginTop: '1.5rem' }}>
+              <button className="pagination-btn" onClick={() => setCurrentPage(p => Math.max(1, p-1))} disabled={currentPage===1}>&laquo;</button>
+              {[...Array(totalPages)].map((_, i) => (
+                <button key={i} className={`pagination-btn ${currentPage===i+1?'active':''}`} onClick={() => setCurrentPage(i+1)}>{i+1}</button>
+              ))}
+              <button className="pagination-btn" onClick={() => setCurrentPage(p => Math.min(totalPages, p+1))} disabled={currentPage===totalPages}>&raquo;</button>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
 
       {/* Discussion Modal */}
