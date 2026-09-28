@@ -138,7 +138,7 @@ export default function Bantuan() {
              <div className="banner-buku-vline"></div>
           </div>
           <div className="banner-buku-center-text">
-            <span className="banner-buku-subtitle">PUSAT BANTUAN</span>
+            <span className="banner-buku-subtitle">PUSAT</span>
             <h1 className="banner-buku-title">BANTUAN MAHASISWA</h1>
           </div>
           <div className="banner-buku-speech-bubble">Ada yang bisa<br/>kami bantu?</div>
