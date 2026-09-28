@@ -156,7 +156,7 @@
   border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  height: 600px;
+  min-height: 400px; max-height: 600px; height: auto;
   overflow: hidden;
 }
 
@@ -316,7 +316,7 @@
 .discussion-container {
   display: flex;
   flex-direction: column;
-  height: 650px;
+  min-height: 400px; max-height: 650px; height: auto;
   background: var(--bg-surface);
   border-radius: 8px;
   border: 1px solid var(--border-color);
@@ -484,7 +484,7 @@
   }
 
   .discussion-container, .chat-container {
-    height: 75vh;
+    min-height: 50vh; max-height: 75vh; height: auto;
   }
 
   .discussion-body {

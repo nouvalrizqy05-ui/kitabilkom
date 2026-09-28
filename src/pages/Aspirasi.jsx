@@ -188,7 +188,7 @@ export default function Aspirasi() {
           setMessages(msgPrev => [...msgPrev, { 
             sender: 'agent', 
             text: 'Identitas ditemukan dengan data:\n\nNama: ' + newData.nama + '\nRole: ' + newData.role + '\nIdentitas: ' + nim + '\nEmail: ' + (user?.email || 'Guest') + '\n\nApakah data sudah benar kak?',
-            options: ['Ya, Data Sudah Benar']
+            options: ['Ya, Data Sudah Benar', 'Belum, Ulangi']
           }])
           return newData
         })
@@ -207,10 +207,16 @@ export default function Aspirasi() {
         setMessages(prev => [...prev, { sender: 'agent', text: 'Boleh dibantu tuliskan NIM/Identitas-nya kak ' + userData.nama + '? Pastikan valid ya kak, karena digunakan untuk tracking nomor tiket' }])
         setChatStep(3)
       } else if (chatStep === 4) {
-        const token = Math.random().toString(36).substring(2, 7).toUpperCase()
-        setGeneratedToken(token)
-        setMessages(prev => [...prev, { sender: 'agent', text: 'Terima kasih! Kode tiket Anda berhasil dibuat: **' + token + '**.\n\nSilakan kembali ke Dashboard dan masukkan token tersebut untuk melanjutkan pengisian form.' }])
-        setChatStep(5)
+        if (option === 'Belum, Ulangi') {
+          setUserData({ nama: '', role: '', nim: '' })
+          setMessages(prev => [...prev, { sender: 'agent', text: 'Baik kak, mari kita ulang dari awal. Mohon isikan nama lengkapnya yaa!' }])
+          setChatStep(1)
+        } else {
+          const token = Math.random().toString(36).substring(2, 7).toUpperCase()
+          setGeneratedToken(token)
+          setMessages(prev => [...prev, { sender: 'agent', text: 'Terima kasih! Kode tiket Anda berhasil dibuat: **' + token + '**.\n\nSilakan kembali ke Dashboard dan masukkan token tersebut untuk melanjutkan pengisian form.' }])
+          setChatStep(5)
+        }
       }
     }, 500)
   }
