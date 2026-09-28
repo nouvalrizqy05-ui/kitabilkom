@@ -514,3 +514,7 @@
     padding: 1rem !important;
   }
 }
+
+/* DARK MODE FIXES */
+.dark .discussion-text.user { background: rgba(207, 156, 42, 0.15); border: 1px solid var(--gold-600); }
+.dark .helpdesk-table-header-row select { background: var(--bg-surface); color: var(--text-primary); border-color: var(--border-color); }

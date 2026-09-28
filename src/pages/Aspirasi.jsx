@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
 import { Send, CheckCircle, Ticket, User, Home, Settings, Eye, Star, Plus, X, Paperclip } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Aspirasi() {
   const { user, profile } = useAuth()
@@ -49,24 +50,93 @@ export default function Aspirasi() {
     fetchTickets()
   }, [user])
 
+  // Filter, Pagination, Sort & Toast states
+  const [filterStatus, setFilterStatus] = useState('Semua')
+  const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' })
+  const [currentPage, setCurrentPage] = useState(1)
+  const ITEMS_PER_PAGE = 5
+  const [toastMsg, setToastMsg] = useState(null)
+
   useEffect(() => {
+    if (!user?.email) return
     const channel = supabase
       .channel('realtime_aspirasi_user')
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'aspirasi' }, (payload) => {
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'aspirasi', filter: `user_email=eq.${user.email}` }, (payload) => {
         setTickets(prev => prev.map(t => t.id === payload.new.id ? payload.new : t))
         setActiveTicket(prev => prev?.id === payload.new.id ? payload.new : prev)
+        setToastMsg('Pembaruan pada tiket: ' + payload.new.judul)
+        setTimeout(() => setToastMsg(null), 4000)
       })
       .subscribe()
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [])
+  }, [user])
 
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
   }, [messages])
+
+  const calculateResponseTime = (ticket) => {
+    if (!ticket.discussion || !Array.isArray(ticket.discussion)) return 'Belum ditanggapi'
+    const adminReply = ticket.discussion.find(msg => msg.sender === 'admin')
+    if (!adminReply) return 'Belum ditanggapi'
+    
+    const start = new Date(ticket.created_at)
+    const end = new Date(adminReply.timestamp)
+    const diffMs = end - start
+    const diffMins = Math.floor(diffMs / 60000)
+    
+    if (diffMins < 1) return '< 1 menit setelahnya'
+    if (diffMins < 60) return diffMins + ' menit setelahnya'
+    const diffHours = Math.floor(diffMins / 60)
+    return diffHours + ' jam setelahnya'
+  }
+
+  const requestSort = (key) => {
+    let direction = 'asc'
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc'
+    }
+    setSortConfig({ key, direction })
+  }
+
+  const getProcessedTickets = () => {
+    let result = [...tickets]
+
+    if (filterStatus !== 'Semua') {
+      result = result.filter(t => (t.status || '').toLowerCase() === filterStatus.toLowerCase())
+    }
+
+    result.sort((a, b) => {
+      if (sortConfig.key === 'status') {
+        const valA = (a.status || '').toLowerCase()
+        const valB = (b.status || '').toLowerCase()
+        if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1
+        if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1
+        return 0
+      } else if (sortConfig.key === 'time_taken') {
+        const dateA = new Date(a.created_at).getTime()
+        const dateB = new Date(b.created_at).getTime()
+        return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA
+      } else if (sortConfig.key === 'taken_by') {
+        const valA = calculateResponseTime(a).toLowerCase()
+        const valB = calculateResponseTime(b).toLowerCase()
+        if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1
+        if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1
+        return 0
+      }
+      return 0
+    })
+
+    return result
+  }
+
+  const processedTickets = getProcessedTickets()
+  const totalPages = Math.max(1, Math.ceil(processedTickets.length / ITEMS_PER_PAGE))
+  const paginatedTickets = processedTickets.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
 
   const fetchTickets = async () => {
     if (!user) {
@@ -204,22 +274,6 @@ export default function Aspirasi() {
     }
   }
 
-  const calculateResponseTime = (ticket) => {
-    if (!ticket.discussion || !Array.isArray(ticket.discussion)) return 'Belum ditanggapi'
-    const adminReply = ticket.discussion.find(msg => msg.sender === 'admin')
-    if (!adminReply) return 'Belum ditanggapi'
-    
-    const start = new Date(ticket.created_at)
-    const end = new Date(adminReply.timestamp)
-    const diffMs = end - start
-    const diffMins = Math.floor(diffMs / 60000)
-    
-    if (diffMins < 1) return '< 1 menit setelahnya'
-    if (diffMins < 60) return diffMins + ' menit setelahnya'
-    const diffHours = Math.floor(diffMins / 60)
-    return diffHours + ' jam setelahnya'
-  }
-
   const renderStars = (rating) => {
     const val = rating || 0
     return [1,2,3,4,5].map(n => <Star key={n} size={12} fill={n <= val ? "#ffc107" : "transparent"} color={n <= val ? "#ffc107" : "#ccc"}/>)
@@ -257,6 +311,31 @@ export default function Aspirasi() {
 
   return (
     <div className="helpdesk-layout">
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMsg && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, x: 20 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: -20, x: 20 }}
+            style={{
+              position: 'fixed',
+              top: '80px',
+              right: '20px',
+              background: 'var(--gold-600)',
+              color: '#fff',
+              padding: '1rem 1.5rem',
+              borderRadius: '8px',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+              zIndex: 9999,
+              fontWeight: 600
+            }}
+          >
+            {toastMsg}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* MAIN CONTENT FULL WIDTH */}
       <div className="helpdesk-main" style={{ margin: '0 auto', maxWidth: '1200px' }}>
         {/* Top Navbar Header */}
@@ -288,9 +367,14 @@ export default function Aspirasi() {
               </button>
             </div>
 
-            <div className="helpdesk-table-container">
-              <div className="helpdesk-table-header-row">
-                <h3 style={{ margin: 0, fontSize: '1rem', color: '#333' }}>Daftar Tickets<br/><span style={{ fontSize: '0.8rem', color: '#888', fontWeight: 'normal' }}>Manajemen data Tickets</span></h3>
+            <div className="helpdesk-table-container" style={{ marginTop: '2rem' }}>
+              <div className="helpdesk-table-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--text-primary)' }}>Daftar Tickets<br/><span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 'normal' }}>Manajemen data Tickets</span></h3>
+                <select value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setCurrentPage(1); }} style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-primary)', outline: 'none' }}>
+                  <option value="Semua">Semua Status</option>
+                  <option value="pending">Menunggu</option>
+                  <option value="selesai">Selesai</option>
+                </select>
               </div>
               <table className="helpdesk-table">
                 <thead>
@@ -298,9 +382,9 @@ export default function Aspirasi() {
                     <th>Nomor Ticket</th>
                     <th>Topic</th>
                     <th>Uraian</th>
-                    <th>Taken By</th>
-                    <th>Time Taken</th>
-                    <th>Status</th>
+                    <th onClick={() => requestSort('taken_by')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Taken By {sortConfig.key === 'taken_by' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↕'}</th>
+                    <th onClick={() => requestSort('time_taken')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Time Taken {sortConfig.key === 'time_taken' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↕'}</th>
+                    <th onClick={() => requestSort('status')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Status {sortConfig.key === 'status' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '↕'}</th>
                     <th>Rating</th>
                     <th>Aksi</th>
                   </tr>
@@ -308,10 +392,10 @@ export default function Aspirasi() {
                 <tbody>
                   {loadingTickets ? (
                     <tr><td colSpan="8" style={{ textAlign: 'center' }}>Memuat tiket...</td></tr>
-                  ) : tickets.length === 0 ? (
-                    <tr><td colSpan="8" style={{ textAlign: 'center', padding: '3rem 1rem' }}>Belum ada tiket yang diajukan.</td></tr>
+                  ) : processedTickets.length === 0 ? (
+                    <tr><td colSpan="8" style={{ textAlign: 'center', padding: '3rem 1rem' }}>Belum ada tiket yang sesuai.</td></tr>
                   ) : (
-                    tickets.map((t) => (
+                    paginatedTickets.map((t) => (
                       <tr key={t.id}>
                         <td className="ticket-id">#{t.id.toString().substring(0,5).toUpperCase()}</td>
                         <td>{t.judul}</td>
@@ -323,14 +407,42 @@ export default function Aspirasi() {
                           {renderStars(t.rating)}
                         </td>
                         <td>
-                          <button onClick={() => openDiscussion(t)} style={{ padding: '0.3rem', marginRight: '0.3rem', border: '1px solid #ddd', background: '#f5f5f5', borderRadius: '4px', cursor: 'pointer' }} title="Diskusi"><Eye size={14}/></button>
-                          <button onClick={() => { setRatingTargetId(t.id); setShowRatingModal(true) }} style={{ padding: '0.3rem', border: '1px solid #ddd', background: '#f5f5f5', borderRadius: '4px', cursor: 'pointer' }} title="Beri Rating"><Star size={14}/></button>
+                          <button onClick={() => openDiscussion(t)} style={{ padding: '0.3rem', marginRight: '0.3rem', border: '1px solid var(--border-color)', background: 'var(--bg-base)', borderRadius: '4px', cursor: 'pointer', color: 'var(--text-primary)' }} title="Diskusi"><Eye size={14}/></button>
+                          <button onClick={() => { setRatingTargetId(t.id); setShowRatingModal(true) }} style={{ padding: '0.3rem', border: '1px solid var(--border-color)', background: 'var(--bg-base)', borderRadius: '4px', cursor: 'pointer', color: 'var(--text-primary)' }} title="Beri Rating"><Star size={14}/></button>
                         </td>
                       </tr>
                     ))
                   )}
                 </tbody>
               </table>
+
+              {totalPages > 1 && (
+                <div className="pagination-container" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'center', borderTop: '1px solid var(--border-color)' }}>
+                  <button 
+                    className="pagination-btn" 
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    &laquo;
+                  </button>
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button 
+                      key={i} 
+                      className={`pagination-btn ${currentPage === i + 1 ? 'active' : ''}`}
+                      onClick={() => setCurrentPage(i + 1)}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button 
+                    className="pagination-btn" 
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    &raquo;
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Token Modal */}
@@ -378,10 +490,12 @@ export default function Aspirasi() {
         )}
 
         {flow === 'chat' && (
-          <div className="chat-container">
-            <div className="chat-header">
-              <button onClick={handleDashboardReturn} style={{ background: 'none', border: 'none', cursor: 'pointer', marginRight: '1rem', color: '#666' }}>Kembali</button>
-              Pembuatan Tiket Bantuan
+          <div className="chat-container" style={{ maxWidth: '600px', margin: '0 auto', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+            <div className="chat-header" style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', padding: '1rem', borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+              <button onClick={handleDashboardReturn} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', background: 'none', border: 'none', cursor: 'pointer', marginRight: '1rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>&larr;</span> Kembali
+              </button>
+              <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Pembuatan Tiket Bantuan</h3>
             </div>
             <div className="chat-messages">
               <div className="chat-bubble-wrapper right">

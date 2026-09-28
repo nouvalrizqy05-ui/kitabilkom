@@ -43,7 +43,7 @@ export default function App() {
             <Route path="/publikasi/:id" element={<PageTransition><PublikasiDetail /></PageTransition>} />
             <Route path="/dosen" element={<PageTransition><DosenIlkom /></PageTransition>} />
             <Route path="/bantuan" element={<PageTransition><Bantuan /></PageTransition>} />
-            <Route path="/aspirasi" element={<PageTransition><Aspirasi /></PageTransition>} />
+            <Route path="/bantuan/aspirasi" element={<PageTransition><Aspirasi /></PageTransition>} />
             <Route path="/search" element={<PageTransition><Search /></PageTransition>} />
 
             <Route

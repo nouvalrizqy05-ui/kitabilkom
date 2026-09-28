@@ -217,7 +217,7 @@ export default function Bantuan() {
               Punya keluhan fasilitas, pertanyaan khusus, kritik, atau saran untuk Ilmu Komputer? Suarakan di sini!
             </p>
             <div className="bantuan-quick-actions" style={{ display: 'flex', justifyContent: 'center' }}>
-              <Link to="/aspirasi" className="info-banner banner-card-theme" style={{ textDecoration: 'none', maxWidth: '600px', width: '100%', textAlign: 'left', minHeight: 'auto', padding: '2rem' }}>
+              <Link to="/bantuan/aspirasi" className="info-banner banner-card-theme" style={{ textDecoration: 'none', maxWidth: '600px', width: '100%', textAlign: 'left', minHeight: 'auto', padding: '2rem' }}>
                 <div className="banner-content">
                   <h3 className="banner-title" style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}>Sampaikan Aspirasi</h3>
                   <p className="banner-desc">Klik di sini untuk mengisi formulir aspirasi HIMA secara rahasia dan aman.</p>
