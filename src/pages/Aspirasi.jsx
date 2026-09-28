@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
-import { Send, CheckCircle, Ticket, User, Home, Settings, Eye, Star, Plus, X, Paperclip } from 'lucide-react'
+import { Send, CheckCircle, Ticket, User, Eye, Star, Plus, X, Paperclip } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Aspirasi() {
@@ -344,12 +344,16 @@ export default function Aspirasi() {
 
       {/* MAIN CONTENT FULL WIDTH */}
       <div className="helpdesk-main" style={{ margin: '0 auto', maxWidth: '1200px' }}>
-        {/* Top Navbar Header */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem' }}>
-          <Home size={20} color="#666" />
-          <Settings size={20} color="#666" />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#666', fontSize: '0.9rem' }}>
-            {userData.role || 'Mahasiswa'} () <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#e0e0e0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><User size={16} /></div> {userData.nama || profile?.nama || user?.email?.split('@')[0] || 'GUEST'}
+        {/* Minimal Top Bar: Notification only */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '2rem' }}>
+          <div style={{ position: 'relative', cursor: 'pointer' }} title="Notifikasi">
+            <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            {toastMsg && (
+              <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '10px', height: '10px', background: 'var(--gold-600)', borderRadius: '50%', display: 'block' }} />
+            )}
           </div>
         </div>
 

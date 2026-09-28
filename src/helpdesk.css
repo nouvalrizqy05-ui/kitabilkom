@@ -54,7 +54,7 @@
 
 .helpdesk-main {
   flex: 1;
-  padding: 2rem 3rem;
+  padding: 6rem 3rem 2rem;
   background: var(--bg-surface);
 }
 
