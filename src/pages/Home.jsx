@@ -4,6 +4,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, I
 import { supabase } from '../lib/supabaseClient';
 import Calendar from '../components/Calendar';
 import { motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const PopAnim = ({ children, delay = 0, className = "", style = {} }) => (
   <motion.div
@@ -21,6 +22,7 @@ const PopAnim = ({ children, delay = 0, className = "", style = {} }) => (
 // mockArticles removed to sync with admin data
 
 export default function Home() {
+  const { user } = useAuth();
   const [stats, setStats] = useState({ mahasiswa: 0, dosen: 0, materi: 0, info: 0 });
   const [latestInfo, setLatestInfo] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -242,7 +244,12 @@ export default function Home() {
             </PopAnim>
 
             <PopAnim delay={0.4}>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0A7npBXDlGedxykt1YDu4ukIUleilSYPTuk1EP-x5d40RDw/viewform" target="_blank" rel="noopener noreferrer" className="quick-nav-card">
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0A7npBXDlGedxykt1YDu4ukIUleilSYPTuk1EP-x5d40RDw/viewform" target="_blank" rel="noopener noreferrer" className="quick-nav-card" onClick={(e) => {
+                if (!user) {
+                  e.preventDefault();
+                  navigate('/login');
+                }
+              }}>
                 <div className="quick-nav-icon">
                   <CheckSquare size={42} strokeWidth={1.5} />
                 </div>
@@ -267,7 +274,12 @@ export default function Home() {
                 </Link>
               </PopAnim>
               <PopAnim delay={0.6}>
-                <a href="https://forms.gle/CHBeYri38fW6iJhw8" target="_blank" rel="noopener noreferrer" className="info-banner banner-card-theme" style={{ textDecoration: 'none', height: '100%' }}>
+                <a href="https://forms.gle/CHBeYri38fW6iJhw8" target="_blank" rel="noopener noreferrer" className="info-banner banner-card-theme" style={{ textDecoration: 'none', height: '100%' }} onClick={(e) => {
+                  if (!user) {
+                    e.preventDefault();
+                    navigate('/login');
+                  }
+                }}>
                   <div className="banner-content">
                     <h3 className="banner-title">Pendataan Minat, Bakat, dan Prestasi<br/>Mahasiswa Ilmu Komputer</h3>
                     <p className="banner-desc">Klik di sini untuk mengisi form pendataan minat, bakat, dan prestasi resmi dan dapatkan apresiasi!</p>

@@ -37,14 +37,14 @@ export default function App() {
             <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
             <Route path="/lupa-password" element={<PageTransition><LupaPassword /></PageTransition>} />
             <Route path="/isi-passwordbaru" element={<PageTransition><ResetPassword /></PageTransition>} />
-            <Route path="/info-akademik" element={<PageTransition><InfoAkademik /></PageTransition>} />
-            <Route path="/info-akademik/:kategori" element={<PageTransition><InfoAkademik /></PageTransition>} />
-            <Route path="/publikasi" element={<PageTransition><Publikasi /></PageTransition>} />
-            <Route path="/publikasi/:id" element={<PageTransition><PublikasiDetail /></PageTransition>} />
-            <Route path="/dosen" element={<PageTransition><DosenIlkom /></PageTransition>} />
-            <Route path="/bantuan" element={<PageTransition><Bantuan /></PageTransition>} />
-            <Route path="/bantuan/aspirasi" element={<PageTransition><Aspirasi /></PageTransition>} />
-            <Route path="/search" element={<PageTransition><Search /></PageTransition>} />
+            <Route path="/info-akademik" element={<ProtectedRoute><PageTransition><InfoAkademik /></PageTransition></ProtectedRoute>} />
+            <Route path="/info-akademik/:kategori" element={<ProtectedRoute><PageTransition><InfoAkademik /></PageTransition></ProtectedRoute>} />
+            <Route path="/publikasi" element={<ProtectedRoute><PageTransition><Publikasi /></PageTransition></ProtectedRoute>} />
+            <Route path="/publikasi/:id" element={<ProtectedRoute><PageTransition><PublikasiDetail /></PageTransition></ProtectedRoute>} />
+            <Route path="/dosen" element={<ProtectedRoute><PageTransition><DosenIlkom /></PageTransition></ProtectedRoute>} />
+            <Route path="/bantuan" element={<ProtectedRoute><PageTransition><Bantuan /></PageTransition></ProtectedRoute>} />
+            <Route path="/bantuan/aspirasi" element={<ProtectedRoute><PageTransition><Aspirasi /></PageTransition></ProtectedRoute>} />
+            <Route path="/search" element={<ProtectedRoute><PageTransition><Search /></PageTransition></ProtectedRoute>} />
 
             <Route
               path="/profil"
