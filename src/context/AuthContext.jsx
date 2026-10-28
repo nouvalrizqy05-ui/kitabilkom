@@ -52,9 +52,9 @@ export function AuthProvider({ children }) {
       if (!isMounted) return
       setSession(session)
       if (session?.user) {
-        // Untuk Google OAuth: nama diupdate dari Google, role tetap
+        // Untuk Google OAuth: hanya saat SIGNED_IN, bukan setiap token refresh
         const isGoogleUser = session.user.identities?.some(i => i.provider === 'google')
-        if (isGoogleUser) {
+        if (event === 'SIGNED_IN' && isGoogleUser) {
           const googleName = session.user.user_metadata?.full_name
             || session.user.user_metadata?.name
             || session.user.email?.split('@')[0]
@@ -67,13 +67,11 @@ export function AuthProvider({ children }) {
             .maybeSingle()
 
           if (existing) {
-            // Sudah ada → update nama dari Google, role tetap
             await supabase
               .from('profiles')
               .update({ nama: googleName })
               .eq('id', session.user.id)
           } else {
-            // Belum ada → buat profil baru
             await supabase.from('profiles').insert({
               id: session.user.id,
               email: session.user.email,
