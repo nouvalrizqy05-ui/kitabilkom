@@ -2,20 +2,22 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { CalendarDays, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 
-const PopAnim = ({ children, delay = 0, className = "", style = {} }) => (
-  <motion.div
-    className={className}
-    style={style}
-    initial={{ opacity: 0, scale: 0.95 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ duration: 1.7, ease: [0.25, 1, 0.5, 1], delay }}
-  >
-    {children}
-  </motion.div>
-);
+// Lightweight CSS reveal — no framer-motion
+const PopAnim = ({ children, delay = 0, className = '', style = {} }) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add('pop-visible'); obs.disconnect(); } },
+      { threshold: 0.08 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return <div ref={ref} className={`pop-anim${className ? ' ' + className : ''}`} style={{ ...style, transitionDelay: `${delay}s` }}>{children}</div>;
+};
 
 const EVENT_TYPES = {
   'Lomba': { class: 'event-lomba', tagClass: 'tag-lomba', icon: '🏆', label: 'Lomba' },
