@@ -2790,3 +2790,19 @@
 .admin-pagination { display: flex; gap: 0.25rem; justify-content: center; margin-top: 1.5rem; }
 .admin-table-scroll { overflow-x: auto; width: 100%; }
 .pagination-btn.active { background: var(--gold-600); color: white; border-color: var(--gold-600); }
+
+/* ---------- POP ANIM (lightweight CSS reveal) ---------- */
+.pop-anim {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+  will-change: opacity, transform;
+}
+.pop-anim.pop-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pop-anim { opacity: 1; transform: none; transition: none; }
+}
+

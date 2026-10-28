@@ -73,7 +73,7 @@ export function AuthProvider({ children }) {
       password,
       options: { 
         data: { nama },
-        emailRedirectTo: 'https://www.kitabilkom.online/'
+        emailRedirectTo: 'https://www.kitabilkom.online'
       },
     })
     return { data, error }
@@ -91,7 +91,7 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: 'https://www.kitabilkom.online',
         queryParams: {
           prompt: 'select_account',
           hd: 'students.unnes.ac.id'

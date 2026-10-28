@@ -3,21 +3,28 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Search, BookOpen, Info, CheckSquare, Users, HelpCircle, ArrowRightLeft, Trophy, Camera, AlertTriangle, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import Calendar from '../components/Calendar';
-import { motion } from 'framer-motion';
+
 import { useAuth } from '../context/AuthContext';
 
-const PopAnim = ({ children, delay = 0, className = "", style = {} }) => (
-  <motion.div
-    className={className}
-    style={style}
-    initial={{ opacity: 0, scale: 0.95 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ duration: 1.7, ease: [0.25, 1, 0.5, 1], delay }}
-  >
-    {children}
-  </motion.div>
-);
+// Lightweight CSS-driven reveal — no Framer Motion, no GPU overload
+const PopAnim = ({ children, delay = 0, className = '', style = {} }) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add('pop-visible'); obs.disconnect(); } },
+      { threshold: 0.08, rootMargin: '-40px 0px' }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className={`pop-anim${className ? ' ' + className : ''}`} style={{ ...style, transitionDelay: `${delay}s` }}>
+      {children}
+    </div>
+  );
+};
 
 // mockArticles removed to sync with admin data
 
