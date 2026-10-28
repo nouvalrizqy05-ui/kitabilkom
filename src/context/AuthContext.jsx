@@ -52,23 +52,27 @@ export function AuthProvider({ children }) {
       if (!isMounted) return
       setSession(session)
       if (session?.user) {
-        // Untuk Google OAuth: pastikan profile ada, tapi jangan timpa nama & role yang sudah ada
+        // Untuk Google OAuth: nama diupdate dari Google, role tetap
         if (event === 'SIGNED_IN' && session.user.app_metadata?.provider === 'google') {
+          const googleName = session.user.user_metadata?.full_name
+            || session.user.user_metadata?.name
+            || session.user.email?.split('@')[0]
+            || 'Mahasiswa'
+
           const { data: existing } = await supabase
             .from('profiles')
-            .select('id, nama, role')
+            .select('id, role')
             .eq('id', session.user.id)
             .maybeSingle()
 
-          if (!existing) {
-            // Cek apakah email sudah terdaftar dengan akun lain (email/password)
-            // Jika ada → Supabase sudah merge jadi 1 user, jadi tidak perlu insert
-            // Kalau belum ada sama sekali → buat profil baru dengan nama dari Google
-            const googleName = session.user.user_metadata?.full_name
-              || session.user.user_metadata?.name
-              || session.user.email?.split('@')[0]
-              || 'Mahasiswa'
-
+          if (existing) {
+            // Sudah ada → update nama dari Google, role tetap
+            await supabase
+              .from('profiles')
+              .update({ nama: googleName })
+              .eq('id', session.user.id)
+          } else {
+            // Belum ada → buat profil baru
             await supabase.from('profiles').insert({
               id: session.user.id,
               email: session.user.email,
@@ -76,8 +80,8 @@ export function AuthProvider({ children }) {
               role: 'mahasiswa',
             })
           }
-          // Jika sudah ada → tidak lakukan apa-apa, nama & role tetap
         }
+
 
         await fetchProfile(session.user.id)
       } else {
