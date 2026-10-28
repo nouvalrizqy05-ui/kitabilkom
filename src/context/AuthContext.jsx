@@ -20,12 +20,19 @@ export function AuthProvider({ children }) {
       .single()
 
     if (error) {
-      console.error('Gagal mengambil profil:', error.message)
-      setProfile(null)
+      console.warn('Gagal mengambil profil, mencoba fallback profile:', error.message)
+      const userMeta = session?.user?.user_metadata || {}
+      const fallbackName = userMeta.full_name || userMeta.name || userMeta.nama || session?.user?.email?.split('@')[0] || 'Mahasiswa'
+      setProfile({
+        id: userId,
+        email: session?.user?.email,
+        nama: fallbackName,
+        role: 'mahasiswa'
+      })
     } else {
       setProfile(data)
     }
-  }, [])
+  }, [session])
 
   useEffect(() => {
     let isMounted = true
@@ -80,6 +87,20 @@ export function AuthProvider({ children }) {
     return { data, error }
   }
 
+  const signInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+        queryParams: {
+          prompt: 'select_account',
+          hd: 'students.unnes.ac.id'
+        }
+      }
+    })
+    return { data, error }
+  }
+
   const signOut = async () => {
     await supabase.auth.signOut()
   }
@@ -93,6 +114,7 @@ export function AuthProvider({ children }) {
     loading,
     signUp,
     signIn,
+    signInWithGoogle,
     signOut,
     refreshProfile: () => fetchProfile(session?.user?.id),
   }
