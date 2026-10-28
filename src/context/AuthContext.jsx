@@ -48,15 +48,43 @@ export function AuthProvider({ children }) {
     })
 
     // Dengar perubahan auth state (login, logout, token refresh)
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!isMounted) return
       setSession(session)
       if (session?.user) {
+        // Untuk Google OAuth: pastikan profile ada, tapi jangan timpa nama & role yang sudah ada
+        if (event === 'SIGNED_IN' && session.user.app_metadata?.provider === 'google') {
+          const { data: existing } = await supabase
+            .from('profiles')
+            .select('id, nama, role')
+            .eq('id', session.user.id)
+            .maybeSingle()
+
+          if (!existing) {
+            // Cek apakah email sudah terdaftar dengan akun lain (email/password)
+            // Jika ada → Supabase sudah merge jadi 1 user, jadi tidak perlu insert
+            // Kalau belum ada sama sekali → buat profil baru dengan nama dari Google
+            const googleName = session.user.user_metadata?.full_name
+              || session.user.user_metadata?.name
+              || session.user.email?.split('@')[0]
+              || 'Mahasiswa'
+
+            await supabase.from('profiles').insert({
+              id: session.user.id,
+              email: session.user.email,
+              nama: googleName,
+              role: 'mahasiswa',
+            })
+          }
+          // Jika sudah ada → tidak lakukan apa-apa, nama & role tetap
+        }
+
         await fetchProfile(session.user.id)
       } else {
         setProfile(null)
       }
     })
+
 
     return () => {
       isMounted = false
