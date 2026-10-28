@@ -1,5 +1,4 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -12,85 +11,43 @@ import InfoAkademik from './pages/InfoAkademik'
 import Publikasi from './pages/Publikasi'
 import PublikasiDetail from './pages/PublikasiDetail'
 import DosenIlkom from './pages/DosenIlkom'
-
 import Bantuan from './pages/Bantuan'
 import Search from './pages/Search'
 import Profil from './pages/Profil'
 import Aspirasi from './pages/Aspirasi'
 import AdminDashboard from './pages/admin/AdminDashboard'
+import AuthCallback from './pages/AuthCallback'
 import { ProtectedRoute, AdminRoute } from './components/ProtectedRoute'
 import ScrollToTop from './components/ScrollToTop'
-import PageTransition from './components/PageTransition'
 
 export default function App() {
-  const location = useLocation()
-
   return (
     <>
       <ScrollToTop />
       <Navbar />
       <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-            <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
-            <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
-            <Route path="/lupa-password" element={<PageTransition><LupaPassword /></PageTransition>} />
-            <Route path="/isi-passwordbaru" element={<PageTransition><ResetPassword /></PageTransition>} />
-            <Route path="/info-akademik" element={<ProtectedRoute><PageTransition><InfoAkademik /></PageTransition></ProtectedRoute>} />
-            <Route path="/info-akademik/:kategori" element={<ProtectedRoute><PageTransition><InfoAkademik /></PageTransition></ProtectedRoute>} />
-            <Route path="/publikasi" element={<ProtectedRoute><PageTransition><Publikasi /></PageTransition></ProtectedRoute>} />
-            <Route path="/publikasi/:id" element={<ProtectedRoute><PageTransition><PublikasiDetail /></PageTransition></ProtectedRoute>} />
-            <Route path="/dosen" element={<ProtectedRoute><PageTransition><DosenIlkom /></PageTransition></ProtectedRoute>} />
-            <Route path="/bantuan" element={<ProtectedRoute><PageTransition><Bantuan /></PageTransition></ProtectedRoute>} />
-            <Route path="/bantuan/aspirasi" element={<ProtectedRoute><PageTransition><Aspirasi /></PageTransition></ProtectedRoute>} />
-            <Route path="/search" element={<ProtectedRoute><PageTransition><Search /></PageTransition></ProtectedRoute>} />
-
-            <Route
-              path="/profil"
-              element={
-                <ProtectedRoute>
-                  <PageTransition><Profil /></PageTransition>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/buku-akademik"
-              element={
-                <ProtectedRoute>
-                  <PageTransition><BukuAkademik /></PageTransition>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/buku-akademik/:prodi"
-              element={
-                <ProtectedRoute>
-                  <PageTransition><BukuAkademik /></PageTransition>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/buku-akademik/:prodi/:matkul"
-              element={
-                <ProtectedRoute>
-                  <PageTransition><BukuAkademik /></PageTransition>
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/admin"
-              element={
-                <AdminRoute>
-                  <PageTransition><AdminDashboard /></PageTransition>
-                </AdminRoute>
-              }
-            />
-
-            <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
-          </Routes>
-        </AnimatePresence>
+        <Routes>
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/lupa-password" element={<LupaPassword />} />
+          <Route path="/isi-passwordbaru" element={<ResetPassword />} />
+          <Route path="/info-akademik" element={<ProtectedRoute><InfoAkademik /></ProtectedRoute>} />
+          <Route path="/info-akademik/:kategori" element={<ProtectedRoute><InfoAkademik /></ProtectedRoute>} />
+          <Route path="/publikasi" element={<ProtectedRoute><Publikasi /></ProtectedRoute>} />
+          <Route path="/publikasi/:id" element={<ProtectedRoute><PublikasiDetail /></ProtectedRoute>} />
+          <Route path="/dosen" element={<ProtectedRoute><DosenIlkom /></ProtectedRoute>} />
+          <Route path="/bantuan" element={<ProtectedRoute><Bantuan /></ProtectedRoute>} />
+          <Route path="/bantuan/aspirasi" element={<ProtectedRoute><Aspirasi /></ProtectedRoute>} />
+          <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
+          <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
+          <Route path="/buku-akademik" element={<ProtectedRoute><BukuAkademik /></ProtectedRoute>} />
+          <Route path="/buku-akademik/:prodi" element={<ProtectedRoute><BukuAkademik /></ProtectedRoute>} />
+          <Route path="/buku-akademik/:prodi/:matkul" element={<ProtectedRoute><BukuAkademik /></ProtectedRoute>} />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </main>
       <Footer />
     </>

@@ -11,7 +11,12 @@ if (!supabaseUrl || !supabaseAnonKey) {
   )
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    flowType: 'pkce',
+  }
+})
+
 
 // Domain email kampus yang diizinkan daftar & login.
 export const ALLOWED_EMAIL_DOMAIN = '@students.unnes.ac.id'
