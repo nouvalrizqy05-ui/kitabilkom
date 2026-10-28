@@ -53,7 +53,8 @@ export function AuthProvider({ children }) {
       setSession(session)
       if (session?.user) {
         // Untuk Google OAuth: nama diupdate dari Google, role tetap
-        if (event === 'SIGNED_IN' && session.user.app_metadata?.provider === 'google') {
+        const isGoogleUser = session.user.identities?.some(i => i.provider === 'google')
+        if (isGoogleUser) {
           const googleName = session.user.user_metadata?.full_name
             || session.user.user_metadata?.name
             || session.user.email?.split('@')[0]
@@ -81,6 +82,7 @@ export function AuthProvider({ children }) {
             })
           }
         }
+
 
 
         await fetchProfile(session.user.id)
