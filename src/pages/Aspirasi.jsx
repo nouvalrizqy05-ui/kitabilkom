@@ -1,13 +1,32 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
-import { Send, CheckCircle, Ticket, User, Eye, Star, Plus, X, Paperclip } from 'lucide-react'
+import { Send, CheckCircle, Ticket, User, Eye, Star, Plus, X, Paperclip, Bell, ArrowLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+
+/* ============ Relative-time helper ============ */
+function timeAgo(dateStr) {
+  const now = new Date()
+  const past = new Date(dateStr)
+  const diffMs = now - past
+  const seconds = Math.floor(diffMs / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
+  const weeks = Math.floor(days / 7)
+
+  if (seconds < 60) return 'Baru saja'
+  if (minutes < 60) return `${minutes} menit yang lalu`
+  if (hours < 24) return `${hours} jam yang lalu`
+  if (days < 7) return `${days} hari yang lalu`
+  if (weeks < 4) return `${weeks} minggu yang lalu`
+  return past.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+}
 
 export default function Aspirasi() {
   const { user, profile } = useAuth()
   
-  // flow: 'dashboard' | 'chat' | 'form'
+  // flow: 'dashboard' | 'chat' | 'form' | 'discussion'
   const [flow, setFlow] = useState('dashboard')
   
   // Dashboard state
@@ -40,6 +59,70 @@ export default function Aspirasi() {
   const [discussionInput, setDiscussionInput] = useState('')
   const discussionEndRef = useRef(null)
 
+  // ============ NOTIFICATION SYSTEM ============
+  const [notifications, setNotifications] = useState(() => {
+    try {
+      const saved = localStorage.getItem('aspirasi_notifications')
+      return saved ? JSON.parse(saved) : []
+    } catch { return [] }
+  })
+  const [showNotifPanel, setShowNotifPanel] = useState(false)
+  const notifPanelRef = useRef(null)
+
+  // Persist notifications to localStorage
+  useEffect(() => {
+    localStorage.setItem('aspirasi_notifications', JSON.stringify(notifications))
+  }, [notifications])
+
+  // Close notification panel when clicking outside
+  useEffect(() => {
+    const handler = (e) => {
+      if (notifPanelRef.current && !notifPanelRef.current.contains(e.target)) {
+        setShowNotifPanel(false)
+      }
+    }
+    if (showNotifPanel) document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [showNotifPanel])
+
+  const unreadCount = notifications.filter(n => !n.read).length
+
+  const addNotification = useCallback((title, body, ticketId) => {
+    const newNotif = {
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+      title,
+      body,
+      ticketId,
+      timestamp: new Date().toISOString(),
+      read: false
+    }
+    setNotifications(prev => [newNotif, ...prev].slice(0, 50)) // keep max 50
+  }, [])
+
+  const markAsRead = (notifId) => {
+    setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, read: true } : n))
+  }
+
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+  }
+
+  const clearNotifications = () => {
+    setNotifications([])
+  }
+
+  const handleNotifClick = (notif) => {
+    markAsRead(notif.id)
+    setShowNotifPanel(false)
+    // navigate to the ticket's discussion
+    const ticket = tickets.find(t => t.id === notif.ticketId)
+    if (ticket) {
+      openDiscussion(ticket)
+    }
+  }
+
+  // ============ END NOTIFICATION SYSTEM ============
+
   useEffect(() => {
     if (discussionEndRef.current) {
       discussionEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
@@ -57,21 +140,50 @@ export default function Aspirasi() {
   const ITEMS_PER_PAGE = 5
   const [toastMsg, setToastMsg] = useState(null)
 
+  // Supabase realtime listener with notification support
   useEffect(() => {
     if (!user?.email) return
     const channel = supabase
       .channel('realtime_aspirasi_user')
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'aspirasi', filter: `user_email=eq.${user.email}` }, (payload) => {
-        setTickets(prev => prev.map(t => t.id === payload.new.id ? payload.new : t))
-        setActiveTicket(prev => prev?.id === payload.new.id ? payload.new : prev)
-        setToastMsg('Pembaruan pada tiket: ' + payload.new.judul)
-        setTimeout(() => setToastMsg(null), 4000)
+        const updated = payload.new
+        const old = payload.old
+
+        setTickets(prev => prev.map(t => t.id === updated.id ? updated : t))
+        setActiveTicket(prev => prev?.id === updated.id ? updated : prev)
+
+        // Check if there's a new admin reply in discussion
+        const oldDiscussion = old?.discussion || []
+        const newDiscussion = updated?.discussion || []
+        if (newDiscussion.length > oldDiscussion.length) {
+          const latestMsg = newDiscussion[newDiscussion.length - 1]
+          if (latestMsg?.sender === 'admin') {
+            const ticketLabel = updated.judul || `#${updated.id.toString().substring(0, 5).toUpperCase()}`
+            addNotification(
+              `Balasan baru di tiket "${ticketLabel}"`,
+              latestMsg.text?.substring(0, 80) + (latestMsg.text?.length > 80 ? '...' : ''),
+              updated.id
+            )
+            setToastMsg(`Admin membalas tiket: ${ticketLabel}`)
+            setTimeout(() => setToastMsg(null), 5000)
+          }
+        }
+
+        // Also notify on status change
+        if (old?.status !== updated?.status) {
+          const ticketLabel = updated.judul || `#${updated.id.toString().substring(0, 5).toUpperCase()}`
+          addNotification(
+            `Status tiket "${ticketLabel}" diubah`,
+            `Status berubah menjadi: ${updated.status?.toUpperCase()}`,
+            updated.id
+          )
+        }
       })
       .subscribe()
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [user])
+  }, [user, addNotification])
 
   useEffect(() => {
     if (chatEndRef.current) {
@@ -315,6 +427,42 @@ export default function Aspirasi() {
     }
   }
 
+  /* ============ MOBILE CARD RENDERER (for ticket list on small screens) ============ */
+  const renderTicketCard = (t) => (
+    <div key={t.id} className="aspirasi-ticket-card">
+      <div className="aspirasi-ticket-card-header">
+        <span className="ticket-id">#{t.id.toString().substring(0,5).toUpperCase()}</span>
+        <span className="ticket-status">{t.status}</span>
+      </div>
+      <div className="aspirasi-ticket-card-body">
+        <div className="aspirasi-ticket-card-row">
+          <span className="aspirasi-ticket-label">Topik</span>
+          <span>{t.judul}</span>
+        </div>
+        <div className="aspirasi-ticket-card-row">
+          <span className="aspirasi-ticket-label">Uraian</span>
+          <span className="aspirasi-ticket-desc">{t.deskripsi}</span>
+        </div>
+        <div className="aspirasi-ticket-card-row">
+          <span className="aspirasi-ticket-label">Taken By</span>
+          <span>CS <span style={{fontSize:'0.7rem', color:'var(--text-secondary)'}}>{calculateResponseTime(t)}</span></span>
+        </div>
+        <div className="aspirasi-ticket-card-row">
+          <span className="aspirasi-ticket-label">Rating</span>
+          <span style={{ display: 'flex', gap: '2px' }}>{renderStars(t.rating)}</span>
+        </div>
+      </div>
+      <div className="aspirasi-ticket-card-actions">
+        <button onClick={() => openDiscussion(t)} className="aspirasi-card-btn">
+          <Eye size={14}/> Diskusi
+        </button>
+        <button onClick={() => { setRatingTargetId(t.id); setShowRatingModal(true) }} className="aspirasi-card-btn">
+          <Star size={14}/> Rating
+        </button>
+      </div>
+    </div>
+  )
+
   return (
     <div className="helpdesk-layout">
       {/* Toast Notification */}
@@ -324,19 +472,9 @@ export default function Aspirasi() {
             initial={{ opacity: 0, y: -20, x: 20 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, y: -20, x: 20 }}
-            style={{
-              position: 'fixed',
-              top: '80px',
-              right: '20px',
-              background: 'var(--gold-600)',
-              color: '#fff',
-              padding: '1rem 1.5rem',
-              borderRadius: '8px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-              zIndex: 9999,
-              fontWeight: 600
-            }}
+            className="aspirasi-toast"
           >
+            <Bell size={16} />
             {toastMsg}
           </motion.div>
         )}
@@ -345,15 +483,72 @@ export default function Aspirasi() {
       {/* MAIN CONTENT FULL WIDTH */}
       <div className="helpdesk-main" style={{ margin: '0 auto', maxWidth: '1200px' }}>
         {/* Minimal Top Bar: Notification only */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '2rem' }}>
-          <div style={{ position: 'relative', cursor: 'pointer' }} title="Notifikasi">
-            <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
-            {toastMsg && (
-              <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '10px', height: '10px', background: 'var(--gold-600)', borderRadius: '50%', display: 'block' }} />
-            )}
+        <div className="aspirasi-topbar">
+          <div ref={notifPanelRef} className="aspirasi-notif-wrapper">
+            <button
+              className="aspirasi-notif-btn"
+              onClick={() => setShowNotifPanel(prev => !prev)}
+              title="Notifikasi"
+            >
+              <Bell size={22} strokeWidth={1.8} />
+              {unreadCount > 0 && (
+                <span className="aspirasi-notif-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
+              )}
+            </button>
+
+            {/* Notification Dropdown Panel */}
+            <AnimatePresence>
+              {showNotifPanel && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
+                  className="aspirasi-notif-panel"
+                >
+                  <div className="aspirasi-notif-panel-header">
+                    <h4>Notifikasi</h4>
+                    <div className="aspirasi-notif-panel-actions">
+                      {unreadCount > 0 && (
+                        <button onClick={markAllAsRead} className="aspirasi-notif-action-btn">
+                          Tandai semua dibaca
+                        </button>
+                      )}
+                      {notifications.length > 0 && (
+                        <button onClick={clearNotifications} className="aspirasi-notif-action-btn danger">
+                          Hapus semua
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="aspirasi-notif-panel-body">
+                    {notifications.length === 0 ? (
+                      <div className="aspirasi-notif-empty">
+                        <Bell size={32} strokeWidth={1} style={{ opacity: 0.3 }} />
+                        <p>Belum ada notifikasi</p>
+                      </div>
+                    ) : (
+                      notifications.map(n => (
+                        <button
+                          key={n.id}
+                          className={`aspirasi-notif-item ${!n.read ? 'unread' : ''}`}
+                          onClick={() => handleNotifClick(n)}
+                        >
+                          <div className="aspirasi-notif-item-dot">
+                            {!n.read && <span className="aspirasi-notif-dot" />}
+                          </div>
+                          <div className="aspirasi-notif-item-content">
+                            <div className="aspirasi-notif-item-title">{n.title}</div>
+                            <div className="aspirasi-notif-item-body">{n.body}</div>
+                            <div className="aspirasi-notif-item-time">{timeAgo(n.timestamp)}</div>
+                          </div>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
@@ -367,20 +562,21 @@ export default function Aspirasi() {
               <div className="helpdesk-alert">
                 <h4>Penting!</h4>
                 <p>Tiket akan otomatis ditutup jika tidak ada tanggapan dalam waktu 1 minggu setelah balasan terakhir dari Operator atau Layanan Pelanggan (CS).</p>
-                <button onClick={() => setShowAlert(false)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', cursor: 'pointer', color: '#00838f' }}><X size={18}/></button>
+                <button onClick={() => setShowAlert(false)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gold-700)' }}><X size={18}/></button>
               </div>
             )}
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+            <div className="aspirasi-toolbar">
               <button className="btn-purple" onClick={startChat}>
                 <Plus size={16} /> Tambah Tickets
               </button>
             </div>
 
-            <div className="helpdesk-table-container" style={{ marginTop: '2rem' }}>
+            {/* DESKTOP TABLE */}
+            <div className="helpdesk-table-container aspirasi-desktop-only" style={{ marginTop: '2rem' }}>
               <div className="helpdesk-table-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--text-primary)' }}>Daftar Tickets<br/><span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 'normal' }}>Manajemen data Tickets</span></h3>
-                <select value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setCurrentPage(1); }} style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)', color: 'var(--text-primary)', outline: 'none' }}>
+                <select value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setCurrentPage(1); }} className="aspirasi-filter-select">
                   <option value="Semua">Semua Status</option>
                   <option value="pending">Menunggu</option>
                   <option value="selesai">Selesai</option>
@@ -455,6 +651,36 @@ export default function Aspirasi() {
               )}
             </div>
 
+            {/* MOBILE CARD LIST */}
+            <div className="aspirasi-mobile-only" style={{ marginTop: '1.5rem' }}>
+              <div className="aspirasi-mobile-list-header">
+                <h3>Daftar Tickets</h3>
+                <select value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setCurrentPage(1); }} className="aspirasi-filter-select">
+                  <option value="Semua">Semua Status</option>
+                  <option value="pending">Menunggu</option>
+                  <option value="selesai">Selesai</option>
+                </select>
+              </div>
+              {loadingTickets ? (
+                <div className="aspirasi-empty-state">Memuat tiket...</div>
+              ) : processedTickets.length === 0 ? (
+                <div className="aspirasi-empty-state">Belum ada tiket yang sesuai.</div>
+              ) : (
+                <>
+                  {paginatedTickets.map(renderTicketCard)}
+                  {totalPages > 1 && (
+                    <div className="pagination-container" style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', gap: '0.25rem' }}>
+                      <button className="pagination-btn" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>&laquo;</button>
+                      {[...Array(totalPages)].map((_, i) => (
+                        <button key={i} className={`pagination-btn ${currentPage === i + 1 ? 'active' : ''}`} onClick={() => setCurrentPage(i + 1)}>{i + 1}</button>
+                      ))}
+                      <button className="pagination-btn" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>&raquo;</button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
             {/* Token Modal */}
             {showTokenModal && (
               <div className="helpdesk-modal-overlay">
@@ -463,14 +689,14 @@ export default function Aspirasi() {
                     Nomor Tiket <button onClick={() => setShowTokenModal(false)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}><X size={18}/></button>
                   </div>
                   <div className="helpdesk-modal-body">
-                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#666', marginBottom: '0.5rem' }}>Token</label>
-                    <select value={selectedToken} onChange={(e) => setSelectedToken(e.target.value)} style={{ width: '100%', padding: '0.6rem', border: '1px solid #ccc', borderRadius: '4px' }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Token</label>
+                    <select value={selectedToken} onChange={(e) => setSelectedToken(e.target.value)} style={{ width: '100%', padding: '0.6rem', border: '1px solid var(--border-color)', borderRadius: '4px', background: 'var(--bg-surface)', color: 'var(--text-primary)' }}>
                       {generatedToken && <option value={generatedToken}>{generatedToken}</option>}
                     </select>
                   </div>
                   <div className="helpdesk-modal-footer">
-                    <button onClick={handleTokenSubmit} style={{ background: '#7e57c2', color: 'white', border: 'none', padding: '0.5rem 1.5rem', borderRadius: '4px', cursor: 'pointer' }}>OK</button>
-                    <button onClick={() => setShowTokenModal(false)} style={{ background: '#757575', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer' }}>Close</button>
+                    <button onClick={handleTokenSubmit} className="btn-purple">OK</button>
+                    <button onClick={() => setShowTokenModal(false)} style={{ background: 'var(--text-secondary)', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer' }}>Close</button>
                   </div>
                 </div>
               </div>
@@ -484,7 +710,7 @@ export default function Aspirasi() {
                     Beri Rating <button onClick={() => setShowRatingModal(false)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}><X size={18}/></button>
                   </div>
                   <div className="helpdesk-modal-body">
-                    <p style={{ marginBottom: '1rem', color: '#666' }}>Berapa bintang untuk layanan ini?</p>
+                    <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>Berapa bintang untuk layanan ini?</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
                       {[1,2,3,4,5].map(n => (
                         <button key={n} onClick={() => handleRate(n)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
@@ -502,10 +728,10 @@ export default function Aspirasi() {
         {flow === 'chat' && (
           <div className="chat-container" style={{ maxWidth: '600px', margin: '0 auto', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
             <div className="chat-header" style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', padding: '1rem', borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
-              <button onClick={handleDashboardReturn} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', background: 'none', border: 'none', cursor: 'pointer', marginRight: '1rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
-                <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>&larr;</span> Kembali
+              <button onClick={handleDashboardReturn} className="aspirasi-back-btn">
+                <ArrowLeft size={18} /> <span>Kembali</span>
               </button>
-              <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Pembuatan Tiket Bantuan</h3>
+              <h3 style={{ margin: 0, fontSize: '1rem' }}>Pembuatan Tiket Bantuan</h3>
             </div>
             <div className="chat-messages">
               <div className="chat-bubble-wrapper right">
@@ -546,7 +772,7 @@ export default function Aspirasi() {
                   onChange={(e) => setChatInput(e.target.value)}
                   disabled={chatStep === 2 || chatStep === 4}
                 />
-                <button type="submit" style={{ background: 'none', border: 'none', color: '#1a73e8', cursor: 'pointer' }} disabled={chatStep === 2 || chatStep === 4}><Send size={24} /></button>
+                <button type="submit" style={{ background: 'none', border: 'none', color: 'var(--gold-600)', cursor: 'pointer' }} disabled={chatStep === 2 || chatStep === 4}><Send size={24} /></button>
               </form>
             )}
           </div>
@@ -555,10 +781,12 @@ export default function Aspirasi() {
         {flow === 'discussion' && activeTicket && (
           <div className="discussion-container">
             <div className="discussion-header">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <button onClick={() => setFlow('dashboard')} className="btn-icon"><X size={20}/></button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <button onClick={() => setFlow('dashboard')} className="aspirasi-back-btn compact">
+                  <ArrowLeft size={18}/>
+                </button>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Discussion (#{activeTicket.id.toString().substring(0,5).toUpperCase()})</h3>
+                  <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--text-primary)' }}>Discussion (#{activeTicket.id.toString().substring(0,5).toUpperCase()})</h3>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{activeTicket.judul}</div>
                 </div>
               </div>
@@ -571,7 +799,7 @@ export default function Aspirasi() {
                 <div className="discussion-content">
                   <div className="discussion-sender">
                     <span>{activeTicket.nama || 'Mahasiswa'}</span>
-                    <span className="discussion-time">{new Date(activeTicket.created_at).toLocaleDateString('id-ID')}</span>
+                    <span className="discussion-time">{timeAgo(activeTicket.created_at)}</span>
                   </div>
                   <div className="discussion-text user">
                     <strong>{activeTicket.judul}</strong><br/>
@@ -589,7 +817,7 @@ export default function Aspirasi() {
                   <div className="discussion-content">
                     <div className="discussion-sender">
                       <span>{msg.sender === 'admin' ? 'CS ADMIN' : msg.name || 'Mahasiswa'}</span>
-                      <span className="discussion-time">{new Date(msg.timestamp).toLocaleString('id-ID')}</span>
+                      <span className="discussion-time">{timeAgo(msg.timestamp)}</span>
                     </div>
                     <div className={`discussion-text ${msg.sender === 'admin' ? '' : 'user'}`} style={{ whiteSpace: 'pre-line' }}>
                       {msg.text}
@@ -621,7 +849,7 @@ export default function Aspirasi() {
         )}
 
         {flow === 'form' && (
-          <div className="auth-box" style={{ width: '100%', maxWidth: '700px', margin: '0 auto', background: 'var(--bg-surface)', padding: '2rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+          <div className="aspirasi-form-container">
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
               <h2 style={{ color: 'var(--text-primary)' }}>Formulir Detail Tiket #{selectedToken}</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Silakan lengkapi detail permasalahan Anda.</p>
@@ -632,50 +860,52 @@ export default function Aspirasi() {
                 <div style={{ width: '64px', height: '64px', background: '#e8f5e9', color: '#4caf50', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                   <CheckCircle size={32} />
                 </div>
-                <h3 style={{ color: '#333' }}>Tiket Berhasil Dikirim!</h3>
-                <p style={{ color: '#666', marginBottom: '2rem' }}>Tim Helpdesk akan segera merespons tiket Anda.</p>
+                <h3 style={{ color: 'var(--text-primary)' }}>Tiket Berhasil Dikirim!</h3>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Tim Helpdesk akan segera merespons tiket Anda.</p>
                 <button onClick={resetAll} className="btn-purple">Kembali ke Dashboard</button>
               </div>
             ) : (
               <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <label style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem', color: '#333', fontWeight: 600 }}>
+                <label className="aspirasi-form-label">
                   Topik
                   <input
                     type="text"
                     required
-                    style={{ padding: '0.8rem', border: '1px solid #ccc', borderRadius: '4px' }}
+                    className="aspirasi-form-input"
                     placeholder="Contoh: Permasalahan Kemahasiswaan / Error Sistem"
                     value={judul}
                     onChange={(e) => setJudul(e.target.value)}
                   />
                 </label>
 
-                <label style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem', color: '#333', fontWeight: 600 }}>
+                <label className="aspirasi-form-label">
                   Uraian Masalah
                   <textarea
                     required
                     rows="6"
-                    style={{ padding: '0.8rem', border: '1px solid #ccc', borderRadius: '4px', resize: 'vertical' }}
+                    className="aspirasi-form-input"
+                    style={{ resize: 'vertical' }}
                     placeholder="Ceritakan secara detail mengenai masalah yang Anda hadapi..."
                     value={deskripsi}
                     onChange={(e) => setDeskripsi(e.target.value)}
                   ></textarea>
                 </label>
 
-                <label style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem', color: '#333', fontWeight: 600 }}>
+                <label className="aspirasi-form-label">
                   Upload File (png/jpg/pdf)
                   <input
                     type="file"
                     accept=".png,.jpg,.jpeg,.pdf"
-                    style={{ padding: '0.8rem', border: '1px solid #ccc', borderRadius: '4px', background: '#f9f9f9' }}
+                    className="aspirasi-form-input"
+                    style={{ background: 'var(--bg-base)' }}
                   />
                 </label>
 
-                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                <div className="aspirasi-form-actions">
                   <button type="submit" className="btn-purple" disabled={loadingSubmit} style={{ flex: 1, justifyContent: 'center' }}>
                     {loadingSubmit ? 'Mengirim...' : 'Submit Tiket'}
                   </button>
-                  <button type="button" onClick={() => setFlow('dashboard')} style={{ padding: '0.8rem 1.5rem', border: '1px solid #ccc', borderRadius: '4px', background: 'white', cursor: 'pointer' }}>Batal</button>
+                  <button type="button" onClick={() => setFlow('dashboard')} className="aspirasi-btn-cancel">Batal</button>
                 </div>
               </form>
             )}
