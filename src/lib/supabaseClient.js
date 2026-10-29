@@ -14,6 +14,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     flowType: 'pkce',
+    persistSession: true,
+    autoRefreshToken: true,
+    storageKey: 'kitabilkom-auth',
   }
 })
 
