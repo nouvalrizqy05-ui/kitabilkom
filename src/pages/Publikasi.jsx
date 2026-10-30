@@ -167,16 +167,11 @@ export default function Publikasi() {
                     </p>
 
                     {/* Abstrak preview */}
-                    <div style={{
-                      background: 'var(--bg-surface)', padding: '0.85rem', borderRadius: '8px',
-                      marginBottom: '1.5rem', flexGrow: 1, border: '1px solid var(--border-color)'
-                    }}>
-                      <p style={{
-                        fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6,
-                        margin: 0
-                      }}>
+                    <div className="pub-abstract-box">
+                      <p className="pub-abstract-text">
                         {item.abstrak ? item.abstrak.replace(/<[^>]*>/g, '') : 'Abstrak tidak tersedia.'}
                       </p>
+                      <div className="pub-abstract-fade" />
                     </div>
 
                     {/* Link ke halaman detail */}

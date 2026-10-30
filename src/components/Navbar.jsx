@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Moon, Sun, X } from 'lucide-react';
+import { Menu, Moon, Sun, X, Bell } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
@@ -10,8 +10,35 @@ export default function Navbar() {
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [unreadNotif, setUnreadNotif] = useState(0);
   const location = useLocation();
   const { user, isAdmin } = useAuth();
+
+  // Read unread aspirasi notifications count from localStorage
+  const readUnreadCount = () => {
+    try {
+      const saved = localStorage.getItem('aspirasi_notifications');
+      const notifs = saved ? JSON.parse(saved) : [];
+      return notifs.filter(n => !n.read).length;
+    } catch { return 0; }
+  };
+
+  useEffect(() => {
+    setUnreadNotif(readUnreadCount());
+    // Listen for storage changes (when Aspirasi page updates notifications)
+    const onStorage = (e) => {
+      if (e.key === 'aspirasi_notifications') setUnreadNotif(readUnreadCount());
+    };
+    window.addEventListener('storage', onStorage);
+    // Also poll every 30 seconds in case of same-tab updates
+    const timer = setInterval(() => setUnreadNotif(readUnreadCount()), 30000);
+    return () => { window.removeEventListener('storage', onStorage); clearInterval(timer); };
+  }, []);
+
+  // Re-read after navigating (e.g. user visited aspirasi, notifications got marked read)
+  useEffect(() => {
+    setUnreadNotif(readUnreadCount());
+  }, [location.pathname]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -64,13 +91,28 @@ export default function Navbar() {
           <Link to="/info-akademik" className={`nav-link-custom ${location.pathname === '/info-akademik' ? 'active' : ''}`}>Info Akademik</Link>
           <Link to="/dosen" className={`nav-link-custom ${location.pathname === '/dosen' ? 'active' : ''}`}>Dosen</Link>
           <Link to="/publikasi" className={`nav-link-custom ${location.pathname === '/publikasi' ? 'active' : ''}`}>Publikasi</Link>
-            {isAdmin && (
-              <Link to="/admin" className={`nav-link-custom ${location.pathname.startsWith('/admin') ? 'active' : ''}`}>Dashboard Admin</Link>
-            )}
+          {isAdmin && (
+            <Link to="/admin" className={`nav-link-custom ${location.pathname.startsWith('/admin') ? 'active' : ''}`}>Dashboard Admin</Link>
+          )}
         </nav>
         
         {/* Actions */}
         <div className={`navbar-actions-custom ${isMenuOpen ? 'is-open' : ''}`}>
+          {/* Aspirasi Notification Bell — only for logged-in users */}
+          {user && (
+            <Link
+              to="/bantuan/aspirasi"
+              className="navbar-notif-btn"
+              title="Notifikasi balasan aspirasi"
+              aria-label={unreadNotif > 0 ? `${unreadNotif} notifikasi belum dibaca` : 'Notifikasi aspirasi'}
+            >
+              <Bell size={20} />
+              {unreadNotif > 0 && (
+                <span className="navbar-notif-badge">{unreadNotif > 9 ? '9+' : unreadNotif}</span>
+              )}
+            </Link>
+          )}
+
           <button 
             onClick={toggleDarkMode} 
             className="btn-icon-custom"

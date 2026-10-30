@@ -1282,7 +1282,7 @@ button {
     gap: 1.2rem;
     grid-template-rows: 1fr;
     grid-auto-flow: column;
-    grid-auto-columns: 85%;
+    grid-auto-columns: min(85%, 280px);
     overflow-x: auto;
     padding-bottom: 1rem;
     scroll-behavior: smooth;
@@ -1360,6 +1360,7 @@ button {
 .event-info {
     flex: 1;
     min-width: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
@@ -1418,6 +1419,8 @@ button {
     color: var(--gray-800);
     line-height: 1.35;
     margin: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .event-date-range {
@@ -2764,6 +2767,43 @@ button {
     border-color: var(--gold-400);
 }
 
+/* ---- Publication abstract preview ---- */
+.pub-abstract-box {
+    position: relative;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.85rem;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+    max-height: 5.5rem;  /* ~3 lines at 1.6 line-height */
+    overflow: hidden;
+}
+
+.pub-abstract-text {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    word-break: break-word;
+}
+
+/* Fade-out gradient at bottom */
+.pub-abstract-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2.5rem;
+    background: linear-gradient(to bottom, transparent, var(--bg-surface));
+    pointer-events: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.dark .pub-abstract-fade {
+    background: linear-gradient(to bottom, transparent, var(--bg-surface));
+}
+
 .card-image-wrap {
     width: 100%;
     height: 180px;
@@ -3161,6 +3201,52 @@ button {
   cursor: pointer;
   color: var(--text-primary);
   transition: all 0.2s ease;
+}
+
+/* Navbar notification bell */
+.navbar-notif-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--text-primary);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.navbar-notif-btn:hover {
+  background: rgba(212, 168, 67, 0.1);
+  border-color: var(--gold-400);
+  color: var(--gold-500);
+}
+
+.navbar-notif-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--bg-base);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
 }
 
 .btn-login-custom {
