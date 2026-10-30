@@ -1391,6 +1391,11 @@ button {
     color: var(--blue-600);
 }
 
+.dark .tag-bootcamp {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+}
+
 .tag-penting {
     background: rgba(239, 68, 68, 0.1);
     color: #dc2626;
