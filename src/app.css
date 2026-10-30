@@ -417,6 +417,44 @@
   outline-offset: 1px;
 }
 
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap input {
+  width: 100%;
+  padding-right: 2.75rem;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gray-400);
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease;
+}
+
+.password-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.dark .password-toggle-btn {
+  color: var(--gray-500);
+}
+
+.dark .password-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
 .auth-error {
   color: var(--rose-600);
   font-size: 0.85rem;

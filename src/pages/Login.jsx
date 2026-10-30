@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { LogIn, Mail, Lock, Fingerprint } from 'lucide-react'
+import { LogIn, Mail, Lock, Fingerprint, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { ALLOWED_EMAIL_DOMAIN } from '../lib/supabaseClient'
 import BackButton from '../components/BackButton'
@@ -18,6 +18,7 @@ export default function Login() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
   
   const [error, setError] = useState('')
@@ -187,13 +188,24 @@ export default function Login() {
 
           <label className="auth-field">
             <span><Lock size={16} /> Kata Sandi</span>
-            <input
-              type="password"
-              required
-              placeholder="Kata sandi Anda"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="password-input-wrap">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                placeholder="Kata sandi Anda"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+                aria-label={showPassword ? 'Sembunyikan sandi' : 'Tampilkan sandi'}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </label>
 
           {/* Baris Ingat Saya + Lupa Password */}
