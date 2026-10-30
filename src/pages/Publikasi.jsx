@@ -97,23 +97,24 @@ export default function Publikasi() {
         <div className="container">
 
           {/* Search & Filter Bar */}
-          <div className="info-tools-bar">
-            <div className="info-search-wrapper">
-              <Search className="info-search-icon" size={18} />
-              <input
-                type="text"
-                placeholder="Cari judul, penulis..."
-                className="info-search-input"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-            </div>
+          <div className="search-filter-combined">
             <FilterDropdown
               label="Kategori"
               options={KATEGORI_OPTIONS}
               selected={selectedKategori}
               onChange={handleFilterChange}
             />
+            <div className="search-filter-divider" />
+            <div className="search-filter-input-wrap">
+              <Search className="search-filter-icon" size={18} />
+              <input
+                type="text"
+                placeholder="Cari judul, penulis..."
+                className="search-filter-input"
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+            </div>
           </div>
 
           {loading ? (

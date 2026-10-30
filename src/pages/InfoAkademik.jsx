@@ -235,28 +235,28 @@ export default function InfoAkademik() {
         <div className="container">
 
           {/* SEARCH & FILTER BAR */}
-          <div className="info-tools-bar" style={{ flexWrap: 'wrap', gap: '1rem' }}>
-            <div className="info-search-wrapper" style={{ flex: '1 1 300px' }}>
+          <div className="search-filter-combined">
+            {kategori === 'lomba' && (
+              <>
+                <FilterDropdown
+                  label="Bidang"
+                  options={LOMBA_IT_CATEGORIES}
+                  selected={subKategoriFilter}
+                  onChange={setSubKategoriFilter}
+                />
+                <div className="search-filter-divider" />
+              </>
+            )}
+            <div className="search-filter-input-wrap">
+              <Search className="search-filter-icon" size={18} />
               <input 
                 type="text" 
                 placeholder={`Cari nama ${kategoriTitle.toLowerCase()}...`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="info-search-input"
+                className="search-filter-input"
               />
-              <Search size={18} className="info-search-icon" />
             </div>
-
-            {kategori === 'lomba' && (
-              <FilterDropdown
-                label="Bidang"
-                options={LOMBA_IT_CATEGORIES}
-                selected={subKategoriFilter}
-                onChange={setSubKategoriFilter}
-              />
-            )}
-
-            {/* Status filter removed */}
           </div>
 
           {/* CONTENT GRID */}
