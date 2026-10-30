@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { BookOpen, Search, Tag, ArrowRight } from 'lucide-react'
 import BackButton from '../components/BackButton'
+import FilterDropdown from '../components/FilterDropdown'
 
 const KATEGORI_OPTIONS = [
-  'Semua',
   'Ilmu Komputer',
   'Sistem Informasi',
   'Teknologi Informasi',
@@ -21,7 +21,7 @@ export default function Publikasi() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedKategori, setSelectedKategori] = useState('Semua')
+  const [selectedKategori, setSelectedKategori] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function Publikasi() {
       (item.judul || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (item.penulis || '').toLowerCase().includes(searchQuery.toLowerCase())
     const matchKategori =
-      selectedKategori === 'Semua' || item.kategori_publikasi === selectedKategori
+      selectedKategori.length === 0 || selectedKategori.includes(item.kategori_publikasi)
     return matchSearch && matchKategori
   })
 
@@ -56,8 +56,8 @@ export default function Publikasi() {
     currentPage * ITEMS_PER_PAGE
   )
 
-  const handleFilterChange = (kat) => {
-    setSelectedKategori(kat)
+  const handleFilterChange = (newSelected) => {
+    setSelectedKategori(newSelected)
     setCurrentPage(1)
   }
 
@@ -108,18 +108,12 @@ export default function Publikasi() {
                 onChange={handleSearch}
               />
             </div>
-            <div className="info-filter-group" style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '5px' }}>
-              {KATEGORI_OPTIONS.map(kat => (
-                <button
-                  key={kat}
-                  className={`info-filter-btn ${selectedKategori === kat ? 'active' : ''}`}
-                  onClick={() => handleFilterChange(kat)}
-                  style={{ whiteSpace: 'nowrap' }}
-                >
-                  {kat}
-                </button>
-              ))}
-            </div>
+            <FilterDropdown
+              label="Kategori"
+              options={KATEGORI_OPTIONS}
+              selected={selectedKategori}
+              onChange={handleFilterChange}
+            />
           </div>
 
           {loading ? (

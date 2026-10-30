@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabaseClient'
 import BackButton from '../components/BackButton'
 import { Search, X, ExternalLink, AlertCircle, Trophy, GraduationCap, Rocket } from 'lucide-react'
 import Spinner from '../components/Spinner'
+import FilterDropdown from '../components/FilterDropdown'
 import { useParams, useNavigate } from 'react-router-dom'
 
 const getDriveImageUrl = (url) => {
@@ -29,10 +30,10 @@ export default function InfoAkademik() {
   const [selected, setSelected] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('Semua') // Semua, Buka, Tutup
-  const [subKategoriFilter, setSubKategoriFilter] = useState('Semua') // Untuk lomba IT
+  const [subKategoriFilter, setSubKategoriFilter] = useState([])
 
   // Sub kategori lomba IT
-  const LOMBA_IT_CATEGORIES = ['Semua', 'Web Dev', 'Game Dev', 'UI/UX Design', 'Businessplan', 'Lainnya']
+  const LOMBA_IT_CATEGORIES = ['Web Dev', 'Game Dev', 'UI/UX Design', 'Businessplan', 'Lainnya']
 
   useEffect(() => {
     // Only load items if we are in a specific kategori route
@@ -92,12 +93,12 @@ export default function InfoAkademik() {
     
     // 3. SubKategori check
     let matchesSubKategori = true
-    if (kategori === 'lomba' && subKategoriFilter !== 'Semua') {
-      if (subKategoriFilter === 'Lainnya') {
-        const predefined = LOMBA_IT_CATEGORIES.filter(c => c !== 'Semua' && c !== 'Lainnya')
-        matchesSubKategori = !predefined.includes(item.sub_kategori)
+    if (kategori === 'lomba' && subKategoriFilter.length > 0) {
+      if (subKategoriFilter.includes('Lainnya')) {
+        const predefined = LOMBA_IT_CATEGORIES.filter(c => c !== 'Lainnya')
+        matchesSubKategori = subKategoriFilter.includes(item.sub_kategori) || !predefined.includes(item.sub_kategori)
       } else {
-        matchesSubKategori = item.sub_kategori === subKategoriFilter
+        matchesSubKategori = subKategoriFilter.includes(item.sub_kategori)
       }
     }
 
@@ -246,21 +247,13 @@ export default function InfoAkademik() {
               <Search size={18} className="info-search-icon" />
             </div>
 
-            {/* Sub Kategori Filter for Lomba */}
             {kategori === 'lomba' && (
-              <div className="info-filter-group" style={{ overflowX: 'auto', flexWrap: 'nowrap' }}>
-                <span style={{ padding: '0.5rem', fontWeight: 600, color: 'var(--text-dark)' }}>Bidang:</span>
-                {LOMBA_IT_CATEGORIES.map(sub => (
-                  <button 
-                    key={sub}
-                    className={`info-filter-btn ${subKategoriFilter === sub ? 'active' : ''}`}
-                    onClick={() => setSubKategoriFilter(sub)}
-                    style={{ whiteSpace: 'nowrap' }}
-                  >
-                    {sub}
-                  </button>
-                ))}
-              </div>
+              <FilterDropdown
+                label="Bidang"
+                options={LOMBA_IT_CATEGORIES}
+                selected={subKategoriFilter}
+                onChange={setSubKategoriFilter}
+              />
             )}
 
             {/* Status filter removed */}
