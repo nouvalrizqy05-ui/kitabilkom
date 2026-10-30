@@ -178,7 +178,6 @@ export default function Publikasi() {
                     }}>
                       <p style={{
                         fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6,
-                        display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
                         margin: 0
                       }}>
                         {item.abstrak ? item.abstrak.replace(/<[^>]*>/g, '') : 'Abstrak tidak tersedia.'}

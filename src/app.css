@@ -358,7 +358,6 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Tombol kembali di dalam card — posisi relatif (flow normal) */
 .auth-box .back-btn-page-light {
   position: static;
   display: inline-flex;
@@ -367,6 +366,15 @@
   font-size: 0.82rem;
   top: unset;
   left: unset;
+  background: rgba(212, 168, 67, 0.12);
+  color: var(--gold-600);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+}
+
+.auth-box .back-btn-page-light:hover {
+  background: var(--gold-500);
+  color: white;
+  border-color: var(--gold-500);
 }
 
 .auth-box h1 {
@@ -2152,9 +2160,20 @@
   color: var(--text-primary);
 }
 
-.dark .auth-box p,
-.dark .auth-box .back-btn-page-light {
+.dark .auth-box p {
   color: var(--text-secondary);
+}
+
+.dark .auth-box .back-btn-page-light {
+  background: rgba(212, 168, 67, 0.15);
+  color: var(--gold-400);
+  border-color: rgba(212, 168, 67, 0.35);
+}
+
+.dark .auth-box .back-btn-page-light:hover {
+  background: var(--gold-500);
+  color: white;
+  border-color: var(--gold-500);
 }
 
 .dark .auth-form label span {
