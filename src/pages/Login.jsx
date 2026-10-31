@@ -154,7 +154,7 @@ export default function Login() {
   }
 
   return (
-    <section className="auth-section">
+    <section className="auth-section auth-gold">
       <div className="auth-box">
         {/* Tombol Kembali di dalam card, pojok kiri atas */}
         <BackButton light={true} />
@@ -220,7 +220,7 @@ export default function Login() {
             </label>
             <Link
               to="/lupa-password"
-              style={{ fontSize: '0.82rem', color: 'var(--primary-600)', fontWeight: 600, textDecoration: 'none' }}
+              style={{ fontSize: '0.82rem', color: 'var(--gold-600)', fontWeight: 600, textDecoration: 'none' }}
             >
               Lupa Password?
             </Link>

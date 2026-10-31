@@ -3888,6 +3888,12 @@ button {
 
     .calendar-grid {
         align-items: start;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: none;
+        grid-auto-flow: row;
+        grid-auto-columns: auto;
+        overflow-x: visible;
+        scroll-snap-type: none;
     }
 
     .calendar-layout {

@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import CookieConsent from './components/CookieConsent'
 import ScrollToTop from './components/ScrollToTop'
 import { ProtectedRoute, AdminRoute } from './components/ProtectedRoute'
 
@@ -50,6 +51,7 @@ export default function App() {
     <>
       <ScrollToTop />
       <Navbar />
+      <CookieConsent />
       <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Suspense fallback={<PageLoader />}>
           <Routes>

@@ -14,6 +14,77 @@
   flex: 1;
 }
 
+.cookie-consent {
+  position: fixed;
+  z-index: 1100;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: min(680px, calc(100vw - 2rem));
+  margin-inline: auto;
+  padding: 1rem 1.15rem;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--gold-500);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+}
+
+.cookie-consent > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.cookie-consent h2 {
+  margin: 0 0 0.3rem;
+  color: var(--gold-600);
+  font-size: 0.95rem;
+}
+
+.cookie-consent p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.cookie-consent button {
+  flex: 0 0 auto;
+  padding: 0.65rem 1rem;
+  color: white;
+  background: var(--gold-600);
+  border: 0;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.cookie-consent button:hover {
+  background: var(--gold-700);
+  transform: translateY(-1px);
+}
+
+.cookie-consent button:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .cookie-consent {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1rem;
+  }
+}
+
 /* ---------- HERO (layout wrapper baru, style dasar reuse dari index.css) ---------- */
 .hero-inner {
   display: flex;
@@ -382,6 +453,28 @@
   color: var(--navy-900);
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+}
+
+.auth-section.auth-gold .auth-box h1,
+.auth-section.auth-gold .auth-field,
+.auth-section.auth-gold .auth-switch a {
+  color: var(--gold-700);
+}
+
+.auth-section.auth-gold .auth-field input:focus {
+  outline-color: var(--gold-500);
+}
+
+.auth-section.auth-gold .auth-box .btn-primary {
+  background: var(--gold-600);
+}
+
+.auth-section.auth-gold .auth-box .btn-primary:hover {
+  background: var(--gold-700);
+}
+
+.auth-section.auth-gold .auth-checkbox input {
+  accent-color: var(--gold-600);
 }
 
 .auth-subtitle {

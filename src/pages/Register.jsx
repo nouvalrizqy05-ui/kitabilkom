@@ -61,7 +61,7 @@ export default function Register() {
 
   if (success) {
     return (
-      <section className="auth-section">
+      <section className="auth-section auth-gold">
         <div className="auth-box">
           <BackButton light={true} />
           <h1>Cek Email Kamu</h1>
@@ -78,7 +78,7 @@ export default function Register() {
   }
 
   return (
-    <section className="auth-section">
+    <section className="auth-section auth-gold">
       <div className="auth-box">
         <BackButton light={true} />
         <h1>Daftar Akun</h1>
